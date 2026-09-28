@@ -1,0 +1,142 @@
+# Research set for the Composio app-buildability take-home.
+#
+# SOURCE TRUNCATION: the brief as received cut off mid-way through category 10
+# ("AI, Research and Media-native"). 90 apps are confirmed below. Apps 91-100
+# were not in the source text and have NOT been invented -- see the
+# TODO_CATEGORY_10 block at the end.
+#
+# `trap: true` marks apps expected to defeat naive research: no public docs,
+# sales-gated, or not an API at all. These are deliberately over-represented in
+# the gold set, because that is where the informative errors are.
+
+meta:
+  total_in_brief: 100
+  confirmed_here: 90
+  missing: "category 10 (AI, Research and Media-native), apps 91-100"
+
+categories:
+  - name: "CRM & Sales"
+    apps:
+      - {id: 1,  name: Salesforce,   website: salesforce.com}
+      - {id: 2,  name: HubSpot,      website: hubspot.com}
+      - {id: 3,  name: Pipedrive,    website: pipedrive.com}
+      - {id: 4,  name: Attio,        website: attio.com}
+      - {id: 5,  name: Twenty,       website: twenty.com, note: "open-source CRM, self-hostable"}
+      - {id: 6,  name: Podio,        website: podio.com}
+      - {id: 7,  name: Zoho CRM,     website: zoho.com/crm}
+      - {id: 8,  name: Close,        website: close.com}
+      - {id: 9,  name: Copper,       website: copper.com}
+      - {id: 10, name: DealCloud,    website: api.docs.dealcloud.com, trap: true}
+
+  - name: "Support & Helpdesk"
+    apps:
+      - {id: 11, name: Zendesk,    website: zendesk.com}
+      - {id: 12, name: Intercom,   website: intercom.com}
+      - {id: 13, name: Freshdesk,  website: freshdesk.com}
+      - {id: 14, name: Front,      website: front.com}
+      - {id: 15, name: Pylon,      website: usepylon.com, trap: true}
+      - {id: 16, name: LiveAgent,  website: liveagent.com}
+      - {id: 17, name: Plain,      website: plain.com}
+      - {id: 18, name: Help Scout, website: helpscout.com}
+      - {id: 19, name: Gorgias,    website: gorgias.com}
+      - {id: 20, name: Gladly,     website: gladly.com, trap: true}
+
+  - name: "Communications & Messaging"
+    apps:
+      - {id: 21, name: Slack,             website: slack.com}
+      - {id: 22, name: Twilio,            website: twilio.com}
+      - {id: 23, name: Zoho Cliq,         website: zoho.com/cliq}
+      - {id: 24, name: Lark (Larksuite),  website: open.larksuite.com}
+      - {id: 25, name: Pumble,            website: pumble.com, trap: true}
+      - {id: 26, name: Discord,           website: discord.com}
+      - {id: 27, name: Telegram,          website: core.telegram.org}
+      - {id: 28, name: WhatsApp Business, website: developers.facebook.com/docs/whatsapp, note: "expect post-credential gate"}
+      - {id: 29, name: Aircall,           website: aircall.io}
+      - {id: 30, name: Vonage,            website: developer.vonage.com}
+
+  - name: "Marketing, Ads, Email & Social"
+    apps:
+      - {id: 31, name: Google Ads,     website: developers.google.com/google-ads, note: "developer token approval"}
+      - {id: 32, name: Meta Ads,       website: developers.facebook.com/docs/marketing-apis}
+      - {id: 33, name: LinkedIn Ads,   website: learn.microsoft.com/linkedin/marketing, note: "partner program"}
+      - {id: 34, name: GoHighLevel,    website: highlevel.stoplight.io}
+      - {id: 35, name: Mailchimp,      website: mailchimp.com/developer}
+      - {id: 36, name: Klaviyo,        website: developers.klaviyo.com}
+      - {id: 37, name: systeme.io,     website: systeme.io}
+      - {id: 38, name: Pinterest,      website: developers.pinterest.com}
+      - {id: 39, name: Threads (Meta), website: developers.facebook.com/docs/threads}
+      - {id: 40, name: SendGrid,       website: sendgrid.com}
+
+  - name: "Ecommerce"
+    apps:
+      - {id: 41, name: Shopify,                     website: shopify.dev}
+      - {id: 42, name: WooCommerce,                 website: woocommerce.com/document/woocommerce-rest-api}
+      - {id: 43, name: BigCommerce,                 website: developer.bigcommerce.com}
+      - {id: 44, name: Salesforce Commerce Cloud,   website: developer.salesforce.com/docs/commerce, trap: true}
+      - {id: 45, name: Magento (Adobe Commerce),    website: developer.adobe.com/commerce}
+      - {id: 46, name: Squarespace,                 website: developers.squarespace.com}
+      - {id: 47, name: Ecwid,                       website: api-docs.ecwid.com}
+      - {id: 48, name: Gumroad,                     website: gumroad.com/api}
+      - {id: 49, name: Amazon Selling Partner,      website: developer-docs.amazon.com/sp-api, note: "developer registration"}
+      - {id: 50, name: fanbasis,                    website: fanbasis.com, trap: true}
+
+  - name: "Data, SEO & Scraping"
+    apps:
+      - {id: 51, name: DataForSEO,   website: docs.dataforseo.com}
+      - {id: 52, name: SE Ranking,   website: seranking.com/api}
+      - {id: 53, name: Ahrefs,       website: ahrefs.com/api}
+      - {id: 54, name: MrScraper,    website: docs.mrscraper.com}
+      - {id: 55, name: Apify,        website: docs.apify.com}
+      - {id: 56, name: Firecrawl,    website: firecrawl.dev}
+      - {id: 57, name: Bright Data,  website: brightdata.com}
+      - {id: 58, name: Sherlock,     website: github.com/sherlock-project/sherlock, trap: true, note: "CLI project, not an API -- correct answer is no_public_api"}
+      - {id: 59, name: Waterfall.io, website: waterfall.io, trap: true}
+      - {id: 60, name: Clay,         website: clay.com, trap: true}
+
+  - name: "Developer, Infra & Data platforms"
+    apps:
+      - {id: 61, name: GitHub,        website: docs.github.com/rest}
+      - {id: 62, name: Vercel,        website: vercel.com/docs/rest-api}
+      - {id: 63, name: Netlify,       website: docs.netlify.com/api}
+      - {id: 64, name: Cloudflare,    website: developers.cloudflare.com/api}
+      - {id: 65, name: Supabase,      website: supabase.com/docs}
+      - {id: 66, name: Neo4j,         website: neo4j.com/docs/api}
+      - {id: 67, name: Snowflake,     website: docs.snowflake.com}
+      - {id: 68, name: MongoDB Atlas, website: mongodb.com/docs/atlas/api}
+      - {id: 69, name: Datadog,       website: docs.datadoghq.com/api}
+      - {id: 70, name: Sentry,        website: docs.sentry.io/api}
+
+  - name: "Productivity & Project Management"
+    apps:
+      - {id: 71, name: Notion,      website: developers.notion.com}
+      - {id: 72, name: Airtable,    website: airtable.com/developers}
+      - {id: 73, name: Linear,      website: developers.linear.app}
+      - {id: 74, name: Jira,        website: developer.atlassian.com}
+      - {id: 75, name: Asana,       website: developers.asana.com}
+      - {id: 76, name: Monday.com,  website: developer.monday.com}
+      - {id: 77, name: ClickUp,     website: clickup.com/api}
+      - {id: 78, name: Coda,        website: coda.io/developers}
+      - {id: 79, name: Smartsheet,  website: smartsheet.com/developers}
+      - {id: 80, name: Harvest,     website: help.getharvest.com/api-v2}
+
+  - name: "Finance & Fintech"
+    apps:
+      - {id: 81, name: Stripe,          website: stripe.com/docs/api}
+      - {id: 82, name: Plaid,           website: plaid.com/docs}
+      - {id: 83, name: Binance,         website: binance-docs.github.io}
+      - {id: 84, name: Paygent Connect, website: null, trap: true, note: "NMI-powered; identify the real vendor first"}
+      - {id: 85, name: iPayX,           website: ipayx.ai/docs, trap: true}
+      - {id: 86, name: QuickBooks,      website: developer.intuit.com}
+      - {id: 87, name: Xero,            website: developer.xero.com}
+      - {id: 88, name: Brex,            website: developer.brex.com}
+      - {id: 89, name: Ramp,            website: docs.ramp.com}
+      - {id: 90, name: PitchBook,       website: pitchbook.com, trap: true, note: "research API is sales-gated"}
+
+  # ------------------------------------------------------------------------
+  # TODO_CATEGORY_10 -- "AI, Research and Media-native", apps 91-100.
+  #
+  # Not present in the brief as received; the source text ends at the category
+  # heading. Ask for the list, then add it here as a normal category block.
+  # Do NOT invent entries to reach 100. Reporting "90 of 100, list truncated in
+  # the source brief" is the honest finding.
+  # ------------------------------------------------------------------------

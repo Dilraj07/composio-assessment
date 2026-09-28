@@ -1,0 +1,148 @@
+{
+  "_README": [
+    "HAND-BUILT GROUND TRUTH. Fill this in yourself, from real documentation,",
+    "BEFORE running the agent on these apps. Commit it before the first pass-1",
+    "run -- the git timestamp is what proves the gold set predates the output.",
+    "",
+    "Grading after seeing agent answers produces a number nobody should",
+    "believe, including you. The interview will ask how you avoided exactly",
+    "this; the commit history is the answer.",
+    "",
+    "Leave a field null to exclude it from scoring. Better an honest null than",
+    "a guess that turns into a fake agent error.",
+    "",
+    "Enum decision rules: docs/METHODOLOGY.md §1.",
+    "Selection: one obvious + one obscure app per category, 16 total,",
+    "weighted toward apps marked `trap: true` in data/apps.yaml."
+  ],
+
+  "built_by": "REPLACE_WITH_YOUR_NAME",
+  "built_on": "YYYY-MM-DD",
+  "method": "Manual reading of first-party documentation and pricing pages. No pipeline output consulted.",
+  "selection_rationale": "Stratified: 1 well-documented + 1 obscure app per category, skewed toward likely traps.",
+
+  "apps": [
+    {
+      "_template": true,
+      "_delete_this_row_once_you_start": true,
+      "app": "EXAMPLE — Google Ads",
+      "category": "Marketing, Ads, Email & Social",
+      "auth": {
+        "methods": ["oauth2"],
+        "primary_for_third_party": "oauth2",
+        "evidence_url": "https://developers.google.com/google-ads/api/docs/oauth/overview"
+      },
+      "access": {
+        "tier": "self_serve_free",
+        "extra_gate": "developer_token",
+        "evidence_url": "https://developers.google.com/google-ads/api/docs/access-levels",
+        "_why": "Textbook case for splitting tier from extra_gate: credentials are free and instant, production traffic is not."
+      },
+      "api": {
+        "breadth": "broad",
+        "evidence_url": "https://developers.google.com/google-ads/api/reference/rpc"
+      },
+      "verdict": {
+        "value": "needs_outreach",
+        "blocker": "developer_token"
+      },
+      "notes": "Delete this row. It shows the shape and the reasoning style expected in `_why`."
+    },
+
+    { "app": "", "category": "CRM & Sales",                        "_slot": "obvious",
+      "auth": {"methods": [], "primary_for_third_party": null, "evidence_url": null},
+      "access": {"tier": null, "extra_gate": null, "evidence_url": null},
+      "api": {"breadth": null, "evidence_url": null},
+      "verdict": {"value": null, "blocker": null}, "notes": "" },
+
+    { "app": "", "category": "CRM & Sales",                        "_slot": "obscure",
+      "auth": {"methods": [], "primary_for_third_party": null, "evidence_url": null},
+      "access": {"tier": null, "extra_gate": null, "evidence_url": null},
+      "api": {"breadth": null, "evidence_url": null},
+      "verdict": {"value": null, "blocker": null}, "notes": "" },
+
+    { "app": "", "category": "Support & Helpdesk",                 "_slot": "obvious",
+      "auth": {"methods": [], "primary_for_third_party": null, "evidence_url": null},
+      "access": {"tier": null, "extra_gate": null, "evidence_url": null},
+      "api": {"breadth": null, "evidence_url": null},
+      "verdict": {"value": null, "blocker": null}, "notes": "" },
+
+    { "app": "", "category": "Support & Helpdesk",                 "_slot": "obscure",
+      "auth": {"methods": [], "primary_for_third_party": null, "evidence_url": null},
+      "access": {"tier": null, "extra_gate": null, "evidence_url": null},
+      "api": {"breadth": null, "evidence_url": null},
+      "verdict": {"value": null, "blocker": null}, "notes": "" },
+
+    { "app": "", "category": "Communications & Messaging",         "_slot": "obvious",
+      "auth": {"methods": [], "primary_for_third_party": null, "evidence_url": null},
+      "access": {"tier": null, "extra_gate": null, "evidence_url": null},
+      "api": {"breadth": null, "evidence_url": null},
+      "verdict": {"value": null, "blocker": null}, "notes": "" },
+
+    { "app": "", "category": "Communications & Messaging",         "_slot": "obscure",
+      "auth": {"methods": [], "primary_for_third_party": null, "evidence_url": null},
+      "access": {"tier": null, "extra_gate": null, "evidence_url": null},
+      "api": {"breadth": null, "evidence_url": null},
+      "verdict": {"value": null, "blocker": null}, "notes": "" },
+
+    { "app": "", "category": "Marketing, Ads, Email & Social",     "_slot": "obvious",
+      "auth": {"methods": [], "primary_for_third_party": null, "evidence_url": null},
+      "access": {"tier": null, "extra_gate": null, "evidence_url": null},
+      "api": {"breadth": null, "evidence_url": null},
+      "verdict": {"value": null, "blocker": null}, "notes": "" },
+
+    { "app": "", "category": "Marketing, Ads, Email & Social",     "_slot": "obscure",
+      "auth": {"methods": [], "primary_for_third_party": null, "evidence_url": null},
+      "access": {"tier": null, "extra_gate": null, "evidence_url": null},
+      "api": {"breadth": null, "evidence_url": null},
+      "verdict": {"value": null, "blocker": null}, "notes": "" },
+
+    { "app": "", "category": "Ecommerce",                          "_slot": "obvious",
+      "auth": {"methods": [], "primary_for_third_party": null, "evidence_url": null},
+      "access": {"tier": null, "extra_gate": null, "evidence_url": null},
+      "api": {"breadth": null, "evidence_url": null},
+      "verdict": {"value": null, "blocker": null}, "notes": "" },
+
+    { "app": "", "category": "Ecommerce",                          "_slot": "obscure",
+      "auth": {"methods": [], "primary_for_third_party": null, "evidence_url": null},
+      "access": {"tier": null, "extra_gate": null, "evidence_url": null},
+      "api": {"breadth": null, "evidence_url": null},
+      "verdict": {"value": null, "blocker": null}, "notes": "" },
+
+    { "app": "", "category": "Data, SEO & Scraping",               "_slot": "obvious",
+      "auth": {"methods": [], "primary_for_third_party": null, "evidence_url": null},
+      "access": {"tier": null, "extra_gate": null, "evidence_url": null},
+      "api": {"breadth": null, "evidence_url": null},
+      "verdict": {"value": null, "blocker": null}, "notes": "" },
+
+    { "app": "", "category": "Data, SEO & Scraping",               "_slot": "obscure",
+      "auth": {"methods": [], "primary_for_third_party": null, "evidence_url": null},
+      "access": {"tier": null, "extra_gate": null, "evidence_url": null},
+      "api": {"breadth": null, "evidence_url": null},
+      "verdict": {"value": null, "blocker": null}, "notes": "" },
+
+    { "app": "", "category": "Developer, Infra & Data platforms",  "_slot": "obvious",
+      "auth": {"methods": [], "primary_for_third_party": null, "evidence_url": null},
+      "access": {"tier": null, "extra_gate": null, "evidence_url": null},
+      "api": {"breadth": null, "evidence_url": null},
+      "verdict": {"value": null, "blocker": null}, "notes": "" },
+
+    { "app": "", "category": "Productivity & Project Management",  "_slot": "obvious",
+      "auth": {"methods": [], "primary_for_third_party": null, "evidence_url": null},
+      "access": {"tier": null, "extra_gate": null, "evidence_url": null},
+      "api": {"breadth": null, "evidence_url": null},
+      "verdict": {"value": null, "blocker": null}, "notes": "" },
+
+    { "app": "", "category": "Finance & Fintech",                  "_slot": "obvious",
+      "auth": {"methods": [], "primary_for_third_party": null, "evidence_url": null},
+      "access": {"tier": null, "extra_gate": null, "evidence_url": null},
+      "api": {"breadth": null, "evidence_url": null},
+      "verdict": {"value": null, "blocker": null}, "notes": "" },
+
+    { "app": "", "category": "Finance & Fintech",                  "_slot": "obscure",
+      "auth": {"methods": [], "primary_for_third_party": null, "evidence_url": null},
+      "access": {"tier": null, "extra_gate": null, "evidence_url": null},
+      "api": {"breadth": null, "evidence_url": null},
+      "verdict": {"value": null, "blocker": null}, "notes": "" }
+  ]
+}

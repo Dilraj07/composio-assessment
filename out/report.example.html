@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>App Buildability Research — 6 apps</title>
+<style>
+:root{--bg:#fbfaf9;--fg:#1c1a17;--muted:#6b6560;--line:#e4dfd9;--card:#fff;
+--accent:#b8500f;--good:#2f6f4f;--warn:#9a6a10;--bad:#a33223;}
+@media(prefers-color-scheme:dark){:root{--bg:#161512;--fg:#ecE7e0;--muted:#a09a92;
+--line:#302c27;--card:#1e1c19;--accent:#e08a4a;--good:#6fbf92;--warn:#d8a748;--bad:#e0766a;}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 ui-sans-serif,
+-apple-system,"Segoe UI",Roboto,sans-serif;}
+.wrap{max-width:1080px;margin:0 auto;padding:48px 20px 96px}
+h1{font-size:2.1rem;line-height:1.15;margin:0 0 8px;letter-spacing:-.02em}
+h2{font-size:1.35rem;margin:56px 0 4px;letter-spacing:-.01em}
+h2+.sub{color:var(--muted);margin:0 0 20px;font-size:.92rem}
+.lede{color:var(--muted);font-size:1.02rem;margin:0 0 4px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:28px 0}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.kpi .n{font-size:1.75rem;font-weight:650;letter-spacing:-.02em}
+.kpi .l{color:var(--muted);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+.finding{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--accent);
+border-radius:8px;padding:16px 18px;margin:12px 0}
+.finding h3{margin:0 0 6px;font-size:1.02rem}
+.finding p{margin:0;color:var(--muted);font-size:.93rem}
+table{width:100%;border-collapse:collapse;font-size:.86rem;margin-top:12px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.74rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);
+position:sticky;top:0;background:var(--bg)}
+tbody tr:hover{background:color-mix(in srgb,var(--accent) 6%,transparent)}
+.tag{display:inline-block;padding:1px 7px;border-radius:99px;font-size:.73rem;
+border:1px solid var(--line);white-space:nowrap}
+.t-good{color:var(--good);border-color:color-mix(in srgb,var(--good) 40%,transparent)}
+.t-warn{color:var(--warn);border-color:color-mix(in srgb,var(--warn) 40%,transparent)}
+.t-bad{color:var(--bad);border-color:color-mix(in srgb,var(--bad) 40%,transparent)}
+.bar{height:6px;border-radius:99px;background:var(--line);overflow:hidden;min-width:70px}
+.bar>i{display:block;height:100%;background:var(--accent)}
+.delta{font-variant-numeric:tabular-nums;font-weight:600}
+.up{color:var(--good)} .down{color:var(--bad)}
+.note{background:var(--card);border:1px dashed var(--line);border-radius:8px;
+padding:14px 16px;color:var(--muted);font-size:.9rem;margin:16px 0}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:16px 0;font-size:.85rem}
+.step{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 12px}
+.arrow{color:var(--muted)}
+.scroll{max-height:560px;overflow:auto;border:1px solid var(--line);border-radius:10px}
+code{font:.85em ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--card);
+border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+footer{margin-top:72px;padding-top:20px;border-top:1px solid var(--line);
+color:var(--muted);font-size:.84rem}
+a{color:var(--accent)}
+</style></head><body><div class="wrap">
+
+<h1>What actually blocks an agent toolkit</h1>
+<p class="lede">6 SaaS apps researched by a two-pass agent pipeline, graded
+against a blind hand-built gold set. Generated 2026-09-28.</p>
+
+<div class="kpis"><div class="kpi"><div class="n">6</div><div class="l">apps researched</div></div><div class="kpi"><div class="n">—</div><div class="l">pass-1 accuracy</div></div><div class="kpi"><div class="n">—</div><div class="l">pass-2 accuracy</div></div><div class="kpi"><div class="n">36</div><div class="l">needed a human</div></div><div class="kpi"><div class="n">0</div><div class="l">buildable today</div></div></div>
+
+<h2>The findings</h2>
+<p class="sub">Every claim below is a count off the enum-constrained records, not an assertion.</p>
+
+<div class="finding"><h3>The blocker is almost never authentication.</h3>
+<p>0 apps hand out credentials in seconds and still
+refuse production traffic until a separate approval clears — developer tokens, app review,
+partner admission. Auth is a solved problem; commercial gating is not. Any toolkit roadmap
+built on "which auth does it use" will mis-rank its own backlog.</p></div>
+
+<div class="finding"><h3>unknown dominates third-party integration at 100.0%.</h3>
+<p>But the distribution splits sharply by category — see the breakdown below. Auth choice
+tracks who the vendor's customer is, not what the product does.</p></div>
+
+<div class="finding"><h3>Most common blocker: no_api (6 apps).</h3>
+<p>Ranked table below. Everything above <code>none</code> is outreach work, not engineering work.</p></div>
+
+<div class="finding"><h3>0 apps are buildable today with no MCP server yet.</h3>
+<p>Existing MCP coverage clusters in developer tooling, where the need is lowest. The
+highest-value gaps are the apps that are trivially buildable and that nobody has built:
+—.</p></div>
+
+
+<h2>Verification</h2>
+<p class="sub">Gold set of — apps, hand-researched and committed
+<em>before</em> the agent ran. Field-level scoring — —
+judgments, not rows.</p>
+<table><thead><tr><th>Field</th><th>Pass 1</th><th>Pass 2</th><th>Movement</th><th></th></tr></thead>
+<tbody><tr><td colspan="5">Run <code>make grade</code>.</td></tr></tbody></table>
+
+<h3 style="font-size:1rem;margin-top:28px">Where it was still wrong</h3>
+<table><thead><tr><th>App</th><th>Field</th><th>Agent said</th><th>Truth</th><th>Class</th></tr></thead>
+<tbody><tr><td colspan="5">No misses recorded.</td></tr></tbody></table>
+
+<h2>The agent</h2>
+<div class="flow">
+<span class="step">apps.yaml</span><span class="arrow">→</span>
+<span class="step">Pass 1 · search + fetch + extract</span><span class="arrow">→</span>
+<span class="step"><strong>frozen</strong> pass1.json</span><span class="arrow">→</span>
+<span class="step">Triage · 6 rules</span><span class="arrow">→</span>
+<span class="step">Pass 2 · re-fetch, browser, adjudicate</span><span class="arrow">→</span>
+<span class="step">Grade vs gold</span>
+</div>
+<p style="color:var(--muted);font-size:.92rem">Pass 2 re-runs only escalated fields. One rule
+is deliberately asymmetric: every <code>buildable_now</code> verdict is re-verified regardless
+of confidence, because a false positive costs an engineering sprint while a false negative
+costs an email.</p>
+
+<h3 style="font-size:1rem;margin-top:28px">Where a human was needed — 36 items</h3>
+<table><thead><tr><th>App</th><th>Field</th><th>Why</th></tr></thead>
+<tbody><tr><td>Salesforce</td><td><code>auth.methods</code></td><td>stub backend</td></tr><tr><td>Salesforce</td><td><code>auth.primary_for_third_party</code></td><td>stub backend</td></tr><tr><td>Salesforce</td><td><code>access.tier</code></td><td>stub backend</td></tr><tr><td>Salesforce</td><td><code>access.extra_gate</code></td><td>stub backend</td></tr><tr><td>Salesforce</td><td><code>api.breadth</code></td><td>stub backend</td></tr><tr><td>Salesforce</td><td><code>verdict.value</code></td><td>stub backend</td></tr><tr><td>HubSpot</td><td><code>auth.methods</code></td><td>stub backend</td></tr><tr><td>HubSpot</td><td><code>auth.primary_for_third_party</code></td><td>stub backend</td></tr><tr><td>HubSpot</td><td><code>access.tier</code></td><td>stub backend</td></tr><tr><td>HubSpot</td><td><code>access.extra_gate</code></td><td>stub backend</td></tr><tr><td>HubSpot</td><td><code>api.breadth</code></td><td>stub backend</td></tr><tr><td>HubSpot</td><td><code>verdict.value</code></td><td>stub backend</td></tr></tbody></table>
+
+<h2>Patterns in detail</h2>
+<h3 style="font-size:1rem">Primary auth for third-party integrations</h3>
+<table><thead><tr><th>Method</th><th>Apps</th><th>Share</th><th></th></tr></thead><tbody><tr><td>unknown</td><td>6</td><td>100.0%</td><td><div class="bar"><i style="width:100%"></i></div></td></tr></tbody></table>
+
+<h3 style="font-size:1rem;margin-top:28px">Blockers, ranked</h3>
+<table><thead><tr><th>Blocker</th><th>Apps</th><th>Share</th></tr></thead><tbody><tr><td>no_api</td><td>6</td><td>100.0%</td></tr></tbody></table>
+
+<h3 style="font-size:1rem;margin-top:28px">Category difficulty</h3>
+<table><thead><tr><th>Category</th><th>Apps</th><th>Buildable</th><th>Needs outreach</th><th>Buildable %</th></tr></thead>
+<tbody><tr><td>CRM &amp; Sales</td><td>6</td><td>0</td><td>0</td><td>0.0%</td></tr></tbody></table>
+
+<h2>All 6 apps</h2>
+<div class="scroll"><table><thead><tr><th>App</th><th>Category</th><th>Auth</th>
+<th>Access tier</th><th>Extra gate</th><th>Breadth</th><th>MCP</th><th>Verdict</th><th>Evidence</th>
+</tr></thead><tbody><tr><td><strong>Attio</strong><br><span style='color:var(--muted);font-size:.8rem'></span></td><td>CRM &amp; Sales</td><td>unknown</td><td>no_public_api</td><td>unknown</td><td>unknown</td><td>unknown</td><td><span class="tag t-bad">not_buildable</span></td><td>—</td></tr><tr><td><strong>HubSpot</strong><br><span style='color:var(--muted);font-size:.8rem'></span></td><td>CRM &amp; Sales</td><td>unknown</td><td>no_public_api</td><td>unknown</td><td>unknown</td><td>unknown</td><td><span class="tag t-bad">not_buildable</span></td><td>—</td></tr><tr><td><strong>Pipedrive</strong><br><span style='color:var(--muted);font-size:.8rem'></span></td><td>CRM &amp; Sales</td><td>unknown</td><td>no_public_api</td><td>unknown</td><td>unknown</td><td>unknown</td><td><span class="tag t-bad">not_buildable</span></td><td>—</td></tr><tr><td><strong>Podio</strong><br><span style='color:var(--muted);font-size:.8rem'></span></td><td>CRM &amp; Sales</td><td>unknown</td><td>no_public_api</td><td>unknown</td><td>unknown</td><td>unknown</td><td><span class="tag t-bad">not_buildable</span></td><td>—</td></tr><tr><td><strong>Salesforce</strong><br><span style='color:var(--muted);font-size:.8rem'></span></td><td>CRM &amp; Sales</td><td>unknown</td><td>no_public_api</td><td>unknown</td><td>unknown</td><td>unknown</td><td><span class="tag t-bad">not_buildable</span></td><td>—</td></tr><tr><td><strong>Twenty</strong><br><span style='color:var(--muted);font-size:.8rem'></span></td><td>CRM &amp; Sales</td><td>unknown</td><td>no_public_api</td><td>unknown</td><td>unknown</td><td>unknown</td><td><span class="tag t-bad">not_buildable</span></td><td>—</td></tr></tbody></table></div>
+
+<h2>Honest limitations</h2>
+<div class="note">
+<p style="margin:0 0 8px"><strong>90 of 100 apps.</strong> The source brief was truncated
+mid-way through category 10 ("AI, Research and Media-native"). No apps were invented to
+reach 100.</p>
+<p style="margin:0 0 8px"><strong>Gold set is — apps</strong>, a
+stratified sample — one obvious and one obscure app per category, weighted toward likely
+traps. Accuracy figures carry the confidence interval of that sample size.</p>
+<p style="margin:0"><strong>Mismatches are classified, not just counted.</strong> Some are
+agent errors; some are cases where the enum itself was too loose, or where the vendor
+changed after the gold set was written. Only <code>agent_wrong</code> counts against the
+pipeline, and the class is shown per row above.</p>
+</div>
+
+<footer>Pipeline source, methodology and the full rubric breakdown are in the repo.
+Every field carries its own evidence URL and confidence; nulls are real nulls.</footer>
+</div></body></html>
