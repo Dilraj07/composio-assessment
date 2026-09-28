@@ -98,6 +98,30 @@ The model's own verdict is kept in `verdict.model_verdict` for comparison but
 is never graded. Deriving it means every verdict is explainable from two
 evidenced fields, never "the model decided".
 
+### 1b. Clarifications found while building the gold set
+
+Written down during gold research on 2026-09-28, **before any agent run**, so
+the agent prompt and the gold set use identical rules.
+
+1. **Sales-only enterprise products** (no online purchase, no free developer
+   access — DealCloud, Gladly, PitchBook, Otter's API) → `tier: partner_gated`,
+   `extra_gate: sales_contact`. `paid_plan_required` is reserved for plans you
+   can buy with a card.
+2. **`api_key` vs `bearer_token` is decided by what the vendor calls it**, not
+   by the header scheme. `Authorization: Bearer fc-…` that the docs call an
+   "API key" is `api_key`. `bearer_token` is for tokens issued per install or
+   integration (Notion internal integration tokens, Slack bot tokens,
+   personal access tokens).
+3. **Multi-tenant OAuth that needs platform review is `app_review`.** When a
+   third party cannot act on arbitrary customers' accounts without the
+   platform approving the app (Zendesk global OAuth client, Shopify public
+   distribution, Meta Advanced Access), that is a real gate, not a listing.
+4. **The API, not the MCP server, decides auth and tier.** An official MCP
+   server that is *less* gated than the API (Otter) is recorded in notes and
+   `api.mcp`. It does not change `access.tier`.
+5. **Rebrands resolve to the current product** (fanbasis → Commas, July 2026),
+   with the rename noted.
+
 ---
 
 ## 2. Gold set protocol

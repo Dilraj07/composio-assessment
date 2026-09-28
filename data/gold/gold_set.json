@@ -1,148 +1,574 @@
 {
   "_README": [
-    "HAND-BUILT GROUND TRUTH. Fill this in yourself, from real documentation,",
-    "BEFORE running the agent on these apps. Commit it before the first pass-1",
-    "run -- the git timestamp is what proves the gold set predates the output.",
-    "",
-    "Grading after seeing agent answers produces a number nobody should",
-    "believe, including you. The interview will ask how you avoided exactly",
-    "this; the commit history is the answer.",
-    "",
-    "Leave a field null to exclude it from scoring. Better an honest null than",
-    "a guess that turns into a fake agent error.",
-    "",
-    "Enum decision rules: docs/METHODOLOGY.md §1.",
-    "Selection: one obvious + one obscure app per category, 16 total,",
-    "weighted toward apps marked `trap: true` in data/apps.yaml."
+    "HAND-RESEARCHED GROUND TRUTH, built BEFORE any pipeline run on these apps.",
+    "Commit timestamp of this file must predate out/pass1.json.",
+    "null = deliberately not scored (gold itself could not settle it).",
+    "_gold_uncertain marks rows where a disagreement is likely both_defensible.",
+    "Enum decision rules: docs/METHODOLOGY.md section 1."
   ],
-
-  "built_by": "REPLACE_WITH_YOUR_NAME",
-  "built_on": "YYYY-MM-DD",
-  "method": "Manual reading of first-party documentation and pricing pages. No pipeline output consulted.",
-  "selection_rationale": "Stratified: 1 well-documented + 1 obscure app per category, skewed toward likely traps.",
-
+  "built_by": "Drafted by Claude Code (Opus 5.5) reading first-party docs interactively (WebFetch, built-in browser for bot-protected pages); reviewed by Dilraj07.",
+  "built_on": "2026-09-28",
+  "method": "Per app: first-party docs for auth, pricing/access pages for tier+gate, OpenAPI specs or llms.txt reference indexes to count endpoints, search for MCP repos. No pipeline output existed at the time.",
+  "known_bias": "Same model family as the pipeline agent, so errors may be correlated. Mitigated by a different process (interactive, spec-counting, browser) and human review, not eliminated.",
+  "selection_rationale": "Stratified: 1 well-documented + 1 obscure app per category (10 categories), skewed toward likely traps.",
   "apps": [
     {
-      "_template": true,
-      "_delete_this_row_once_you_start": true,
-      "app": "EXAMPLE — Google Ads",
-      "category": "Marketing, Ads, Email & Social",
+      "app": "HubSpot",
+      "category": "CRM & Sales",
+      "_slot": "obvious",
       "auth": {
-        "methods": ["oauth2"],
+        "methods": [
+          "oauth2",
+          "bearer_token"
+        ],
+        "primary_for_third_party": "oauth2",
+        "evidence_url": "https://developers.hubspot.com/docs/guides/apps/authentication/intro-to-auth"
+      },
+      "access": {
+        "tier": "self_serve_free",
+        "extra_gate": "none",
+        "evidence_url": "https://developers.hubspot.com/docs/guides/apps/authentication/intro-to-auth"
+      },
+      "api": {
+        "breadth": "broad",
+        "mcp": "official",
+        "evidence_url": "https://developers.hubspot.com/ai-tools/mcp"
+      },
+      "verdict": {
+        "value": "buildable_now",
+        "blocker": "none"
+      },
+      "notes": "Multi-account apps must use OAuth; static access tokens are single-account. Marketplace listing is optional, so no gate. Remote MCP at mcp.hubspot.com went GA Apr 2026."
+    },
+    {
+      "app": "DealCloud",
+      "category": "CRM & Sales",
+      "_slot": "obscure",
+      "auth": {
+        "methods": [
+          "oauth2"
+        ],
+        "primary_for_third_party": "oauth2",
+        "evidence_url": "https://api.docs.dealcloud.com/docs/token"
+      },
+      "access": {
+        "tier": "partner_gated",
+        "extra_gate": "sales_contact",
+        "evidence_url": "https://api.docs.dealcloud.com/docs/apikeys"
+      },
+      "api": {
+        "breadth": "moderate",
+        "mcp": "official",
+        "evidence_url": "https://api.docs.dealcloud.com/docs"
+      },
+      "verdict": {
+        "value": "needs_outreach",
+        "blocker": "sales_contact"
+      },
+      "notes": "OAuth2 client-credentials (client_id + API key -> 15-min bearer). Keys are per customer site ({host}); no free or self-serve tier, you must be an Intapp customer. Docs have an MCP section. ~50 endpoints."
+    },
+    {
+      "app": "Zendesk",
+      "category": "Support & Helpdesk",
+      "_slot": "obvious",
+      "auth": {
+        "methods": [
+          "oauth2",
+          "basic"
+        ],
+        "primary_for_third_party": "oauth2",
+        "evidence_url": "https://developer.zendesk.com/api-reference/introduction/security-and-auth/"
+      },
+      "access": {
+        "tier": "self_serve_trial",
+        "extra_gate": "app_review",
+        "evidence_url": "https://developer.zendesk.com/documentation/marketplace/building-a-marketplace-app/set-up-a-global-oauth-client/"
+      },
+      "api": {
+        "breadth": "broad",
+        "mcp": "community",
+        "evidence_url": "https://github.com/reminia/zendesk-mcp-server"
+      },
+      "verdict": {
+        "value": "needs_outreach",
+        "blocker": "app_review"
+      },
+      "notes": "Third-party developers must use a GLOBAL OAuth client, which needs a sponsored d3v- account plus a reviewed request (~1 week); apps for multiple customers must go through Marketplace review. API tokens (basic) deprecated. Official MCP announced May 2026 but not GA -> community.",
+      "_gold_uncertain": "tier: trial vs sponsored developer account (the free sponsored account itself needs approval)"
+    },
+    {
+      "app": "Gladly",
+      "category": "Support & Helpdesk",
+      "_slot": "obscure",
+      "auth": {
+        "methods": [
+          "basic"
+        ],
+        "primary_for_third_party": "basic",
+        "evidence_url": "https://developer.gladly.com/rest/"
+      },
+      "access": {
+        "tier": "partner_gated",
+        "extra_gate": "sales_contact",
+        "evidence_url": "https://help.gladly.com/docs/generate-api-tokens-and-create-webhooks"
+      },
+      "api": {
+        "breadth": "moderate",
+        "mcp": "none",
+        "evidence_url": "https://developer.gladly.com/rest/"
+      },
+      "verdict": {
+        "value": "needs_outreach",
+        "blocker": "sales_contact"
+      },
+      "notes": "Token-based Basic auth (agent email + API token). Enterprise contact-center product, no self-serve signup. ~60 endpoints across ~20 resource groups. Only aggregator MCPs (StackOne), which do not count."
+    },
+    {
+      "app": "WhatsApp Business",
+      "category": "Communications & Messaging",
+      "_slot": "obvious",
+      "auth": {
+        "methods": [
+          "oauth2",
+          "bearer_token"
+        ],
+        "primary_for_third_party": "oauth2",
+        "evidence_url": "https://developers.facebook.com/documentation/business-messaging/whatsapp/solution-providers/app-review"
+      },
+      "access": {
+        "tier": "self_serve_free",
+        "extra_gate": "app_review",
+        "evidence_url": "https://developers.facebook.com/documentation/business-messaging/whatsapp/solution-providers/app-review"
+      },
+      "api": {
+        "breadth": "moderate",
+        "mcp": "community",
+        "evidence_url": "https://github.com/tkhattar14/whatsapp-business-mcp"
+      },
+      "verdict": {
+        "value": "needs_outreach",
+        "blocker": "app_review"
+      },
+      "notes": "Free test number and system-user token instantly, but apps serving other businesses need Advanced Access via App Review, plus business verification. Only community MCPs."
+    },
+    {
+      "app": "Pumble",
+      "category": "Communications & Messaging",
+      "_slot": "obscure",
+      "auth": {
+        "methods": [
+          "api_key",
+          "oauth2"
+        ],
+        "primary_for_third_party": "oauth2",
+        "evidence_url": "https://pumble.com/help/integrations/automation-workflow-integrations/api-keys-integration/"
+      },
+      "access": {
+        "tier": "self_serve_free",
+        "extra_gate": "none",
+        "evidence_url": "https://pumble.com/help/integrations/automation-workflow-integrations/api-keys-integration/"
+      },
+      "api": {
+        "breadth": "moderate",
+        "mcp": "community",
+        "evidence_url": "https://github.com/apet97/pumble-python-sdk"
+      },
+      "verdict": {
+        "value": "buildable_now",
+        "blocker": "none"
+      },
+      "notes": "API Keys addon 'Available on all plans' incl. free; ApiKey header. Pumble also has an OAuth app SDK. 26 operations: right at the narrow/moderate boundary.",
+      "_gold_uncertain": "breadth: 26 ops is 1 over the moderate threshold"
+    },
+    {
+      "app": "Google Ads",
+      "category": "Marketing, Ads, Email & Social",
+      "_slot": "obvious",
+      "auth": {
+        "methods": [
+          "oauth2"
+        ],
         "primary_for_third_party": "oauth2",
         "evidence_url": "https://developers.google.com/google-ads/api/docs/oauth/overview"
       },
       "access": {
         "tier": "self_serve_free",
         "extra_gate": "developer_token",
-        "evidence_url": "https://developers.google.com/google-ads/api/docs/access-levels",
-        "_why": "Textbook case for splitting tier from extra_gate: credentials are free and instant, production traffic is not."
+        "evidence_url": "https://developers.google.com/google-ads/api/docs/api-policy/access-levels"
       },
       "api": {
         "breadth": "broad",
-        "evidence_url": "https://developers.google.com/google-ads/api/reference/rpc"
+        "mcp": "official",
+        "evidence_url": "https://github.com/googleads/google-ads-mcp"
       },
       "verdict": {
         "value": "needs_outreach",
         "blocker": "developer_token"
       },
-      "notes": "Delete this row. It shows the shape and the reasoning style expected in `_why`."
+      "notes": "New projects get Test access only (test accounts). Explorer/Basic require submitting an application. Official MCP: googleads/google-ads-mcp."
     },
-
-    { "app": "", "category": "CRM & Sales",                        "_slot": "obvious",
-      "auth": {"methods": [], "primary_for_third_party": null, "evidence_url": null},
-      "access": {"tier": null, "extra_gate": null, "evidence_url": null},
-      "api": {"breadth": null, "evidence_url": null},
-      "verdict": {"value": null, "blocker": null}, "notes": "" },
-
-    { "app": "", "category": "CRM & Sales",                        "_slot": "obscure",
-      "auth": {"methods": [], "primary_for_third_party": null, "evidence_url": null},
-      "access": {"tier": null, "extra_gate": null, "evidence_url": null},
-      "api": {"breadth": null, "evidence_url": null},
-      "verdict": {"value": null, "blocker": null}, "notes": "" },
-
-    { "app": "", "category": "Support & Helpdesk",                 "_slot": "obvious",
-      "auth": {"methods": [], "primary_for_third_party": null, "evidence_url": null},
-      "access": {"tier": null, "extra_gate": null, "evidence_url": null},
-      "api": {"breadth": null, "evidence_url": null},
-      "verdict": {"value": null, "blocker": null}, "notes": "" },
-
-    { "app": "", "category": "Support & Helpdesk",                 "_slot": "obscure",
-      "auth": {"methods": [], "primary_for_third_party": null, "evidence_url": null},
-      "access": {"tier": null, "extra_gate": null, "evidence_url": null},
-      "api": {"breadth": null, "evidence_url": null},
-      "verdict": {"value": null, "blocker": null}, "notes": "" },
-
-    { "app": "", "category": "Communications & Messaging",         "_slot": "obvious",
-      "auth": {"methods": [], "primary_for_third_party": null, "evidence_url": null},
-      "access": {"tier": null, "extra_gate": null, "evidence_url": null},
-      "api": {"breadth": null, "evidence_url": null},
-      "verdict": {"value": null, "blocker": null}, "notes": "" },
-
-    { "app": "", "category": "Communications & Messaging",         "_slot": "obscure",
-      "auth": {"methods": [], "primary_for_third_party": null, "evidence_url": null},
-      "access": {"tier": null, "extra_gate": null, "evidence_url": null},
-      "api": {"breadth": null, "evidence_url": null},
-      "verdict": {"value": null, "blocker": null}, "notes": "" },
-
-    { "app": "", "category": "Marketing, Ads, Email & Social",     "_slot": "obvious",
-      "auth": {"methods": [], "primary_for_third_party": null, "evidence_url": null},
-      "access": {"tier": null, "extra_gate": null, "evidence_url": null},
-      "api": {"breadth": null, "evidence_url": null},
-      "verdict": {"value": null, "blocker": null}, "notes": "" },
-
-    { "app": "", "category": "Marketing, Ads, Email & Social",     "_slot": "obscure",
-      "auth": {"methods": [], "primary_for_third_party": null, "evidence_url": null},
-      "access": {"tier": null, "extra_gate": null, "evidence_url": null},
-      "api": {"breadth": null, "evidence_url": null},
-      "verdict": {"value": null, "blocker": null}, "notes": "" },
-
-    { "app": "", "category": "Ecommerce",                          "_slot": "obvious",
-      "auth": {"methods": [], "primary_for_third_party": null, "evidence_url": null},
-      "access": {"tier": null, "extra_gate": null, "evidence_url": null},
-      "api": {"breadth": null, "evidence_url": null},
-      "verdict": {"value": null, "blocker": null}, "notes": "" },
-
-    { "app": "", "category": "Ecommerce",                          "_slot": "obscure",
-      "auth": {"methods": [], "primary_for_third_party": null, "evidence_url": null},
-      "access": {"tier": null, "extra_gate": null, "evidence_url": null},
-      "api": {"breadth": null, "evidence_url": null},
-      "verdict": {"value": null, "blocker": null}, "notes": "" },
-
-    { "app": "", "category": "Data, SEO & Scraping",               "_slot": "obvious",
-      "auth": {"methods": [], "primary_for_third_party": null, "evidence_url": null},
-      "access": {"tier": null, "extra_gate": null, "evidence_url": null},
-      "api": {"breadth": null, "evidence_url": null},
-      "verdict": {"value": null, "blocker": null}, "notes": "" },
-
-    { "app": "", "category": "Data, SEO & Scraping",               "_slot": "obscure",
-      "auth": {"methods": [], "primary_for_third_party": null, "evidence_url": null},
-      "access": {"tier": null, "extra_gate": null, "evidence_url": null},
-      "api": {"breadth": null, "evidence_url": null},
-      "verdict": {"value": null, "blocker": null}, "notes": "" },
-
-    { "app": "", "category": "Developer, Infra & Data platforms",  "_slot": "obvious",
-      "auth": {"methods": [], "primary_for_third_party": null, "evidence_url": null},
-      "access": {"tier": null, "extra_gate": null, "evidence_url": null},
-      "api": {"breadth": null, "evidence_url": null},
-      "verdict": {"value": null, "blocker": null}, "notes": "" },
-
-    { "app": "", "category": "Productivity & Project Management",  "_slot": "obvious",
-      "auth": {"methods": [], "primary_for_third_party": null, "evidence_url": null},
-      "access": {"tier": null, "extra_gate": null, "evidence_url": null},
-      "api": {"breadth": null, "evidence_url": null},
-      "verdict": {"value": null, "blocker": null}, "notes": "" },
-
-    { "app": "", "category": "Finance & Fintech",                  "_slot": "obvious",
-      "auth": {"methods": [], "primary_for_third_party": null, "evidence_url": null},
-      "access": {"tier": null, "extra_gate": null, "evidence_url": null},
-      "api": {"breadth": null, "evidence_url": null},
-      "verdict": {"value": null, "blocker": null}, "notes": "" },
-
-    { "app": "", "category": "Finance & Fintech",                  "_slot": "obscure",
-      "auth": {"methods": [], "primary_for_third_party": null, "evidence_url": null},
-      "access": {"tier": null, "extra_gate": null, "evidence_url": null},
-      "api": {"breadth": null, "evidence_url": null},
-      "verdict": {"value": null, "blocker": null}, "notes": "" }
+    {
+      "app": "systeme.io",
+      "category": "Marketing, Ads, Email & Social",
+      "_slot": "obscure",
+      "auth": {
+        "methods": [
+          "api_key"
+        ],
+        "primary_for_third_party": "api_key",
+        "evidence_url": "https://developer.systeme.io/reference/api"
+      },
+      "access": {
+        "tier": "self_serve_free",
+        "extra_gate": "none",
+        "evidence_url": "https://help.systeme.io/article/2323-how-to-use-systeme-io-public-api"
+      },
+      "api": {
+        "breadth": "broad",
+        "mcp": "official",
+        "evidence_url": "https://developer.systeme.io/docs/mcp-server"
+      },
+      "verdict": {
+        "value": "buildable_now",
+        "blocker": "none"
+      },
+      "notes": "X-API-Key from dashboard; ~140 reference operations in llms.txt. Official MCP server (initial release, MCP key). Free plan exists; no plan restriction on API keys documented.",
+      "_gold_uncertain": "tier: free-plan API access inferred from absence of any restriction"
+    },
+    {
+      "app": "Shopify",
+      "category": "Ecommerce",
+      "_slot": "obvious",
+      "auth": {
+        "methods": [
+          "oauth2"
+        ],
+        "primary_for_third_party": "oauth2",
+        "evidence_url": "https://shopify.dev/docs/apps/build/authentication-authorization"
+      },
+      "access": {
+        "tier": "self_serve_free",
+        "extra_gate": "app_review",
+        "evidence_url": "https://shopify.dev/docs/apps/launch/distribution"
+      },
+      "api": {
+        "breadth": "broad",
+        "mcp": "official",
+        "evidence_url": "https://shopify.dev/docs/apps/build/storefront-mcp"
+      },
+      "verdict": {
+        "value": "needs_outreach",
+        "blocker": "app_review"
+      },
+      "notes": "Free partner account + dev stores. Custom distribution (no review) is limited to one store / one Plus org; reaching arbitrary merchants requires public distribution = App Store review. Admin-created custom app tokens can no longer be created.",
+      "_gold_uncertain": "gate: app_review only bites for multi-merchant distribution"
+    },
+    {
+      "app": "fanbasis",
+      "category": "Ecommerce",
+      "_slot": "obscure",
+      "auth": {
+        "methods": [
+          "api_key"
+        ],
+        "primary_for_third_party": "api_key",
+        "evidence_url": "https://commasdocs.com/"
+      },
+      "access": {
+        "tier": "self_serve_free",
+        "extra_gate": "none",
+        "evidence_url": "https://commas.com/fanbasis-is-now-commas"
+      },
+      "api": {
+        "breadth": "moderate",
+        "mcp": "none",
+        "evidence_url": "https://commasdocs.com/"
+      },
+      "verdict": {
+        "value": "buildable_now",
+        "blocker": "none"
+      },
+      "notes": "REBRANDED to Commas on 2026-07-14 and opened to all sellers (was invite-only). x-api-key header, scoped keys, sandbox. ~47 endpoints.",
+      "_gold_uncertain": "tier: pre-July-2026 answer would be partner_gated (invite-only)"
+    },
+    {
+      "app": "Firecrawl",
+      "category": "Data, SEO & Scraping",
+      "_slot": "obvious",
+      "auth": {
+        "methods": [
+          "api_key"
+        ],
+        "primary_for_third_party": "api_key",
+        "evidence_url": "https://docs.firecrawl.dev/api-reference/v2-openapi.json"
+      },
+      "access": {
+        "tier": "self_serve_free",
+        "extra_gate": "none",
+        "evidence_url": "https://www.firecrawl.dev/pricing"
+      },
+      "api": {
+        "breadth": "moderate",
+        "mcp": "official",
+        "evidence_url": "https://github.com/firecrawl/firecrawl-mcp-server"
+      },
+      "verdict": {
+        "value": "buildable_now",
+        "blocker": "none"
+      },
+      "notes": "Bearer fc- API key; free credits on signup. v2 OpenAPI has 54 operations (moderate, not narrow)."
+    },
+    {
+      "app": "Sherlock",
+      "category": "Data, SEO & Scraping",
+      "_slot": "obscure",
+      "auth": {
+        "methods": [
+          "none"
+        ],
+        "primary_for_third_party": "none",
+        "evidence_url": "https://github.com/sherlock-project/sherlock"
+      },
+      "access": {
+        "tier": "no_public_api",
+        "extra_gate": "none",
+        "evidence_url": "https://github.com/sherlock-project/sherlock"
+      },
+      "api": {
+        "breadth": "none",
+        "mcp": "community",
+        "evidence_url": "https://github.com/Burnsedia/sherlock-mcp"
+      },
+      "verdict": {
+        "value": "buildable_local",
+        "blocker": "local_only"
+      },
+      "notes": "OSS Python CLI for username OSINT, no hosted API and no auth. Wrap as a local skill. Community MCP exists."
+    },
+    {
+      "app": "GitHub",
+      "category": "Developer, Infra & Data platforms",
+      "_slot": "obvious",
+      "auth": {
+        "methods": [
+          "oauth2",
+          "bearer_token",
+          "jwt"
+        ],
+        "primary_for_third_party": "oauth2",
+        "evidence_url": "https://docs.github.com/en/rest/authentication/authenticating-to-the-rest-api"
+      },
+      "access": {
+        "tier": "self_serve_free",
+        "extra_gate": "none",
+        "evidence_url": "https://docs.github.com/en/apps/creating-github-apps"
+      },
+      "api": {
+        "breadth": "broad",
+        "mcp": "official",
+        "evidence_url": "https://github.com/github/github-mcp-server"
+      },
+      "verdict": {
+        "value": "buildable_now",
+        "blocker": "none"
+      },
+      "notes": "OAuth apps / GitHub App user tokens, PATs, and app JWTs. Free."
+    },
+    {
+      "app": "Neo4j",
+      "category": "Developer, Infra & Data platforms",
+      "_slot": "obscure",
+      "auth": {
+        "methods": [
+          "basic",
+          "oauth2"
+        ],
+        "primary_for_third_party": null,
+        "evidence_url": "https://neo4j.com/docs/aura/api/authentication/"
+      },
+      "access": {
+        "tier": "self_serve_free",
+        "extra_gate": "none",
+        "evidence_url": "https://neo4j.com/docs/aura/api/authentication/"
+      },
+      "api": {
+        "breadth": null,
+        "mcp": "official",
+        "evidence_url": "https://neo4j.com/docs/mcp/current/authentication/"
+      },
+      "verdict": {
+        "value": "buildable_now",
+        "blocker": "none"
+      },
+      "notes": "Two APIs: Aura management API (OAuth2 client credentials, all tiers incl. AuraDB Free) and the database Query API (basic auth). primary_for_third_party and breadth left null: depends on which API a toolkit wraps.",
+      "_gold_uncertain": "which surface is 'the API'"
+    },
+    {
+      "app": "Notion",
+      "category": "Productivity & Project Management",
+      "_slot": "obvious",
+      "auth": {
+        "methods": [
+          "oauth2",
+          "bearer_token"
+        ],
+        "primary_for_third_party": "oauth2",
+        "evidence_url": "https://developers.notion.com/docs/authorization"
+      },
+      "access": {
+        "tier": "self_serve_free",
+        "extra_gate": "none",
+        "evidence_url": "https://developers.notion.com/docs/authorization"
+      },
+      "api": {
+        "breadth": "moderate",
+        "mcp": "official",
+        "evidence_url": "https://developers.notion.com/docs/mcp"
+      },
+      "verdict": {
+        "value": "buildable_now",
+        "blocker": "none"
+      },
+      "notes": "Public integrations use OAuth; internal integration tokens are bearer tokens. ~65 reference operations. Official hosted MCP."
+    },
+    {
+      "app": "Harvest",
+      "category": "Productivity & Project Management",
+      "_slot": "obscure",
+      "auth": {
+        "methods": [
+          "oauth2",
+          "bearer_token"
+        ],
+        "primary_for_third_party": "oauth2",
+        "evidence_url": "https://help.getharvest.com/api-v2/authentication-api/authentication/authentication/"
+      },
+      "access": {
+        "tier": "self_serve_free",
+        "extra_gate": "none",
+        "evidence_url": "https://www.getharvest.com/pricing"
+      },
+      "api": {
+        "breadth": "broad",
+        "mcp": "community",
+        "evidence_url": "https://github.com/ianaleck/harvest-mcp-server"
+      },
+      "verdict": {
+        "value": "buildable_now",
+        "blocker": "none"
+      },
+      "notes": "OAuth2 or personal access token + Harvest-Account-Id. Free plan (1 seat). ~30 resource pages x CRUD, >100 ops. Only unofficial MCPs."
+    },
+    {
+      "app": "Plaid",
+      "category": "Finance & Fintech",
+      "_slot": "obvious",
+      "auth": {
+        "methods": [
+          "api_key"
+        ],
+        "primary_for_third_party": "api_key",
+        "evidence_url": "https://plaid.com/docs/api/"
+      },
+      "access": {
+        "tier": "self_serve_free",
+        "extra_gate": "app_review",
+        "evidence_url": "https://support.plaid.com/hc/en-us/articles/16110110883479-How-are-Sandbox-Production-Trial-plan-and-Limited-Production-different"
+      },
+      "api": {
+        "breadth": "broad",
+        "mcp": "official",
+        "evidence_url": "https://plaid.com/docs/resources/mcp/"
+      },
+      "verdict": {
+        "value": "needs_outreach",
+        "blocker": "app_review"
+      },
+      "notes": "client_id + secret. Sandbox free; Trial plan (auto-approved, 10 Items, from 2026-04-15) gives real data; full Production needs a company/use-case application. Dashboard MCP + sandbox MCP are official.",
+      "_gold_uncertain": "gate: Trial plan softens the production gate; could be argued buildable_now"
+    },
+    {
+      "app": "PitchBook",
+      "category": "Finance & Fintech",
+      "_slot": "obscure",
+      "auth": {
+        "methods": [
+          "api_key"
+        ],
+        "primary_for_third_party": "api_key",
+        "evidence_url": "https://pitchbook.com/help/PitchBook-api"
+      },
+      "access": {
+        "tier": "partner_gated",
+        "extra_gate": "sales_contact",
+        "evidence_url": "https://pitchbook.com/help/PitchBook-api"
+      },
+      "api": {
+        "breadth": null,
+        "mcp": "official",
+        "evidence_url": "https://claude.com/connectors/pitchbook"
+      },
+      "verdict": {
+        "value": "needs_outreach",
+        "blocker": "sales_contact"
+      },
+      "notes": "Direct Data team provisions keys after a contract; no trial. Official MCP connector requires a PitchBook license + SSO. Breadth not publicly countable -> null."
+    },
+    {
+      "app": "Otter AI",
+      "category": "AI, Research & Media-native",
+      "_slot": "obvious",
+      "auth": {
+        "methods": [
+          "api_key"
+        ],
+        "primary_for_third_party": "api_key",
+        "evidence_url": "https://help.otter.ai/hc/en-us/articles/36130822688279-Otter-ai-Public-API"
+      },
+      "access": {
+        "tier": "partner_gated",
+        "extra_gate": "sales_contact",
+        "evidence_url": "https://help.otter.ai/hc/en-us/articles/36130822688279-Otter-ai-Public-API"
+      },
+      "api": {
+        "breadth": "narrow",
+        "mcp": "official",
+        "evidence_url": "https://help.otter.ai/hc/en-us/articles/35287607569687-Otter-MCP-Server"
+      },
+      "verdict": {
+        "value": "needs_outreach",
+        "blocker": "sales_contact"
+      },
+      "notes": "Public API: Enterprise workspaces only, bearer API key, 7 endpoints. BUT the official MCP server works for standard accounts over OAuth, so the MCP is less gated than the API."
+    },
+    {
+      "app": "Consensus",
+      "category": "AI, Research & Media-native",
+      "_slot": "obscure",
+      "auth": {
+        "methods": [
+          "api_key",
+          "oauth2"
+        ],
+        "primary_for_third_party": null,
+        "evidence_url": "https://docs.consensus.app/enterprise/connection-reference"
+      },
+      "access": {
+        "tier": "self_serve_free",
+        "extra_gate": "none",
+        "evidence_url": "https://docs.consensus.app/get-started/what-is-consensus"
+      },
+      "api": {
+        "breadth": "narrow",
+        "mcp": "official",
+        "evidence_url": "https://docs.consensus.app/consensus-mcp"
+      },
+      "verdict": {
+        "value": "buildable_now",
+        "blocker": "none"
+      },
+      "notes": "consensus.app (research search engine), NOT goconsensus.com (sales demos): a name collision that search results mix. Self-serve keys; Free plan = 30 API+MCP calls/mo. One REST endpoint. OAuth exists on the MCP server only; primary left null.",
+      "_gold_uncertain": "primary auth: REST=api_key, MCP=per-user OAuth"
+    }
   ]
 }
