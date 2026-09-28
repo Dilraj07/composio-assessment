@@ -35,7 +35,7 @@ integration for *other people's* accounts would use. For most apps that is
 
 | Value | Decision rule |
 |---|---|
-| `self_serve_free` | Free account → credentials, no human in the loop, no card |
+| `self_serve_free` | Free account → credentials, no human in the loop, no card. **Includes free non-expiring developer sandboxes** (Salesforce Developer Edition, Shopify dev store, QuickBooks sandbox) and self-hostable open source. |
 | `self_serve_trial` | Credentials during a time-limited trial; lapses to paid |
 | `paid_plan_required` | API only on a paid tier, but purchasable online without talking to anyone |
 | `approval_required` | Signup is self-serve, but a human/automated review gates production use |
@@ -49,7 +49,7 @@ What stands between *having a credential* and *calling production*.
 | Value | Decision rule |
 |---|---|
 | `none` | Credential works in production immediately |
-| `app_review` | Platform reviews the app before production access (Meta, Pinterest) |
+| `app_review` | Platform must review the app before it can act on **other users' accounts at all** (Meta advanced access, Pinterest standard access). Review needed only to be *listed in a marketplace* (HubSpot, Slack directory) is **not** a gate → `none`. |
 | `developer_token` | A separately-approved token beyond OAuth credentials (Google Ads) |
 | `partner_program` | Admission to a named partner program (LinkedIn Marketing) |
 | `admin_consent` | A workspace/org admin must approve installation |
@@ -66,31 +66,45 @@ combination. That is the point of splitting them.
 | `narrow` | < 25 documented endpoints / GraphQL root fields |
 | `moderate` | 25–100 |
 | `broad` | > 100 |
+| `none` | No hosted API at all (CLI tools, no_public_api apps) |
 
 Count from the docs' own reference index. If uncounted, estimate from section
 count and mark `confidence: medium`.
 
 ### `api.mcp`
 
-`none` | `official` (vendor-published) | `community` (third-party) | `unknown`.
-Community servers must have a real repo URL to count.
+`none` | `official` (vendor-published, hosted or repo) | `community` (third-party,
+**specific to this app**, real repo URL) | `unknown`.
+
+Multi-app aggregators (Composio, Zapier, Pipedream, Klavis) do **not** count as
+`community`, otherwise nearly every app would qualify and the field says
+nothing. Graded from schema freeze onward because MCP availability changes
+monthly and is exactly what parametric memory gets wrong.
 
 ### `verdict.value`
 
+**Derived, not judged.** `src/schema.py::derive_verdict` computes it from the
+two evidenced access fields; first matching rule wins:
+
 | Value | Rule |
 |---|---|
-| `buildable_now` | A dev could ship a toolkit this week with a free account |
-| `buildable_paid` | Same, but needs a purchasable paid plan |
-| `needs_outreach` | Blocked on approval, partnership or sales contact |
-| `not_buildable` | No public API, or API cannot support agent actions |
+| `buildable_local` | `tier = no_public_api` and an open-source CLI/library exists (`protocols` has `cli`/`sdk_only`) → wrap as a local agent skill |
+| `not_buildable` | `tier = no_public_api`, nothing to wrap |
+| `needs_outreach` | `tier ∈ {approval_required, partner_gated}` **or** `extra_gate ∈ {app_review, developer_token, partner_program, sales_contact}` |
+| `buildable_paid` | `tier = paid_plan_required` |
+| `buildable_now` | everything else: free or trial credentials, no outreach gate (`admin_consent` is an end-user install step, not a builder blocker) |
+
+The model's own verdict is kept in `verdict.model_verdict` for comparison but
+is never graded. Deriving it means every verdict is explainable from two
+evidenced fields, never "the model decided".
 
 ---
 
 ## 2. Gold set protocol
 
 ### Stratification
-16 apps — roughly 18% of the set. Per category: one **obvious** app (well
-documented, high prior) and one **obscure** app (thin or absent docs). Skewed
+20 apps (20% of the set). Per category (10 categories): one **obvious** app
+(well documented, high prior) and one **obscure** app (thin or absent docs). Skewed
 toward apps likely to defeat the pipeline, because that is where the
 informative errors are.
 
@@ -127,12 +141,12 @@ loose. Fix the definition, not the data.
 
 ## 3. Accuracy metric
 
-Field-level across 6 graded fields:
+Field-level across 7 graded fields:
 
 `auth.methods` · `auth.primary_for_third_party` · `access.tier` ·
-`access.extra_gate` · `api.breadth` · `verdict.value`
+`access.extra_gate` · `api.breadth` · `api.mcp` · `verdict.value`
 
-6 × 16 = 96 judgments. `auth.methods` is multi-label, scored as exact set match
+7 × 20 = 140 judgments (fewer where gold is honestly left null). `auth.methods` is multi-label, scored as exact set match
 (strict) with Jaccard overlap reported alongside (informative).
 
 Report **per-field**, pass 1 vs pass 2. The shape matters more than the
@@ -146,6 +160,7 @@ Written down in advance so the result is a test rather than a description:
 |---|---|---|
 | `auth.methods` | ~85–90% | ~95% |
 | `api.breadth` | ~70% | ~80% |
+| `api.mcp` | ~60% | ~85% |
 | `access.tier` | ~65% | ~85% |
 | `access.extra_gate` | ~55% | ~85% |
 | `verdict.value` | ~60% | ~85% |

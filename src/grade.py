@@ -1,6 +1,6 @@
 """Grade pass 1 and pass 2 against the hand-built gold set.
 
-Field-level, not row-level: 6 graded fields x 16 gold apps = 96 judgments.
+Field-level, not row-level: 7 graded fields x 20 gold apps = 140 judgments.
 Row accuracy is both brutal and uninformative -- one wrong `breadth` should
 not zero out an otherwise perfect row, and a per-field breakdown tells you
 WHERE the pipeline is weak, which is the actually useful signal.
@@ -27,6 +27,9 @@ PRIOR = {
     "access.tier": (0.65, 0.85),
     "access.extra_gate": (0.55, 0.85),
     "api.breadth": (0.70, 0.80),
+    # Added at schema freeze: MCP availability moves monthly, so parametric
+    # memory should be the stalest here of any field.
+    "api.mcp": (0.60, 0.85),
     "verdict.value": (0.60, 0.85),
 }
 

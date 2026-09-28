@@ -145,3 +145,34 @@ class TestTriageAggregate:
         assert summary["apps_total"] == 2
         assert 0.0 <= summary["escalation_rate"] <= 1.0
         assert "buildable_always_verified" in summary["by_rule"]
+
+
+class TestDerivedVerdict:
+    """verdict.value is a rule over tier + gate (METHODOLOGY §1)."""
+
+    @pytest.mark.parametrize("tier,gate,protocols,expected", [
+        ("self_serve_free", "none", ["rest"], "buildable_now"),
+        ("self_serve_trial", "admin_consent", ["rest"], "buildable_now"),
+        ("self_serve_free", "developer_token", ["rest"], "needs_outreach"),
+        ("paid_plan_required", "none", ["rest"], "buildable_paid"),
+        ("paid_plan_required", "sales_contact", ["rest"], "needs_outreach"),
+        ("partner_gated", "none", ["rest"], "needs_outreach"),
+        ("no_public_api", "none", ["cli"], "buildable_local"),
+        ("no_public_api", "none", ["none"], "not_buildable"),
+    ])
+    def test_rule_table(self, tier, gate, protocols, expected):
+        from src.schema import AccessTier, ExtraGate, Protocol, derive_verdict
+        got = derive_verdict(AccessTier(tier), ExtraGate(gate),
+                             [Protocol(p) for p in protocols])
+        assert got.value == expected
+
+    def test_rederive_keeps_model_verdict(self):
+        rec = make(verdict={"value": "buildable_now"},
+                   access={"tier": "paid_plan_required"}).rederive_verdict()
+        assert rec.verdict.value.value == "buildable_paid"
+        assert rec.verdict.model_verdict.value == "buildable_now"
+
+    def test_cli_allowed_with_no_public_api(self):
+        rec = make(access={"tier": "no_public_api"}, api={"protocols": ["cli"]},
+                   verdict={"value": "buildable_local"})
+        assert rec.verdict.value.value == "buildable_local"

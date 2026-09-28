@@ -71,8 +71,8 @@ Return JSON matching this shape exactly:
     "confidence": "high"|"medium"|"low"
   }},
   "api": {{
-    "protocols": ["rest"|"graphql"|"soap"|"grpc"|"webhook_only"|"sdk_only"|"none"],
-    "breadth": "narrow"|"moderate"|"broad"|"unknown",
+    "protocols": ["rest"|"graphql"|"soap"|"grpc"|"webhook_only"|"sdk_only"|"cli"|"none"],
+    "breadth": "narrow"|"moderate"|"broad"|"none"|"unknown",
     "endpoint_count": <int or null>,
     "mcp": "none"|"official"|"community"|"unknown",
     "mcp_url": "<url or null>",
@@ -82,8 +82,8 @@ Return JSON matching this shape exactly:
     "confidence": "high"|"medium"|"low"
   }},
   "verdict": {{
-    "value": "buildable_now"|"buildable_paid"|"needs_outreach"|"not_buildable",
-    "blocker": "none"|"no_api"|"paid_only"|<an extra_gate value>,
+    "value": "buildable_now"|"buildable_paid"|"needs_outreach"|"buildable_local"|"not_buildable",
+    "blocker": "none"|"no_api"|"paid_only"|"local_only"|"approval"|"partnership"|<an extra_gate value>,
     "rationale": "one sentence",
     "evidence_url": "<url or null>",
     "confidence": "high"|"medium"|"low"
@@ -161,8 +161,9 @@ FIELD_ALLOWED_VALUES = {
     "auth.primary_for_third_party": "oauth2, api_key, basic, bearer_token, jwt, hmac_signed, none, unknown (single)",
     "access.tier": "self_serve_free, self_serve_trial, paid_plan_required, approval_required, partner_gated, no_public_api",
     "access.extra_gate": "none, app_review, developer_token, partner_program, admin_consent, sales_contact, unknown",
-    "api.breadth": "narrow (<25 endpoints), moderate (25-100), broad (>100), unknown",
-    "verdict.value": "buildable_now, buildable_paid, needs_outreach, not_buildable",
+    "api.breadth": "narrow (<25 endpoints), moderate (25-100), broad (>100), none (no hosted API), unknown",
+    "api.mcp": "none, official (vendor-published), community (app-specific third-party repo; NOT aggregators like Composio/Zapier), unknown",
+    "verdict.value": "buildable_now, buildable_paid, needs_outreach, buildable_local, not_buildable",
 }
 
 SEARCH_QUERIES = [

@@ -65,7 +65,12 @@ class Protocol(str, Enum):
     GRPC = "grpc"
     WEBHOOK_ONLY = "webhook_only"
     SDK_ONLY = "sdk_only"
+    CLI = "cli"          # local open-source tool, no hosted API (Sherlock, Mermaid CLI)
     NONE = "none"
+
+
+# Surfaces that exist without a hosted API. Allowed alongside no_public_api.
+LOCAL_PROTOCOLS = {Protocol.CLI, Protocol.SDK_ONLY, Protocol.NONE}
 
 
 class Breadth(str, Enum):
@@ -79,10 +84,17 @@ class Breadth(str, Enum):
     NARROW = "narrow"
     MODERATE = "moderate"
     BROAD = "broad"
+    NONE = "none"        # no hosted API at all
     UNKNOWN = "unknown"
 
 
 class McpStatus(str, Enum):
+    """official   = vendor-published MCP server (hosted or repo).
+    community  = a third-party server specific to THIS app, with a real repo.
+                 Multi-app aggregators (Composio, Zapier, Pipedream) do not
+                 count -- otherwise nearly every app would be "community".
+    """
+
     NONE = "none"
     OFFICIAL = "official"
     COMMUNITY = "community"
@@ -93,7 +105,32 @@ class Verdict(str, Enum):
     BUILDABLE_NOW = "buildable_now"
     BUILDABLE_PAID = "buildable_paid"
     NEEDS_OUTREACH = "needs_outreach"
+    BUILDABLE_LOCAL = "buildable_local"  # no hosted API; wrap the OSS CLI/library as a local skill
     NOT_BUILDABLE = "not_buildable"
+
+
+OUTREACH_GATES = {
+    ExtraGate.APP_REVIEW, ExtraGate.DEVELOPER_TOKEN,
+    ExtraGate.PARTNER_PROGRAM, ExtraGate.SALES_CONTACT,
+}
+
+
+def derive_verdict(tier: AccessTier, gate: ExtraGate,
+                   protocols: list[Protocol]) -> Verdict:
+    """The verdict is a RULE over tier + extra_gate, not a model judgment.
+
+    METHODOLOGY §1 "verdict.value". Deriving it removes a whole class of
+    agent/gold disagreement that would otherwise be about wording, and makes
+    every verdict explainable from two evidenced fields.
+    """
+    if tier == AccessTier.NO_PUBLIC_API:
+        local = {Protocol.CLI, Protocol.SDK_ONLY}
+        return Verdict.BUILDABLE_LOCAL if local & set(protocols) else Verdict.NOT_BUILDABLE
+    if tier in (AccessTier.APPROVAL_REQUIRED, AccessTier.PARTNER_GATED) or gate in OUTREACH_GATES:
+        return Verdict.NEEDS_OUTREACH
+    if tier == AccessTier.PAID_PLAN_REQUIRED:
+        return Verdict.BUILDABLE_PAID
+    return Verdict.BUILDABLE_NOW
 
 
 class Confidence(str, Enum):
@@ -193,8 +230,13 @@ class ApiBlock(EvidencedBlock):
 
 class VerdictBlock(EvidencedBlock):
     value: Verdict = Verdict.NOT_BUILDABLE
-    blocker: ExtraGate | Literal["none", "no_api", "paid_only"] = "none"
+    blocker: ExtraGate | Literal["none", "no_api", "paid_only", "local_only", "approval", "partnership"] = "none"
     rationale: str | None = None
+    model_verdict: Verdict | None = Field(
+        default=None,
+        description="What the model itself said, kept for the record. The "
+                    "graded `value` is always re-derived from tier + gate.",
+    )
 
 
 class Provenance(BaseModel):
@@ -232,27 +274,37 @@ class AppRecord(BaseModel):
         impossible, not merely suspicious.
         """
         if self.access.tier == AccessTier.NO_PUBLIC_API:
-            live = [p for p in self.api.protocols if p != Protocol.NONE]
+            live = [p for p in self.api.protocols if p not in LOCAL_PROTOCOLS]
             if live:
                 raise ValueError(
                     f"{self.app}: tier=no_public_api but protocols="
                     f"{[p.value for p in live]}"
                 )
-            if self.verdict.value in (Verdict.BUILDABLE_NOW, Verdict.BUILDABLE_PAID):
+            if self.verdict.value in (Verdict.BUILDABLE_NOW, Verdict.BUILDABLE_PAID,
+                                      Verdict.NEEDS_OUTREACH):
                 raise ValueError(
                     f"{self.app}: tier=no_public_api but verdict="
                     f"{self.verdict.value}"
                 )
         return self
 
+    def rederive_verdict(self) -> AppRecord:
+        """Recompute verdict.value from tier + gate. Call after any change."""
+        if self.verdict.model_verdict is None:
+            self.verdict.model_verdict = self.verdict.value
+        self.verdict.value = derive_verdict(
+            self.access.tier, self.access.extra_gate, self.api.protocols)
+        return self
 
-# Fields graded against the gold set. 6 fields x 16 apps = 96 judgments.
+
+# Fields graded against the gold set. 7 fields x 20 apps = 140 judgments.
 GRADED_FIELDS: tuple[str, ...] = (
     "auth.methods",
     "auth.primary_for_third_party",
     "access.tier",
     "access.extra_gate",
     "api.breadth",
+    "api.mcp",
     "verdict.value",
 )
 
