@@ -34,7 +34,7 @@ class Settings:
     request_timeout: float = float(os.getenv("REQUEST_TIMEOUT", "30"))
     user_agent: str = os.getenv(
         "USER_AGENT",
-        "composio-app-research/0.1 (take-home research pipeline)",
+        "Mozilla/5.0 (compatible; composio-app-research/0.1; +https://github.com/Dilraj07/composio-assessment)",
     )
 
     def require_llm(self) -> str:

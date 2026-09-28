@@ -11,6 +11,7 @@ nothing in pass1/pass2.
 
 from __future__ import annotations
 
+import html as _html
 import re
 from dataclasses import dataclass, field
 from typing import Protocol, runtime_checkable
@@ -78,16 +79,27 @@ def is_first_party(url: str | None, app_website: str | None) -> bool:
     return bool(vendor) and registrable_domain(url).endswith(vendor)
 
 
+_PUNCT = str.maketrans({"‘": "'", "’": "'", "“": '"', "”": '"',
+                        "–": "-", "—": "-", " ": " "})
+
+
 def _normalise(s: str) -> str:
+    s = _html.unescape(s).translate(_PUNCT)
+    s = re.sub(r"[`*_#>|]", " ", s)          # markdown noise from fetch tools
     return re.sub(r"\s+", " ", s.lower()).strip()
 
 
-def claim_supported(page: Page, quote: str | None, *, min_overlap: float = 0.6) -> bool:
+def claim_supported(page: Page, quote: str | None, *, min_overlap: float = 0.8) -> bool:
     """Does the claim text actually appear on the fetched page?
 
     Confirming a URL returns 200 proves nothing -- a model can invent a docs
     path that happens to exist. This checks the cited words are really there,
-    tolerating minor whitespace and truncation differences.
+    tolerating whitespace, typographic punctuation and markdown noise.
+
+    Fallback when the exact string is absent: >= 80% of the quote's distinct
+    content words (>3 chars) must appear on the page. Loose enough to survive
+    a fetch tool re-flowing a sentence, tight enough that a paraphrase built
+    from memory usually fails.
     """
     if not quote or not page.ok:
         return False
@@ -162,7 +174,7 @@ class DirectBackend:
             return Page(url=url, text="", status=0, ok=False, error=str(exc))
         text = re.sub(r"<(script|style)[^>]*>.*?</\1>", " ", r.text, flags=re.S | re.I)
         text = re.sub(r"<[^>]+>", " ", text)
-        text = re.sub(r"\s+", " ", text).strip()
+        text = re.sub(r"\s+", " ", _html.unescape(text)).strip()
         return Page(url=url, text=text, status=r.status_code, ok=r.is_success)
 
 
