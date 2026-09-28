@@ -1,9 +1,8 @@
 # Research set for the Composio app-buildability take-home.
 #
-# SOURCE TRUNCATION: the brief as received cut off mid-way through category 10
-# ("AI, Research and Media-native"). 90 apps are confirmed below. Apps 91-100
-# were not in the source text and have NOT been invented -- see the
-# TODO_CATEGORY_10 block at the end.
+# All 100 apps from the brief. The first copy of the brief was truncated at
+# category 10; apps 91-100 were supplied later by the candidate from the full
+# brief text (verbatim, not invented).
 #
 # `trap: true` marks apps expected to defeat naive research: no public docs,
 # sales-gated, or not an API at all. These are deliberately over-represented in
@@ -11,8 +10,7 @@
 
 meta:
   total_in_brief: 100
-  confirmed_here: 90
-  missing: "category 10 (AI, Research and Media-native), apps 91-100"
+  confirmed_here: 100
 
 categories:
   - name: "CRM & Sales"
@@ -132,11 +130,15 @@ categories:
       - {id: 89, name: Ramp,            website: docs.ramp.com}
       - {id: 90, name: PitchBook,       website: pitchbook.com, trap: true, note: "research API is sales-gated"}
 
-  # ------------------------------------------------------------------------
-  # TODO_CATEGORY_10 -- "AI, Research and Media-native", apps 91-100.
-  #
-  # Not present in the brief as received; the source text ends at the category
-  # heading. Ask for the list, then add it here as a normal category block.
-  # Do NOT invent entries to reach 100. Reporting "90 of 100, list truncated in
-  # the source brief" is the honest finding.
-  # ------------------------------------------------------------------------
+  - name: "AI, Research & Media-native"
+    apps:
+      - {id: 91,  name: NotebookLM,         website: cloud.google.com/gemini, note: "Enterprise API only; consumer product has no API"}
+      - {id: 92,  name: Otter AI,           website: help.otter.ai, note: "MCP server"}
+      - {id: 93,  name: Fathom,             website: fathom.video}
+      - {id: 94,  name: Consensus,          website: consensus.app, trap: true, note: "OAuth requested by customers"}
+      - {id: 95,  name: Reducto,            website: reducto.ai, note: "document parsing"}
+      - {id: 96,  name: Devin,              website: docs.devin.ai, note: "MCP"}
+      - {id: 97,  name: higgsfield,         website: higgsfield.ai/cli, trap: true, note: "content suite; CLI hint"}
+      - {id: 98,  name: Mermaid CLI,        website: github.com/mermaid-js/mermaid-cli, trap: true, note: "local CLI tool, not a hosted API"}
+      - {id: 99,  name: YouTube Transcript, website: transcriptapi.com, trap: true, note: "third-party API, not YouTube itself"}
+      - {id: 100, name: Grain,              website: grain.com, note: "meeting notes"}

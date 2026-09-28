@@ -3,6 +3,7 @@ __pycache__/
 *.pyc
 .env
 .pytest_cache/
-out/*.json
-out/report.html
+out/cache/
+# out/*.json is COMMITTED on purpose: pass1.json is the frozen 'before'
+# snapshot and its git timestamp is part of the verification proof.
 !out/.gitkeep

@@ -181,10 +181,19 @@ A real mix: apps customers have actually requested, and well-known apps. Across 
 | 90 | PitchBook | pitchbook.com (research API) |
 
 ### 10. AI, Research and Media-native
----
 
-> **NOTE — source truncation.** The brief as received ends here, mid-way through
-> category 10 ("AI, Research and Media-native"). Apps 91–100 were not included
-> in the source text. `data/apps.yaml` carries the 90 confirmed apps plus a
-> `TODO_CATEGORY_10` placeholder. Request the remaining entries before claiming
-> a 100-app run; do not invent them.
+| # | App | Website / hint |
+| --- | --- | --- |
+| 91 | NotebookLM | cloud.google.com/gemini (Enterprise API) |
+| 92 | Otter AI | help.otter.ai (MCP server) |
+| 93 | Fathom | fathom.video |
+| 94 | Consensus | consensus.app (OAuth requested) |
+| 95 | Reducto | reducto.ai (document parsing) |
+| 96 | Devin | docs.devin.ai (MCP) |
+| 97 | higgsfield | higgsfield.ai/cli (content suite) |
+| 98 | Mermaid CLI | github.com/mermaid-js/mermaid-cli |
+| 99 | YouTube Transcript | transcriptapi.com |
+| 100 | Grain | grain.com (meeting notes) |
+
+> Apps 91-100 were missing from the first copy of this brief and were supplied
+> later from the full brief text.
