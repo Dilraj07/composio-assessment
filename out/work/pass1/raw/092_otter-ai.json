@@ -1,0 +1,21 @@
+{
+  "app": "Otter AI",
+  "one_liner": "AI meeting transcription and conversational-intelligence platform that records, transcribes, and summarizes meetings.",
+  "auth": {"methods": ["bearer_token"], "primary_for_third_party": "bearer_token",
+    "evidence_url": "https://help.otter.ai/hc/en-us/articles/36130822688279-Otter-ai-Public-API",
+    "evidence_quote": null,
+    "confidence": "low", "notes": "Search-result summary states 'All API requests require authentication using Bearer token authentication... click Integrations > Developer tab > Create key.' Could not fetch the page directly (403) to verify verbatim quote."},
+  "access": {"tier": "approval_required", "extra_gate": "unknown",
+    "evidence_url": "https://help.otter.ai/hc/en-us/articles/36130822688279-Otter-ai-Public-API",
+    "evidence_quote": null,
+    "confidence": "low", "notes": "Search results indicate 'Otter's Public API is available for all Enterprise workspaces,' implying a sales/enterprise-only plan rather than self-serve purchase; could not verify with a direct fetch (403 on two attempts)."},
+  "api": {"protocols": ["rest"], "breadth": "narrow", "endpoint_count": null,
+    "mcp": "none", "mcp_url": null,
+    "docs_root": "https://otter.ai/api/docs/",
+    "evidence_url": "https://help.otter.ai/hc/en-us/articles/36130822688279-Otter-ai-Public-API",
+    "evidence_quote": null,
+    "confidence": "low", "notes": "Public API covers channels, conversations, transcripts, audio, action items, insights, outlines, workspace details. No official or community MCP server found for Otter specifically despite website hint mentioning MCP; not confirmed."},
+  "verdict": {"value": "needs_outreach", "blocker": "sales_contact",
+    "rationale": "API access appears limited to Enterprise workspaces with no visible self-serve online purchase path.",
+    "confidence": "low"}
+}

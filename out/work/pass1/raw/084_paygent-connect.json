@@ -1,0 +1,38 @@
+{
+  "app": "Paygent Connect",
+  "one_liner": "Japanese payment gateway (Paygent Co., Ltd., backed by Mitsubishi UFJ NICOS/NTT DATA) supporting credit cards, QR wallets, konbini, and carrier billing.",
+  "auth": {
+    "methods": ["unknown"],
+    "primary_for_third_party": "unknown",
+    "evidence_url": "https://documentation.ixopay.com/adapters/paygent",
+    "evidence_quote": "Merchant ID and Hash Code Generation Key are provided by Paygent",
+    "confidence": "low",
+    "notes": "Evidence is from a third-party payment orchestrator's (IXOPAY) adapter page describing Paygent credentials, not Paygent's own developer docs, which were not publicly locatable. No official public API reference found."
+  },
+  "access": {
+    "tier": "partner_gated",
+    "extra_gate": "sales_contact",
+    "evidence_url": "https://www.paygent.co.jp/service/",
+    "evidence_quote": null,
+    "confidence": "low",
+    "notes": "Paygent's public site offers only a sales/inquiry contact form ('資料請求・お問い合わせ'), no self-serve developer signup or public API reference was found. Credentials are merchant-issued ('provided by Paygent'), implying a merchant onboarding process rather than self-serve dev access."
+  },
+  "api": {
+    "protocols": ["unknown"],
+    "breadth": "none",
+    "endpoint_count": null,
+    "mcp": "none",
+    "mcp_url": null,
+    "docs_root": null,
+    "evidence_url": null,
+    "evidence_quote": null,
+    "confidence": "low",
+    "notes": "No public API documentation portal found for Paygent; only third-party payment-orchestrator adapter docs (IXOPAY) reference it as a supported gateway."
+  },
+  "verdict": {
+    "value": "needs_outreach",
+    "blocker": "sales_contact",
+    "rationale": "No public developer docs or self-serve signup found; access appears to require merchant/sales onboarding with Paygent directly.",
+    "confidence": "low"
+  }
+}

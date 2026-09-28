@@ -1,0 +1,21 @@
+{
+  "app": "Fathom",
+  "one_liner": "AI meeting recorder that provides free automatic transcription, summaries, and action items for video calls.",
+  "auth": {"methods": ["api_key", "oauth2"], "primary_for_third_party": "oauth2",
+    "evidence_url": "https://developers.fathom.ai/llms.txt",
+    "evidence_quote": "Generate an API key and make your first call",
+    "confidence": "medium", "notes": "Docs describe both API-key auth (single workspace/internal tools) and OAuth 2.0 app registration via Developer Hub for public integrations serving mutual customers."},
+  "access": {"tier": "self_serve_free", "extra_gate": "none",
+    "evidence_url": "https://developers.fathom.ai/",
+    "evidence_quote": "Generate an API key and make your first call in minutes",
+    "confidence": "medium", "notes": "Docs portal implies self-serve API key generation; exact plan-tier gating not explicitly confirmed in fetched excerpts."},
+  "api": {"protocols": ["rest", "webhook_only"], "breadth": "narrow", "endpoint_count": null,
+    "mcp": "unknown", "mcp_url": null,
+    "docs_root": "https://developers.fathom.ai/",
+    "evidence_url": "https://developers.fathom.ai/llms.txt",
+    "evidence_quote": "Meetings & Types, Recordings, Teams & Members, Users & Permissions, Webhooks",
+    "confidence": "medium", "notes": "Covers meetings, recordings/transcripts, teams, users, webhooks; TypeScript/Python SDKs; docs mention 'Model Context Protocol' integration support for ChatGPT/Claude but official MCP server URL not confirmed."},
+  "verdict": {"value": "buildable_now", "blocker": "none",
+    "rationale": "Self-serve API key generation with OAuth available for third-party integrations and a documented REST API with SDKs.",
+    "confidence": "medium"}
+}

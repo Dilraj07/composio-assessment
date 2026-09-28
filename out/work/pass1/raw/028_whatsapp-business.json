@@ -1,0 +1,38 @@
+{
+  "app": "WhatsApp Business",
+  "one_liner": "Meta's WhatsApp Business Platform (Cloud API) for businesses to send/receive WhatsApp messages programmatically.",
+  "auth": {
+    "methods": ["oauth2", "bearer_token"],
+    "primary_for_third_party": "bearer_token",
+    "evidence_url": "https://developers.facebook.com/documentation/business-messaging/whatsapp/access-tokens/",
+    "evidence_quote": "When making API requests, include your token in an authorization request header, preceded by Bearer.",
+    "confidence": "high",
+    "notes": "System User access tokens (permanent, tied to a System User rather than a personal login) are the standard integration credential; OAuth-style app dashboard flow is used to generate them."
+  },
+  "access": {
+    "tier": "approval_required",
+    "extra_gate": "app_review",
+    "evidence_url": null,
+    "evidence_quote": null,
+    "confidence": "low",
+    "notes": "Search results (not independently fetched/quoted) indicate a Meta Business app and WhatsApp Business Account setup are required, with permissions like whatsapp_business_messaging; production messaging to arbitrary numbers beyond test numbers typically requires Meta App Review. Could not find a fetched page stating the review requirement explicitly, so evidence_url is null per the no-invented-URL rule."
+  },
+  "api": {
+    "protocols": ["rest", "webhook_only"],
+    "breadth": "narrow",
+    "endpoint_count": null,
+    "mcp": "community",
+    "mcp_url": "https://github.com/lharries/whatsapp-mcp",
+    "docs_root": "https://developers.facebook.com/documentation/business-messaging/whatsapp/",
+    "evidence_url": "https://developers.facebook.com/documentation/business-messaging/whatsapp/access-tokens/",
+    "evidence_quote": "Authorization: Bearer EAAJB...",
+    "confidence": "medium",
+    "notes": "No official Meta-published MCP server found; lharries/whatsapp-mcp is a widely-forked community project (note: it wraps personal WhatsApp via whatsmeow, not the official Business Cloud API)."
+  },
+  "verdict": {
+    "value": "needs_outreach",
+    "blocker": "app_review",
+    "rationale": "Requires a Meta Business app, WhatsApp Business Account setup, and (for production-scale messaging to arbitrary users) Meta App Review before full third-party use.",
+    "confidence": "low"
+  }
+}

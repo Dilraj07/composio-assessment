@@ -1,0 +1,21 @@
+{
+  "app": "YouTube Transcript",
+  "one_liner": "Third-party API (TranscriptAPI.com) that fetches YouTube video transcripts, metadata, search, and channel/playlist data.",
+  "auth": {"methods": ["api_key", "oauth2"], "primary_for_third_party": "oauth2",
+    "evidence_url": "https://transcriptapi.com/docs/api/",
+    "evidence_quote": "The API uses Bearer token authentication. Include your API key in the Authorization header of every request",
+    "confidence": "high", "notes": "Primary auth is an API key sent as a Bearer token; docs also mention OAuth support for platforms like Claude/ChatGPT (via MCP)."},
+  "access": {"tier": "self_serve_free", "extra_gate": "none",
+    "evidence_url": "https://transcriptapi.com/docs/api/",
+    "evidence_quote": "successful requests (HTTP 200) - 1 credit (paid endpoints only)",
+    "confidence": "medium", "notes": "Credit-based self-serve model; users get free starting credits (100 per search results) and two endpoints are free even without credits. No sales approval required."},
+  "api": {"protocols": ["rest"], "breadth": "narrow", "endpoint_count": 16,
+    "mcp": "official", "mcp_url": "https://transcriptapi.com/docs/mcp/",
+    "docs_root": "https://transcriptapi.com/docs/",
+    "evidence_url": "https://transcriptapi.com/docs/api/",
+    "evidence_quote": "The API documentation lists 16 distinct endpoints across several categories: transcript extraction, video metadata, search functionality, and channel/playlist operations.",
+    "confidence": "medium", "notes": "Vendor-published MCP docs page exists at transcriptapi.com/docs/mcp/, treated as official since it's the same vendor, not a third-party aggregator."},
+  "verdict": {"value": "buildable_now", "blocker": "none",
+    "rationale": "Self-serve API key signup with free credits, documented REST API and an official MCP integration page.",
+    "confidence": "medium"}
+}

@@ -1,0 +1,38 @@
+{
+  "app": "Notion",
+  "one_liner": "All-in-one workspace for notes, docs, wikis, and project tracking.",
+  "auth": {
+    "methods": ["oauth2", "api_key"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://developers.notion.com/docs/authorization",
+    "evidence_quote": "use the OAuth 2.0 protocol",
+    "confidence": "high",
+    "notes": "Also supports internal integration static tokens and user-created personal access tokens for single-workspace use; OAuth is the public-connection method for third parties."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "app_review",
+    "evidence_url": "https://developers.notion.com/docs/authorization",
+    "evidence_quote": "The Authorization URL field populates after a public connection is submitted for review.",
+    "confidence": "medium",
+    "notes": "Free Notion account and developer portal access; public OAuth integrations that act on arbitrary workspaces go through a review/submission step."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "narrow",
+    "endpoint_count": null,
+    "mcp": "official",
+    "mcp_url": "https://developers.notion.com/docs/mcp",
+    "docs_root": "https://developers.notion.com",
+    "evidence_url": "https://developers.notion.com/docs/authorization",
+    "evidence_quote": "use a static API token",
+    "confidence": "low",
+    "notes": "Notion has published an official remote MCP server; endpoint count not confirmed from this page, breadth estimated as narrow based on general knowledge of the REST API surface."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "app_review",
+    "rationale": "Free-tier OAuth2 API exists and is well documented, but production access to arbitrary workspaces requires submitting the public integration for review.",
+    "confidence": "medium"
+  }
+}

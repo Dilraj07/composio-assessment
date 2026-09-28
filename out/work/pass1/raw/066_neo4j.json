@@ -1,0 +1,38 @@
+{
+  "app": "Neo4j",
+  "one_liner": "Graph database platform (self-managed or Aura cloud) with an Aura management API for provisioning instances and a Cypher query interface.",
+  "auth": {
+    "methods": ["oauth2", "bearer_token"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://neo4j.com/docs/aura/api/authentication/",
+    "evidence_quote": "Authentication to the token endpoint uses HTTP Basic Authentication, where the client ID and client secret are provided as the username and password, respectively.",
+    "confidence": "high",
+    "notes": "This covers the Aura management/control-plane API (client-credentials OAuth2). The actual database query interface (Bolt/Cypher) uses username/password or bearer auth per-driver, separate from the Aura API; database-level auth not re-verified this pass."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "none",
+    "evidence_url": "https://neo4j.com/docs/aura/api/authentication/",
+    "evidence_quote": "API credentials are linked to the user account, inheriting its capabilities and roles.",
+    "confidence": "medium",
+    "notes": "Aura has a free tier (AuraDB Free) and API credential creation is self-serve, per earlier search results ('All tiers can create Aura API credentials'), though that specific sentence wasn't fetched verbatim from the live page this pass."
+  },
+  "api": {
+    "protocols": ["rest", "graphql", "sdk_only"],
+    "breadth": "narrow",
+    "endpoint_count": null,
+    "mcp": "official",
+    "mcp_url": "https://github.com/neo4j/mcp",
+    "docs_root": "https://neo4j.com/docs/aura/api/overview/",
+    "evidence_url": "https://github.com/neo4j-contrib/mcp-neo4j",
+    "evidence_quote": "Neo4j Labs Model Context Protocol servers",
+    "confidence": "medium",
+    "notes": "Aura control-plane API (instance/project management) is narrow in endpoint count. Two MCP options exist: neo4j/mcp (vendor org, official, local binary) and neo4j-contrib/mcp-neo4j (Neo4j Labs, community/experimental) -- classified official since neo4j/mcp is published under the vendor's own GitHub org."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "Free Aura tier, self-serve OAuth2 client-credential API access, and an official MCP server support building now for instance management; database queries need separate driver-level credentials.",
+    "confidence": "medium"
+  }
+}

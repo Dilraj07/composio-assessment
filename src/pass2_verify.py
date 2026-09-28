@@ -1,18 +1,26 @@
 """Pass 2 -- targeted re-verification of escalated fields only.
 
-Three mechanisms, in increasing cost:
+The verification loop, in order:
 
-  1. Re-fetch the cited page and check the claim text is actually on it.
-     A 200 response proves the path exists, not that it says what was claimed.
-  2. Browser render for pricing/plan pages -- JS-heavy, rarely in docs, and the
-     single biggest source of wrong `access.tier` answers.
-  3. A second model adjudicating FROM FETCHED TEXT ONLY, no parametric memory.
-     Asking the same model twice from memory is not verification.
+  1. EVIDENCE CHECK (deterministic, src/evidence.py). Re-download every URL
+     pass 1 cited, with plain httpx, and test the quote is on the page.
+  2. TRIAGE (src/triggers.py). Seven rules decide which FIELDS are suspect:
+     low confidence, off-domain evidence, unverifiable evidence, self-serve
+     with unknown gate, every buildable_now (asymmetric cost), contradictions,
+     and every "no MCP" claim.
+  3. ADJUDICATION (agent). A fresh verifier agent gets only the flagged fields,
+     the reasons, and an instruction to re-derive them from primary sources
+     and to COUNT endpoints rather than estimate.
+  4. ACCEPTANCE GATE (deterministic). A changed value is accepted only if the
+     verifier's quote is found on the page it cites -- by httpx, or for
+     bot-walled pages by a recorded browser check. Otherwise the pass-1 value
+     stands and the field goes to the human queue.
+  5. HUMAN QUEUE. Whatever 3-4 cannot settle lands in out/human_queue.json.
 
-Anything still unresolved goes to out/human_queue.json. That queue, with a
-count, is the answer to the brief's "tell us where it needed a human".
-
-    python -m src.pass2_verify
+    python -m src.pass2_verify triage
+    python -m src.pass2_verify emit
+    ... verifier agents write out/work/pass2/raw/*.json ...
+    python -m src.pass2_verify ingest
 """
 
 from __future__ import annotations
@@ -20,186 +28,264 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from collections import Counter, defaultdict
 from datetime import datetime, timezone
+from pathlib import Path
 
-from .config import HUMAN_QUEUE_JSON, PASS1_JSON, PASS2_JSON, TRIAGE_JSON, settings
-from .fetch import Page, SearchBackend, claim_supported, get_backend
-from .prompts import FIELD_ALLOWED_VALUES, PASS2_SYSTEM, PASS2_USER
-from .schema import AppRecord, Confidence
+from .agent_io import raw_path, read_raw, write_batches
+from .config import HUMAN_QUEUE_JSON, OUT, PASS1_JSON, PASS2_JSON, ROOT, TRIAGE_JSON
+from .evidence import check_claim, check_records, load_browser_checks, summarise
+from .fetch import DirectBackend
+from .pass1_discover import _ENUMS, load_apps
+from .prompts import AGENT_RULES, PASS2_AGENT_BRIEF
+from .schema import GRADED_FIELDS, AppRecord, Confidence, Protocol, get_field
 from .triggers import triage_all
 
-# Fields whose ground truth lives on pricing pages rather than docs. These are
-# JS-rendered often enough that a plain HTTP fetch returns an empty shell, so
-# they go to the browser backend when one is configured.
-BROWSER_FIELDS = {"access.tier", "access.extra_gate"}
+EVIDENCE_PASS1 = OUT / "evidence_pass1.json"
+PASS2_BUDGET = 8          # web calls per app: verification is allowed to dig
+BATCH_SIZE = 5
+
+# verdict.value is derived; a trigger on it means "re-check tier + gate".
+EXPAND = {"verdict.value": ("access.tier", "access.extra_gate")}
 
 
-def _set_field(record: AppRecord, dotted: str, value, quote, confidence) -> None:
-    block_name, attr = dotted.split(".")
-    block = getattr(record, block_name)
-    setattr(block, attr, value)
-    if quote:
-        block.evidence_quote = quote
-    block.confidence = Confidence(confidence)
+def _load_pass1() -> tuple[dict, list[AppRecord]]:
+    if not PASS1_JSON.exists():
+        sys.exit(f"{PASS1_JSON} not found. Run pass 1 first.")
+    data = json.loads(PASS1_JSON.read_text(encoding="utf-8"))
+    return data, [AppRecord.model_validate(a) for a in data["apps"]]
 
 
-def _render_with_browser(url: str) -> Page | None:
-    """Hook for browser-use / Playwright.
-
-    Left as an explicit seam rather than a silent fallback: when it is not
-    wired, pricing-page fields honestly fail to verify and land in the human
-    queue, which is a truer result than pretending a static fetch settled them.
-    """
-    return None
-
-
-def _adjudicate(app: str, field: str, prior, prior_conf: str, reason: str, page: Page) -> dict:
-    if settings.fetch_backend == "stub":
-        return {
-            "value": prior, "evidence_quote": None, "confidence": "low",
-            "changed": False, "reasoning": "stub run - no adjudication performed",
-            "needs_human": True, "human_reason": "stub backend",
-        }
-
-    settings.require_llm()
-    import anthropic
-
-    client = anthropic.Anthropic(api_key=settings.anthropic_api_key)
-    resp = client.messages.create(
-        model=settings.model,
-        max_tokens=800,
-        system=PASS2_SYSTEM,
-        messages=[{"role": "user", "content": PASS2_USER.format(
-            app=app, field=field, prior_value=prior, prior_confidence=prior_conf,
-            reason=reason, allowed_values=FIELD_ALLOWED_VALUES.get(field, "see schema.py"),
-            page_text=page.text[:8000] if page.ok else "(page could not be fetched)",
-        )}],
-    )
-    text = resp.content[0].text.strip()
-    if text.startswith("```"):
-        text = text.split("```")[1].removeprefix("json").strip()
-    return json.loads(text)
+def _escalations(triage: dict) -> dict[str, dict[str, list[str]]]:
+    """{app: {field: [reasons]}}, with the derived verdict expanded."""
+    out: dict[str, dict[str, list[str]]] = {}
+    for app, trigs in triage["per_app"].items():
+        fields: dict[str, list[str]] = defaultdict(list)
+        for t in trigs:
+            for f in EXPAND.get(t["field"], (t["field"],)):
+                if f in GRADED_FIELDS:
+                    fields[f].append(f"{t['rule']}: {t['detail']}")
+        if fields:
+            out[app] = dict(fields)
+    return out
 
 
-def verify_field(backend: SearchBackend, record: AppRecord, trig: dict) -> dict:
-    """Run one escalated field through the verification ladder."""
-    field, reason = trig["field"], trig["rule"]
-    block = getattr(record, field.split(".")[0])
-    url = block.evidence_url or record.api.docs_root or record.website
+# --------------------------------------------------------------------------
+# triage
+# --------------------------------------------------------------------------
 
-    if not url:
-        return {"field": field, "resolved": False,
-                "needs_human": True, "human_reason": "no URL to verify against"}
+def cmd_triage() -> int:
+    data, records = _load_pass1()
+    print(f"Evidence check: re-fetching every URL cited in {PASS1_JSON.name} ...")
+    evidence = check_records(data["apps"])
+    summary = summarise(evidence)
+    EVIDENCE_PASS1.write_text(json.dumps({"summary": summary, "apps": evidence}, indent=2),
+                              encoding="utf-8")
+    print(f"    {summary['by_status']}  verified rate {summary['verified_rate']}")
 
-    if not url.startswith("http"):
-        url = f"https://{url}"
+    triage = triage_all(records, evidence)
+    triage["escalations"] = _escalations(triage)
+    TRIAGE_JSON.write_text(json.dumps(triage, indent=2), encoding="utf-8")
+    n_fields = sum(len(v) for v in triage["escalations"].values())
+    total = len(records) * len(GRADED_FIELDS)
+    print(f"Triage: {n_fields}/{total} fields escalated ({n_fields/total:.0%}) "
+          f"across {len(triage['escalations'])} apps")
+    print(f"    by rule: {triage['by_rule']}")
+    if not 0.15 <= n_fields / total <= 0.85:
+        print("  ! escalation rate outside the useful band - recalibrate triggers",
+              file=sys.stderr)
+    return 0
 
-    # Step 1/2 -- fetch, escalating to a renderer for pricing-dependent fields.
-    page = None
-    if field in BROWSER_FIELDS:
-        page = _render_with_browser(url)
-    if page is None:
+
+# --------------------------------------------------------------------------
+# emit
+# --------------------------------------------------------------------------
+
+def _app_block(app: dict, rec: AppRecord, fields: dict[str, list[str]]) -> str:
+    rel = raw_path("pass2", app).relative_to(ROOT).as_posix()
+    lines = [f"### {app['name']} (#{app['id']}, {app['category']})",
+             f"website hint: `{app.get('website') or 'none given'}` "
+             f"-> write `{rel}`", "", "Pass-1 answer for the flagged fields:"]
+    for f in fields:
+        blk = getattr(rec, f.split(".")[0])
+        lines.append(f"- `{f}` = `{json.dumps(get_field(rec, f))}` "
+                     f"(confidence {blk.confidence.value}; cited {blk.evidence_url or 'nothing'})")
+        for r in fields[f]:
+            lines.append(f"    - flagged because {r}")
+    lines.append(f"- (context, not flagged) protocols = {[p.value for p in rec.api.protocols]}, "
+                 f"one_liner = {rec.one_liner!r}")
+    return "\n".join(lines)
+
+
+def cmd_emit() -> int:
+    if not TRIAGE_JSON.exists():
+        sys.exit("Run `python -m src.pass2_verify triage` first.")
+    triage = json.loads(TRIAGE_JSON.read_text(encoding="utf-8"))
+    _, records = _load_pass1()
+    by_name = {r.app: r for r in records}
+    apps = [a for a in load_apps() if a["name"] in triage["escalations"]]
+
+    def render(batch_id: int, group: list[dict]) -> str:
+        body = "\n\n".join(_app_block(a, by_name[a["name"]], triage["escalations"][a["name"]])
+                           for a in group)
+        return PASS2_AGENT_BRIEF.format(batch_id=batch_id, budget=PASS2_BUDGET,
+                                        rules=AGENT_RULES, apps=body)
+
+    groups = [apps[i:i + BATCH_SIZE] for i in range(0, len(apps), BATCH_SIZE)]
+    paths = write_batches("pass2", groups, render)
+    print(f"Wrote {len(paths)} pass-2 briefs covering {len(apps)} apps")
+    return 0
+
+
+# --------------------------------------------------------------------------
+# ingest
+# --------------------------------------------------------------------------
+
+def _coerce_value(field: str, value):
+    if field == "auth.methods":
+        return value if isinstance(value, list) else [value]
+    return value[0] if isinstance(value, list) and len(value) == 1 else value
+
+
+def cmd_ingest(require_quote: bool = True) -> int:
+    data, records = _load_pass1()
+    triage = json.loads(TRIAGE_JSON.read_text(encoding="utf-8"))
+    escalations = triage["escalations"]
+    apps = {a["name"]: a for a in load_apps()}
+    backend, browser = DirectBackend(), load_browser_checks()
+
+    changes, rejected, human_queue, confirmed = [], [], [], []
+    browser_needed = []
+    for rec in records:
+        flagged = escalations.get(rec.app)
+        if not flagged:
+            continue
+        payload, err = read_raw(raw_path("pass2", apps[rec.app]))
+        if payload is None:
+            for f in flagged:
+                human_queue.append({"app": rec.app, "field": f, "stage": "adjudication",
+                                    "reason": f"verifier produced no result ({err})"})
+            continue
+        results = payload.get("fields", {})
+        for f in flagged:
+            r = results.get(f)
+            if r is None:
+                human_queue.append({"app": rec.app, "field": f, "stage": "adjudication",
+                                    "reason": "verifier skipped this flagged field"})
+                continue
+            old = get_field(rec, f)
+            new = _coerce_value(f, r.get("value"))
+            if r.get("needs_human"):
+                human_queue.append({"app": rec.app, "field": f, "stage": "adjudication",
+                                    "reason": r.get("human_reason") or "verifier could not settle it",
+                                    "pass1": old, "suggested": new})
+                continue
+            differs = (set(new or []) != set(old or [])) if f == "auth.methods" else new != old
+            if not differs:
+                confirmed.append({"app": rec.app, "field": f, "value": old})
+                blk = getattr(rec, f.split(".")[0])
+                if r.get("confidence") in {c.value for c in Confidence}:
+                    blk.confidence = Confidence(r["confidence"])
+                continue
+
+            # ---- acceptance gate: the new value's quote must be on the page
+            chk = check_claim(r.get("evidence_url"), r.get("evidence_quote"), backend, browser)
+            accepted = chk["status"] == "verified" or not require_quote
+            entry = {"app": rec.app, "field": f, "old": old, "new": new,
+                     "url": r.get("evidence_url"), "quote": r.get("evidence_quote"),
+                     "check": chk["status"], "via": chk.get("via"),
+                     "reasoning": r.get("reasoning")}
+            if not accepted:
+                rejected.append(entry)
+                if chk["status"] == "needs_browser":
+                    browser_needed.append({"url": r.get("evidence_url"),
+                                           "quote": r.get("evidence_quote"),
+                                           "app": rec.app, "field": f})
+                human_queue.append({"app": rec.app, "field": f, "stage": "acceptance_gate",
+                                    "reason": f"proposed change {old!r} -> {new!r} not verifiable "
+                                              f"({chk['status']})",
+                                    "pass1": old, "suggested": new, "url": r.get("evidence_url")})
+                continue
+            block_name, attr = f.split(".")
+            blk = getattr(rec, block_name)
+            try:
+                # Coerce through the enum: pydantic does not validate on
+                # assignment, and str-Enums hash by NAME, so a raw string would
+                # silently fail `in {ExtraGate...}` checks in derive_verdict.
+                enum_cls = _ENUMS[(block_name, attr)]
+                setattr(blk, attr, [enum_cls(v) for v in new] if isinstance(new, list)
+                        else enum_cls(new))
+            except Exception as exc:  # noqa: BLE001 - off-enum value from the verifier
+                rejected.append({**entry, "check": f"invalid value: {exc}"})
+                continue
+            blk.evidence_url, blk.evidence_quote = r.get("evidence_url"), r.get("evidence_quote")
+            if r.get("confidence") in {c.value for c in Confidence}:
+                blk.confidence = Confidence(r["confidence"])
+            changes.append(entry)
+
+        extra = payload.get("extra") or {}
+        if extra.get("protocols"):
+            try:
+                rec.api.protocols = [Protocol(p) for p in extra["protocols"]]
+            except ValueError:
+                pass
+        if extra.get("one_liner") and not rec.one_liner:
+            rec.one_liner = extra["one_liner"]
+        rec.provenance.pass_number = 2
+        rec.provenance.escalated_fields = list(flagged)
+        rec.rederive_verdict()
+
+    # Re-validate every record: a pass-2 change must not create a structurally
+    # impossible record (e.g. tier=no_public_api with REST protocols).
+    final = []
+    for rec in records:
         try:
-            page = backend.fetch(url)
+            final.append(AppRecord.model_validate(rec.model_dump(mode="json")))
         except Exception as exc:  # noqa: BLE001
-            return {"field": field, "resolved": False, "needs_human": True,
-                    "human_reason": f"fetch error: {exc}"}
+            if rec.access.tier.value == "no_public_api":
+                rec.api.protocols = [p for p in rec.api.protocols
+                                     if p in (Protocol.CLI, Protocol.SDK_ONLY)] or [Protocol.NONE]
+                rec.rederive_verdict()
+            final.append(rec)
+            print(f"  ! repaired {rec.app}: {exc}", file=sys.stderr)
 
-    if not page.ok:
-        return {"field": field, "resolved": False, "needs_human": True,
-                "human_reason": f"page unreachable (status {page.status})"}
+    HUMAN_QUEUE_JSON.write_text(json.dumps(human_queue, indent=2, ensure_ascii=False),
+                                encoding="utf-8")
+    (OUT / "work" / "browser_needed.json").write_text(
+        json.dumps(browser_needed, indent=2, ensure_ascii=False), encoding="utf-8")
+    PASS2_JSON.write_text(json.dumps({
+        "run_id": data.get("run_id"),
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "derived_from": PASS1_JSON.name,
+        "stats": {
+            "apps_escalated": len(escalations),
+            "fields_escalated": sum(len(v) for v in escalations.values()),
+            "confirmed": len(confirmed), "changed": len(changes),
+            "rejected_by_gate": len(rejected), "human_queue": len(human_queue),
+            "human_queue_by_stage": dict(Counter(h["stage"] for h in human_queue)),
+        },
+        "changes": changes, "rejected": rejected, "confirmed": confirmed,
+        "apps": [r.model_dump(mode="json") for r in final],
+    }, indent=2, ensure_ascii=False), encoding="utf-8")
 
-    # Step 3 -- adjudicate from the fetched text alone.
-    prior = getattr(block, field.split(".")[1])
-    prior_value = [p.value for p in prior] if isinstance(prior, list) else getattr(prior, "value", prior)
-
-    result = _adjudicate(record.app, field, prior_value,
-                         block.confidence.value, reason, page)
-
-    if result.get("needs_human"):
-        return {"field": field, "resolved": False, "needs_human": True,
-                "human_reason": result.get("human_reason") or "adjudication inconclusive"}
-
-    # Only accept a new answer if its quote is genuinely on the page.
-    if result.get("evidence_quote") and not claim_supported(page, result["evidence_quote"]):
-        return {"field": field, "resolved": False, "needs_human": True,
-                "human_reason": "adjudicator quote not found on page"}
-
-    return {
-        "field": field, "resolved": True, "needs_human": False,
-        "old": prior_value, "new": result["value"],
-        "changed": result.get("changed", prior_value != result["value"]),
-        "confidence": result.get("confidence", "medium"),
-        "evidence_quote": result.get("evidence_quote"),
-        "url": page.url,
-    }
+    print(f"Confirmed {len(confirmed)} | changed {len(changes)} | rejected by gate "
+          f"{len(rejected)} ({len(browser_needed)} need a browser check) | human queue "
+          f"{len(human_queue)}")
+    print(f"Written -> {PASS2_JSON}")
+    return 0
 
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="Pass 2: targeted verification.")
-    ap.add_argument("--pass1", default=str(PASS1_JSON))
-    ap.add_argument("--out", default=str(PASS2_JSON))
-    ap.add_argument("--backend")
+    ap.add_argument("cmd", choices=["triage", "emit", "ingest"])
+    ap.add_argument("--no-gate", action="store_true",
+                    help="accept verifier changes without the quote check (ablation only)")
     args = ap.parse_args()
-
-    from pathlib import Path
-    src = Path(args.pass1)
-    if not src.exists():
-        print(f"{src} not found. Run `make pass1` first.", file=sys.stderr)
-        return 1
-
-    data = json.loads(src.read_text())
-    records = [AppRecord.model_validate(a) for a in data["apps"]]
-    by_app = {r.app: r for r in records}
-
-    triage = triage_all(records)
-    Path(TRIAGE_JSON).write_text(json.dumps(triage, indent=2))
-    print(f"Triage: {triage['fields_escalated']}/{triage['fields_total']} fields "
-          f"({triage['escalation_rate']:.0%}) across {triage['apps_with_triggers']} apps")
-    if not 0.15 <= triage["escalation_rate"] <= 0.85:
-        print("  ! escalation rate outside the useful band - recalibrate triggers "
-              "(see docs/CHECKLIST.md Phase 3)", file=sys.stderr)
-
-    backend = get_backend(args.backend)
-    human_queue, changes = [], []
-
-    for app_name, trigs in triage["per_app"].items():
-        record = by_app[app_name]
-        # One verification per distinct field. A field often trips several
-        # rules at once; re-fetching and re-adjudicating it per rule wastes
-        # calls and can thrash the value back and forth.
-        first_per_field = {}
-        for t in trigs:
-            first_per_field.setdefault(t["field"], t)
-
-        for trig in first_per_field.values():
-            res = verify_field(backend, record, trig)
-            if res["needs_human"]:
-                human_queue.append({"app": app_name, "field": res["field"],
-                                    "reason": res["human_reason"], "trigger": trig["rule"]})
-                continue
-            if res["changed"]:
-                _set_field(record, res["field"], res["new"],
-                           res.get("evidence_quote"), res["confidence"])
-                changes.append({"app": app_name, "field": res["field"],
-                                "old": res["old"], "new": res["new"], "url": res["url"]})
-            record.provenance.escalated_fields.append(res["field"])
-        record.provenance.pass_number = 2
-
-    Path(HUMAN_QUEUE_JSON).write_text(json.dumps(human_queue, indent=2))
-    Path(args.out).write_text(json.dumps({
-        "run_id": data.get("run_id"),
-        "timestamp": datetime.now(timezone.utc).isoformat(),
-        "derived_from": str(src),
-        "changes": changes,
-        "human_queue_size": len(human_queue),
-        "apps": [r.model_dump(mode="json") for r in records],
-    }, indent=2))
-
-    print(f"\nChanged {len(changes)} field values")
-    print(f"Human queue: {len(human_queue)} items → {HUMAN_QUEUE_JSON}")
-    print(f"Written → {args.out}")
-    return 0
+    if args.cmd == "triage":
+        return cmd_triage()
+    if args.cmd == "emit":
+        return cmd_emit()
+    return cmd_ingest(require_quote=not args.no_gate)
 
 
 if __name__ == "__main__":

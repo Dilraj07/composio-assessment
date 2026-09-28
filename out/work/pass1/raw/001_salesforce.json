@@ -1,0 +1,38 @@
+{
+  "app": "Salesforce",
+  "one_liner": "CRM platform for sales, service, and marketing with an extensive REST/SOAP/Bulk API surface.",
+  "auth": {
+    "methods": ["oauth2", "bearer_token"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/intro_oauth_and_connected_apps.htm",
+    "evidence_quote": null,
+    "confidence": "medium",
+    "notes": "Salesforce docs site returned 403 to WebFetch (bot-blocked), so no verbatim quote could be captured; WebSearch summaries consistently describe OAuth 2.0 via Connected Apps / External Client Apps as the auth mechanism, with the resulting access token used as a bearer token."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "none",
+    "evidence_url": "https://developer.salesforce.com/docs/platform/api-rest/guide/quickstart-oauth.html",
+    "evidence_quote": null,
+    "confidence": "medium",
+    "notes": "Free Developer Edition org available for signup, capped at 15,000 API requests/day per WebSearch summary of Salesforce docs; direct verbatim quote unavailable because the docs site blocked WebFetch (403). A third party building an app that connects to OTHER customers' orgs does so per-org via OAuth consent at install time (not a separate marketplace review unless listed on AppExchange), so extra_gate is treated as none rather than app_review."
+  },
+  "api": {
+    "protocols": ["rest", "graphql", "soap", "sdk_only"],
+    "breadth": "broad",
+    "endpoint_count": null,
+    "mcp": "official",
+    "mcp_url": "https://github.com/salesforcecli/mcp",
+    "docs_root": "https://developer.salesforce.com/docs",
+    "evidence_url": "https://github.com/salesforcecli/mcp",
+    "evidence_quote": "The Salesforce DX MCP Server is a specialized Model Context Protocol (MCP) implementation designed to facilitate seamless interaction between large language models (LLMs) and Salesforce orgs.",
+    "confidence": "high",
+    "notes": "Salesforce's REST API is resource/object based (SObject API covers arbitrary custom + standard objects) so a fixed endpoint count doesn't apply cleanly; classified broad given breadth of Metadata, Bulk, REST, and Connect APIs. Official MCP server is salesforcecli/mcp (Salesforce DX MCP Server), oriented at org development/admin tasks via CLI auth rather than being a generic data-API MCP."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "Free Developer Edition org plus OAuth2 connected-app flow gives a third party a working, self-serve credential against a broad REST API with an official MCP server.",
+    "confidence": "medium"
+  }
+}

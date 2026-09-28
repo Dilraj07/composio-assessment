@@ -1,0 +1,38 @@
+{
+  "app": "SendGrid",
+  "one_liner": "Transactional and marketing email delivery platform (Twilio) with a REST API for sending mail and managing contacts.",
+  "auth": {
+    "methods": ["api_key"],
+    "primary_for_third_party": "api_key",
+    "evidence_url": "https://www.twilio.com/docs/sendgrid/api-reference/how-to-use-the-sendgrid-v3-api/authentication",
+    "evidence_quote": "To authenticate, add an HTTP Authorization header to your API request that contains an API Key",
+    "confidence": "high",
+    "notes": "Uses Bearer-style header 'Authorization: Bearer <YOUR_API_KEY_HERE>' but the vendor calls it an API Key. No OAuth2 documented for acting on other users' accounts (each customer supplies their own key), except via SendGrid's separate Partner/reseller subuser mechanisms."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "none",
+    "evidence_url": "https://www.twilio.com/docs/sendgrid/api-reference/how-to-use-the-sendgrid-v3-api/authentication",
+    "evidence_quote": "To authenticate, add an HTTP Authorization header to your API request that contains an API Key",
+    "confidence": "medium",
+    "notes": "SendGrid offers a free-tier account with API key generation from the dashboard, no separate review gate documented for basic API key use."
+  },
+  "api": {
+    "protocols": ["rest", "webhook_only"],
+    "breadth": "broad",
+    "endpoint_count": null,
+    "mcp": "unknown",
+    "mcp_url": null,
+    "docs_root": "https://www.twilio.com/docs/sendgrid/api-reference",
+    "evidence_url": "https://www.twilio.com/docs/sendgrid/api-reference/how-to-use-the-sendgrid-v3-api/authentication",
+    "evidence_quote": "To authenticate, add an HTTP Authorization header to your API request that contains an API Key",
+    "confidence": "low",
+    "notes": "SendGrid v3 API covers mail send, marketing campaigns, stats, webhooks, etc. -- a broad surface; did not verify official MCP within call budget."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "Free-tier account with self-service API key generation and no review gate for standard API key usage.",
+    "confidence": "medium"
+  }
+}

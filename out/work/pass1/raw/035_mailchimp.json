@@ -1,0 +1,38 @@
+{
+  "app": "Mailchimp",
+  "one_liner": "Email marketing and marketing automation platform; the Marketing API lets developers manage audiences, campaigns, and automations.",
+  "auth": {
+    "methods": ["api_key", "oauth2"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://mailchimp.com/developer/marketing/docs/fundamentals/",
+    "evidence_quote": "You should use an API key if you're writing code that tightly couples your application data to your Mailchimp account data; if you ever need to access someone else's Mailchimp account data, you should use OAuth 2.",
+    "confidence": "high",
+    "notes": "Both API key and OAuth2 are documented; OAuth2 is the vendor-recommended path for accessing other people's accounts."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "none",
+    "evidence_url": "https://mailchimp.com/developer/marketing/docs/fundamentals/",
+    "evidence_quote": "what you can do with the API depends on what level of Mailchimp plan you have",
+    "confidence": "medium",
+    "notes": "A Mailchimp account (free tier exists) is sufficient to get API credentials; some functionality may be limited by plan tier but no separate approval gate is documented."
+  },
+  "api": {
+    "protocols": ["rest", "webhook_only"],
+    "breadth": "broad",
+    "endpoint_count": null,
+    "mcp": "unknown",
+    "mcp_url": null,
+    "docs_root": "https://mailchimp.com/developer/marketing/",
+    "evidence_url": "https://mailchimp.com/developer/marketing/docs/fundamentals/",
+    "evidence_quote": "You can authenticate requests using either your API key or an OAuth access token, depending on your use case.",
+    "confidence": "low",
+    "notes": "Marketing API resource index (lists, campaigns, automations, reports, etc.) is broad; did not verify official MCP within call budget."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "Free Mailchimp account plus OAuth2 gives immediate self-serve access to other users' accounts with no additional review gate documented.",
+    "confidence": "medium"
+  }
+}

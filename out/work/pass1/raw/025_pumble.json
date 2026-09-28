@@ -1,0 +1,38 @@
+{
+  "app": "Pumble",
+  "one_liner": "Free team chat and messaging app (Slack alternative) from CAKE.com.",
+  "auth": {
+    "methods": ["api_key"],
+    "primary_for_third_party": "api_key",
+    "evidence_url": "https://pumble.com/help/integrations/automation-workflow-integrations/api-keys-integration/",
+    "evidence_quote": "Click on API in the left sidebar. Select Add API key. Enter API key name. Click Generate",
+    "confidence": "medium",
+    "notes": "Pumble's public API uses a generated API key rather than OAuth; no third-party OAuth flow for acting on other workspaces was found."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "none",
+    "evidence_url": "https://pumble.com/help/integrations/automation-workflow-integrations/api-keys-integration/",
+    "evidence_quote": "By using the Pumble API addon, you can interact with Pumble's API documentation without using any complex authentication processes",
+    "confidence": "medium",
+    "notes": "Pumble has a free plan and API keys are self-generated from workspace settings; no separate review process found."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "narrow",
+    "endpoint_count": null,
+    "mcp": "official",
+    "mcp_url": "https://pumble.com/learn/pumble/ai-automation-guide/",
+    "docs_root": "https://pumble.com/help/integrations/automation-workflow-integrations/api-keys-integration/",
+    "evidence_url": "https://pumble.com/learn/pumble/ai-automation-guide/",
+    "evidence_quote": "Pumble offers an MCP server to connect external AI agents (Claude, Gemini, Codex) to Pumble so they can search, read, and act",
+    "confidence": "low",
+    "notes": "MCP mention found via search snippet from pumble.com (vendor domain), not independently fetched/verified for a repo URL; breadth assumed narrow since API is described as simple key-based messaging/reactions, not confirmed against a full reference index."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "Free account with self-generated API key gives immediate working access with no documented extra gate.",
+    "confidence": "medium"
+  }
+}

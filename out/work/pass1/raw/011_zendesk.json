@@ -1,0 +1,38 @@
+{
+  "app": "Zendesk",
+  "one_liner": "Customer support ticketing and helpdesk platform.",
+  "auth": {
+    "methods": ["oauth2", "api_key", "basic"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://developer.zendesk.com/documentation/authentication/",
+    "evidence_quote": "Using OAuth to authenticate API requests",
+    "confidence": "high",
+    "notes": "API tokens are used via HTTP Basic auth (email/token as username, token as password); OAuth supports authorization-code and client-credentials flows."
+  },
+  "access": {
+    "tier": "self_serve_trial",
+    "extra_gate": "none",
+    "evidence_url": "https://developer.zendesk.com/documentation/api-basics/getting-started/getting-a-trial-or-sponsored-account-for-development/",
+    "evidence_quote": "You can try out the Zendesk platform with a free, 14-day trial account.",
+    "confidence": "medium",
+    "notes": "Dev access is via 14-day trial account (or sponsored account program); no perpetual free dev tier found. Marketplace app review is only required to be publicly listed, not to call the API."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "broad",
+    "endpoint_count": null,
+    "mcp": "community",
+    "mcp_url": "https://github.com/reminia/zendesk-mcp-server",
+    "docs_root": "https://developer.zendesk.com/api-reference/",
+    "evidence_url": "https://developer.zendesk.com/documentation/authentication/",
+    "evidence_quote": "Using OAuth to authenticate API requests",
+    "confidence": "medium",
+    "notes": "No official Zendesk-published MCP server found at research time; Zendesk announced plans for an MCP client but no confirmed GA server. Community repo (reminia/zendesk-mcp-server) exists."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "OAuth2 and API-token auth are self-serve via a trial/sandbox account with no extra approval gate to call the API.",
+    "confidence": "medium"
+  }
+}

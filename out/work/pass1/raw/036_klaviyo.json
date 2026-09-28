@@ -1,0 +1,38 @@
+{
+  "app": "Klaviyo",
+  "one_liner": "E-commerce email/SMS marketing automation platform; the API lets developers manage profiles, campaigns, and flows.",
+  "auth": {
+    "methods": ["api_key", "oauth2"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://developers.klaviyo.com/en/docs/authenticate_",
+    "evidence_quote": "If you're building an app with Klaviyo, use OAuth to provide secure delegated access to users via access tokens.",
+    "confidence": "high",
+    "notes": "Private API keys documented as 'Authorization: Klaviyo-API-Key your-private-api-key' header; OAuth recommended for tech partners / app marketplace."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "none",
+    "evidence_url": "https://developers.klaviyo.com/en/docs/authenticate_",
+    "evidence_quote": "If you're building an app with Klaviyo, use OAuth to provide secure delegated access to users via access tokens.",
+    "confidence": "low",
+    "notes": "Klaviyo has a free account tier; whether the OAuth app marketplace listing requires a review gate was not confirmed within the call budget."
+  },
+  "api": {
+    "protocols": ["rest", "webhook_only"],
+    "breadth": "broad",
+    "endpoint_count": null,
+    "mcp": "unknown",
+    "mcp_url": null,
+    "docs_root": "https://developers.klaviyo.com/en/",
+    "evidence_url": "https://developers.klaviyo.com/en/docs/authenticate_",
+    "evidence_quote": "Private API keys can be used to read and write data to your Klaviyo account.",
+    "confidence": "low",
+    "notes": "Did not verify endpoint count or MCP within call budget."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "Free account signup plus OAuth2/API-key access gives self-serve credentials for third-party integration.",
+    "confidence": "medium"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "app": "Bright Data",
+  "one_liner": "Web data platform providing proxies, web scraper APIs, and SERP APIs for large-scale public web data collection.",
+  "auth": {
+    "methods": ["api_key", "basic"],
+    "primary_for_third_party": "api_key",
+    "evidence_url": "https://docs.brightdata.com/api-reference/authentication",
+    "evidence_quote": null,
+    "confidence": "medium",
+    "notes": "Search results describe two methods: 'API Access with an API key' (a hashed token, optionally with expiration) or 'Native Access with proxy username and password' (basic-style credentials for the proxy network). Page seen in search results but not directly fetched, so quote omitted."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "none",
+    "evidence_url": "https://brightdata.com/pricing/mcp-server",
+    "evidence_quote": "Every new account includes 5,000 free requests per month.",
+    "confidence": "medium",
+    "notes": "Web Scraper/SERP APIs use pay-per-result pricing per brightdata.com/products; a default API key is created automatically on account signup."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "moderate",
+    "endpoint_count": null,
+    "mcp": "official",
+    "mcp_url": "https://github.com/brightdata/brightdata-mcp",
+    "docs_root": "https://docs.brightdata.com",
+    "evidence_url": "https://docs.brightdata.com/ai/mcp-server/overview",
+    "evidence_quote": null,
+    "confidence": "medium",
+    "notes": "Official MCP server exposes 69 tools per search results (web search, scraping, structured extraction, browser automation), running on the Web Unlocker API."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "API key auth with automatic account provisioning, a free monthly request allowance, and an official MCP server.",
+    "confidence": "medium"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "app": "higgsfield",
+  "one_liner": "Generative AI platform/CLI for creating images and videos (motion transfer, image/video generation models) via API.",
+  "auth": {"methods": ["api_key"], "primary_for_third_party": "api_key",
+    "evidence_url": "https://docs.higgsfield.ai/docs",
+    "evidence_quote": "Authorization: Key ${HF_API_KEY_ID}:${HF_API_KEY_SECRET}",
+    "confidence": "high", "notes": "Custom API key scheme using a key ID + secret pair, called an 'API key' by the vendor, sent via a custom 'Key' auth scheme rather than Bearer."},
+  "access": {"tier": "self_serve_free", "extra_gate": "none",
+    "evidence_url": "https://cloud.higgsfield.ai/",
+    "evidence_quote": null,
+    "confidence": "low", "notes": "console.higgsfield.ai/cloud.higgsfield.ai appears to allow self-serve account creation and key generation; free-tier/credit details not directly confirmed via fetched page."},
+  "api": {"protocols": ["rest", "cli"], "breadth": "narrow", "endpoint_count": null,
+    "mcp": "unknown", "mcp_url": null,
+    "docs_root": "https://docs.higgsfield.ai/",
+    "evidence_url": "https://higgsfield.ai/creator-hub/help-center/mcp-cli/how-do-i-access-higgsfield-via-cli",
+    "evidence_quote": "npm i -g @higgsfield/cli",
+    "confidence": "medium", "notes": "Async request/poll/webhook pattern for generative media models; separate npm CLI (@higgsfield/cli) that authenticates via browser login. Docs mention Skills/MCP compatibility for coding agents but no confirmed dedicated official MCP server URL."},
+  "verdict": {"value": "buildable_now", "blocker": "none",
+    "rationale": "Documented REST API with key-based auth and a CLI/SDKs available, appears self-serve though free-tier details are unconfirmed.",
+    "confidence": "low"}
+}

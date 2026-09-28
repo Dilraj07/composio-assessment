@@ -1,0 +1,38 @@
+{
+  "app": "Slack",
+  "one_liner": "Team messaging and collaboration platform with channels, DMs, and an extensive app/integration platform.",
+  "auth": {
+    "methods": ["oauth2", "bearer_token"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://docs.slack.dev/authentication/installing-with-oauth",
+    "evidence_quote": "OAuth allows a user in any Slack workspace to install your app.",
+    "confidence": "high",
+    "notes": "Bot tokens issued via OAuth install are long-lived bearer tokens (xoxb-...)."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "app_review",
+    "evidence_url": "https://docs.slack.dev/authentication/installing-with-oauth",
+    "evidence_quote": "Occurs if attempting to install a published app for which the requested scopes aren't approved either because they're still in review for that app, or they weren't yet submitted for review by the app developer.",
+    "confidence": "medium",
+    "notes": "Free Slack workspace signup is self-serve; a published/public-distribution app must go through Slack app review before it can request scopes for other workspaces broadly."
+  },
+  "api": {
+    "protocols": ["rest", "webhook_only"],
+    "breadth": "broad",
+    "endpoint_count": null,
+    "mcp": "community",
+    "mcp_url": "https://github.com/korotovsky/slack-mcp-server",
+    "docs_root": "https://docs.slack.dev/",
+    "evidence_url": "https://docs.slack.dev/authentication/installing-with-oauth",
+    "evidence_quote": "Those scopes determine exactly which doors your app can open.",
+    "confidence": "medium",
+    "notes": "Slack's Web API has hundreds of methods (broad). An official Slack MCP server existed in the modelcontextprotocol/servers repo but search results indicate it was archived; multiple actively maintained community MCP servers exist (e.g. korotovsky/slack-mcp-server)."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "app_review",
+    "rationale": "Free workspace + OAuth2 gives a working credential immediately, but acting on arbitrary third-party workspaces at scale requires Slack app review.",
+    "confidence": "high"
+  }
+}

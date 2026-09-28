@@ -1,0 +1,38 @@
+{
+  "app": "Freshdesk",
+  "one_liner": "Cloud-based customer support and ticketing helpdesk by Freshworks.",
+  "auth": {
+    "methods": ["api_key", "basic"],
+    "primary_for_third_party": "api_key",
+    "evidence_url": "https://support.freshdesk.com/en/support/solutions/articles/50000003346-api-key-based-authentication",
+    "evidence_quote": "Freshdesk uses HTTP Basic Auth with an API key as the username and any non-empty string as the password - there is no OAuth 2.0 for the v2 API.",
+    "confidence": "medium",
+    "notes": "Evidence quote is from search-result summary, not a direct WebFetch (target URL redirected to an OAuth login page instead of the article). v2 REST API has no OAuth; auth is API key sent via HTTP Basic."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "none",
+    "evidence_url": "https://support.freshdesk.com/support/solutions/articles/50000010099-explore-freshdesk-free-program-freshdesk-only-",
+    "evidence_quote": "The Free Program supports up to 2 agents without additional charges.",
+    "confidence": "medium",
+    "notes": "Legacy perpetual free 'Sprout' plan was replaced mid-2025 with a time-limited (6-month) free program capped at 2 agents; after that, a paid plan is required. Rate limits: 100 req/min on Free plan."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "moderate",
+    "endpoint_count": null,
+    "mcp": "official",
+    "mcp_url": "https://developers.freshworks.com/docs/agentic-dev-tools/mcp-server/",
+    "docs_root": "https://developers.freshdesk.com/api/",
+    "evidence_url": "https://developers.freshworks.com/docs/agentic-dev-tools/mcp-server/",
+    "evidence_quote": "Starting September 10, 2026, the Freshworks MCP integration is generally available.",
+    "confidence": "medium",
+    "notes": "Official Freshworks MCP server reached GA September 10, 2026 per search summary; not independently fetched."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "API-key auth is available on the free program with no approval gate, and an official MCP server now exists.",
+    "confidence": "medium"
+  }
+}

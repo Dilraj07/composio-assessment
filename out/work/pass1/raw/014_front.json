@@ -1,0 +1,38 @@
+{
+  "app": "Front",
+  "one_liner": "Shared inbox and customer communication hub for support/sales teams.",
+  "auth": {
+    "methods": ["oauth2", "api_key"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://dev.frontapp.com/docs/oauth",
+    "evidence_quote": "Front requires that public integrations use OAuth unless there is a reason they cannot.",
+    "confidence": "high",
+    "notes": "API tokens are Bearer tokens created in Settings > Developers; OAuth uses authorization-code grant only and is required for public/partner integrations."
+  },
+  "access": {
+    "tier": "self_serve_trial",
+    "extra_gate": "none",
+    "evidence_url": "https://front.com/pricing",
+    "evidence_quote": "Front offers a 14-day free trial that includes all features from the Professional plan - no credit card required.",
+    "confidence": "medium",
+    "notes": "No perpetual free plan; API token/OAuth credentials can be obtained during the 14-day trial without a credit card. Evidence quote from search summary, not a direct fetch of front.com/pricing."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "moderate",
+    "endpoint_count": null,
+    "mcp": "official",
+    "mcp_url": "https://dev.frontapp.com/docs/mcp-server",
+    "docs_root": "https://dev.frontapp.com/reference/introduction",
+    "evidence_url": "https://dev.frontapp.com/docs/mcp-server",
+    "evidence_quote": "Front's MCP server is in open beta and everyone has access",
+    "confidence": "medium",
+    "notes": "Official MCP server confirmed via search results (open beta); not independently fetched."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "OAuth or API-token credentials are obtainable via a no-credit-card 14-day trial, with an official MCP server available.",
+    "confidence": "medium"
+  }
+}

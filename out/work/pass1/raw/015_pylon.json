@@ -1,0 +1,38 @@
+{
+  "app": "Pylon",
+  "one_liner": "B2B customer support platform unifying shared Slack/Teams/email/chat into a single ticketing system.",
+  "auth": {
+    "methods": ["bearer_token", "oauth2"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://docs.usepylon.com/pylon-docs/integrations/pylon-mcp",
+    "evidence_quote": "OAuth 2.0 (AuthKit)",
+    "confidence": "medium",
+    "notes": "Core REST API uses admin-issued Bearer API tokens (Authorization: Bearer YOUR_SECRET_TOKEN) per api docs; the newer MCP server uses OAuth 2.0 (AuthKit) acting on behalf of the authenticated user. Note: usepylon.com is unrelated to the crypto/x402 'Pylon AI' product found in some search results for 'pylon mcp'."
+  },
+  "access": {
+    "tier": "partner_gated",
+    "extra_gate": "sales_contact",
+    "evidence_url": "https://www.usepylon.com/pricing",
+    "evidence_quote": "Schedule a personalized 30-minute demo",
+    "confidence": "medium",
+    "notes": "Pricing page offers only a sales demo booking form, no visible self-serve signup or published pricing. Third-party sources disagree on whether a free trial exists."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "narrow",
+    "endpoint_count": null,
+    "mcp": "official",
+    "mcp_url": "https://mcp.usepylon.com",
+    "docs_root": "https://docs.usepylon.com/pylon-docs/developer/api",
+    "evidence_url": "https://docs.usepylon.com/pylon-docs/integrations/pylon-mcp",
+    "evidence_quote": "Expose Pylon data to AI tools and assistants via Model Context Protocol.",
+    "confidence": "high",
+    "notes": "Official MCP server, configured from Settings > AI Controls > MCP Server in the Pylon dashboard, covering issues, accounts, and contacts."
+  },
+  "verdict": {
+    "value": "needs_outreach",
+    "blocker": "sales_contact",
+    "rationale": "No self-serve signup was found; access appears gated behind a sales demo, though an official MCP server exists once inside.",
+    "confidence": "low"
+  }
+}

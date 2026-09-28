@@ -1,0 +1,38 @@
+{
+  "app": "Copper",
+  "one_liner": "CRM built for Google Workspace users, with a REST API for CRM data.",
+  "auth": {
+    "methods": ["oauth2", "bearer_token"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://developer.copper.com/introduction/authentication.html",
+    "evidence_quote": "The Dev API uses token based authentication. You have to include the token in the header of every request, along with the email address of the user who generated the token.",
+    "confidence": "high",
+    "notes": "API key/token requires pairing with the generating user's email in headers (not a plain 'api_key' bearer pattern, closer to bearer_token + user-id header combo). OAuth2 is explicitly called out as 'the preferred approach for partner integrations' i.e. third-party apps acting on other accounts."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "none",
+    "evidence_url": "https://developer.copper.com/",
+    "evidence_quote": null,
+    "confidence": "low",
+    "notes": "Copper offers a free trial account from which API keys can be generated (System settings > API Keys); did not independently confirm whether a permanent free/dev tier exists beyond trial within the call budget."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "moderate",
+    "endpoint_count": null,
+    "mcp": "unknown",
+    "mcp_url": null,
+    "docs_root": "https://developer.copper.com/",
+    "evidence_url": "https://developer.copper.com/introduction/authentication.html",
+    "evidence_quote": null,
+    "confidence": "low",
+    "notes": "Did not check for a Copper MCP server within the 4-call budget."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "Self-serve API key generation plus OAuth2 for partner integrations against a documented REST API.",
+    "confidence": "medium"
+  }
+}

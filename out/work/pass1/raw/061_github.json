@@ -1,0 +1,38 @@
+{
+  "app": "GitHub",
+  "one_liner": "Git-based code hosting platform with issues, pull requests, Actions CI/CD, and a REST/GraphQL API.",
+  "auth": {
+    "methods": ["oauth2", "bearer_token", "jwt"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://docs.github.com/en/rest/authentication/authenticating-to-the-rest-api",
+    "evidence_quote": "You can also create an OAuth token with an OAuth app to access the REST API.",
+    "confidence": "high",
+    "notes": "GitHub calls its tokens 'personal access tokens', not 'API keys', so bearer_token fits better than api_key. GitHub Apps authenticate with a JWT then exchange for installation tokens; recommended path for building for other accounts is OAuth via a GitHub App or OAuth App."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "none",
+    "evidence_url": "https://docs.github.com/en/rest/authentication/authenticating-to-the-rest-api",
+    "evidence_quote": "You can create a personal access token",
+    "confidence": "medium",
+    "notes": "Free GitHub account gets a working PAT immediately; public OAuth/GitHub Apps do not require GitHub's approval to be installed on arbitrary accounts (user just authorizes). Extra-gate confidence lowered since this specific claim wasn't directly quoted from a page."
+  },
+  "api": {
+    "protocols": ["rest", "graphql", "webhook_only"],
+    "breadth": "broad",
+    "endpoint_count": null,
+    "mcp": "official",
+    "mcp_url": "https://github.com/github/github-mcp-server",
+    "docs_root": "https://docs.github.com/rest",
+    "evidence_url": "https://github.com/github/github-mcp-server",
+    "evidence_quote": "GitHub's official MCP Server",
+    "confidence": "high",
+    "notes": "GitHub REST API reference spans hundreds of endpoints across many resource categories (repos, issues, actions, packages, etc.), well over the 'broad' (>100) threshold based on well-known docs structure; endpoint_count not counted precisely this pass."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "Free account, OAuth2 or PAT auth, broad REST/GraphQL API, and an official MCP server make this immediately buildable.",
+    "confidence": "high"
+  }
+}

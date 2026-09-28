@@ -1,0 +1,38 @@
+{
+  "app": "Threads (Meta)",
+  "one_liner": "Meta's text-based social app (X/Twitter competitor); the Threads API lets developers publish posts and read replies/insights.",
+  "auth": {
+    "methods": ["oauth2"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://developers.facebook.com/docs/threads/get-started",
+    "evidence_quote": "API authentication is handled by Threads user access tokens that conform to the OAuth 2.0 protocol.",
+    "confidence": "high",
+    "notes": "Short-lived tokens last 1 hour and can be exchanged for long-lived tokens valid 60 days; permission grants for public-profile users are valid 90 days."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "app_review",
+    "evidence_url": "https://developers.facebook.com/docs/threads/get-started",
+    "evidence_quote": "In order for app users without a role on your app to be able to grant your app these permissions, each permission must first be approved through the App Review process, and your app must be published.",
+    "confidence": "high",
+    "notes": "Requires a Meta app with the Threads use case and specific permissions (threads_basic, threads_content_publish, etc.); acting on users other than app roles requires App Review approval and app publication."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "narrow",
+    "endpoint_count": null,
+    "mcp": "unknown",
+    "mcp_url": null,
+    "docs_root": "https://developers.facebook.com/docs/threads",
+    "evidence_url": "https://developers.facebook.com/docs/threads/get-started",
+    "evidence_quote": "each permission must first be approved through the App Review process, and your app must be published",
+    "confidence": "low",
+    "notes": "Threads API surface is small (publish, replies, insights) relative to full Graph API; did not verify official MCP within call budget."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "app_review",
+    "rationale": "Developers get OAuth2 access to their own Threads account for free immediately, but acting on other users' accounts requires Meta App Review of the Threads permissions.",
+    "confidence": "medium"
+  }
+}

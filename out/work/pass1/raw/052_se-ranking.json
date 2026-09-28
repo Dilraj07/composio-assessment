@@ -1,0 +1,38 @@
+{
+  "app": "SE Ranking",
+  "one_liner": "SEO rank tracking and marketing analytics platform with an API for keyword, backlink, and domain data.",
+  "auth": {
+    "methods": ["api_key"],
+    "primary_for_third_party": "api_key",
+    "evidence_url": "https://seranking.com/api.html",
+    "evidence_quote": "Log in to your SE Ranking account, navigate to the API tab under the Settings section, and retrieve your unique API key.",
+    "confidence": "high",
+    "notes": null
+  },
+  "access": {
+    "tier": "self_serve_trial",
+    "extra_gate": "none",
+    "evidence_url": "https://seranking.com/api.html",
+    "evidence_quote": "API is included with every SE Ranking subscription. You can even test it in the free trial account.",
+    "confidence": "high",
+    "notes": "API is bundled with paid subscriptions ($129/mo Core, $279/mo Growth) or a separate $149/mo add-on / pay-as-you-go; free trial account allows testing only."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "moderate",
+    "endpoint_count": null,
+    "mcp": "official",
+    "mcp_url": "https://seranking.com/mcp.html",
+    "docs_root": "https://seranking.com/api.html",
+    "evidence_url": "https://seranking.com/api/integrations/mcp/",
+    "evidence_quote": null,
+    "confidence": "medium",
+    "notes": "MCP server hosted on SE Ranking's own domain (seranking.com/mcp.html), qualifying as official/vendor-published. Endpoint count not directly verified against docs' reference index."
+  },
+  "verdict": {
+    "value": "buildable_paid",
+    "blocker": "paid_only",
+    "rationale": "API key auth with no extra approval gate, but sustained production use requires a paid subscription or API add-on beyond the free trial.",
+    "confidence": "medium"
+  }
+}

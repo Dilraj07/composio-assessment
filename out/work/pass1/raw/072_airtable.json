@@ -1,0 +1,38 @@
+{
+  "app": "Airtable",
+  "one_liner": "Cloud spreadsheet-database hybrid for building apps and workflows on structured data.",
+  "auth": {
+    "methods": ["oauth2", "bearer_token"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://airtable.com/developers/web/api/authentication",
+    "evidence_quote": "OAuth access tokens are recommended for building an integration where other users grant your service access to Airtable's API on their behalf.",
+    "confidence": "high",
+    "notes": "Legacy API keys were deprecated Feb 1 2024; personal access tokens (bearer, not called 'API key' by vendor post-deprecation) remain for single-account use."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "none",
+    "evidence_url": "https://airtable.com/developers/web/api/authentication",
+    "evidence_quote": "Personal access tokens are for personal development, like building an integration for yourself, your client, or your company.",
+    "confidence": "medium",
+    "notes": "Airtable has a free plan with API access; no explicit app-review gate documented on this page for OAuth apps."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "moderate",
+    "endpoint_count": null,
+    "mcp": "unknown",
+    "mcp_url": null,
+    "docs_root": "https://airtable.com/developers/web/api",
+    "evidence_url": "https://airtable.com/developers/web/api/authentication",
+    "evidence_quote": "must be authenticated and made through HTTPS",
+    "confidence": "low",
+    "notes": "Endpoint count and MCP status not directly confirmed within the 4-call budget."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "Free-tier account with documented OAuth2 flow and no confirmed production gate beyond standard OAuth consent.",
+    "confidence": "medium"
+  }
+}

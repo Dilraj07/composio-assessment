@@ -1,0 +1,38 @@
+{
+  "app": "Lark (Larksuite)",
+  "one_liner": "All-in-one collaboration suite (messaging, docs, calendar) from ByteDance, with an open developer platform.",
+  "auth": {
+    "methods": ["oauth2", "bearer_token"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://open.larksuite.com/document/ukTMukTMukTM/uMTNz4yM1MjLzUzM",
+    "evidence_quote": "user_access_token 的有效期为两小时左右，过期后，需要刷新后再使用",
+    "confidence": "medium",
+    "notes": "Self-built apps use tenant_access_token (app-identity, App ID/Secret, akin to bearer/service credential) while acting-as-user flows use user_access_token via a standard OAuth2-like authorization code exchange. Docs are primarily in Chinese for this page."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "admin_consent",
+    "evidence_url": "https://open.larksuite.com/document/ukTMukTMukTM/uMTNz4yM1MjLzUzM",
+    "evidence_quote": "调用[自建应用获取 tenant_access_token]...接口，通过应用凭证 App ID 和 App Secret 获取自建应用的tenant_access_token",
+    "confidence": "low",
+    "notes": "Developer console signup appears self-serve; acting on another tenant's workspace typically requires that workspace admin to install/authorize the app, standard for this class of collaboration suite, not directly confirmed on fetched page."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "broad",
+    "endpoint_count": null,
+    "mcp": "official",
+    "mcp_url": "https://github.com/larksuite/lark-openapi-mcp",
+    "docs_root": "https://open.larksuite.com/document",
+    "evidence_url": "https://github.com/larksuite/lark-openapi-mcp",
+    "evidence_quote": "larksuite/lark-openapi-mcp",
+    "confidence": "medium",
+    "notes": "Vendor GitHub org 'larksuite' publishes an official OpenAPI-based MCP server."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "admin_consent",
+    "rationale": "Self-built app credentials are obtainable for free, but acting on other tenants' data requires that tenant's admin to authorize/install the app.",
+    "confidence": "medium"
+  }
+}

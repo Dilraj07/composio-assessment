@@ -1,0 +1,38 @@
+{
+  "app": "Cloudflare",
+  "one_liner": "Content delivery, DNS, security, and edge-compute platform with a broad REST API covering zones, DNS, Workers, and more.",
+  "auth": {
+    "methods": ["api_key", "bearer_token"],
+    "primary_for_third_party": "api_key",
+    "evidence_url": "https://developers.cloudflare.com/fundamentals/api/get-started/",
+    "evidence_quote": "Create an API token to grant access to the API to perform actions.",
+    "confidence": "high",
+    "notes": "Cloudflare API Tokens are Bearer-style scoped tokens; legacy 'API keys' (global key) are explicitly called API keys by the vendor. Cloudflare's MCP servers use OAuth for client login, but the underlying API itself is not documented as OAuth2 in the fetched page, so oauth2 omitted from api.methods pending further check (noted as gap)."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "none",
+    "evidence_url": "https://developers.cloudflare.com/fundamentals/api/get-started/",
+    "evidence_quote": "You can also authenticate with API keys, but these keys have several limitations that make them less secure than API tokens.",
+    "confidence": "medium",
+    "notes": "Free Cloudflare account can create API tokens without a paid plan or review."
+  },
+  "api": {
+    "protocols": ["rest", "graphql"],
+    "breadth": "broad",
+    "endpoint_count": null,
+    "mcp": "official",
+    "mcp_url": "https://github.com/cloudflare/mcp-server-cloudflare",
+    "docs_root": "https://developers.cloudflare.com/api",
+    "evidence_url": "https://developers.cloudflare.com/agents/model-context-protocol/cloudflare/servers-for-cloudflare/",
+    "evidence_quote": "Cloudflare runs a catalog of managed remote MCP servers which you can connect to using OAuth",
+    "confidence": "high",
+    "notes": "Cloudflare's REST API is well known to be broad (hundreds of endpoints across zones, DNS, Workers, R2, etc.); multiple official domain-specific MCP servers plus a Code Mode server confirmed."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "Free account, API token auth, broad REST API, and multiple official MCP servers support immediate integration.",
+    "confidence": "high"
+  }
+}

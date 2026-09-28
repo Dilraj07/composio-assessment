@@ -30,7 +30,7 @@ def make(**over) -> AppRecord:
                  "evidence_quote": "OAuth 2.0", "confidence": "high"},
         "access": {"tier": "self_serve_free", "extra_gate": "none",
                    "evidence_url": "https://testapp.com/pricing", "confidence": "high"},
-        "api": {"protocols": ["rest"], "breadth": "moderate", "mcp": "none",
+        "api": {"protocols": ["rest"], "breadth": "moderate", "mcp": "official",
                 "evidence_url": "https://testapp.com/docs", "confidence": "high"},
         "verdict": {"value": "buildable_paid", "blocker": "none",
                     "evidence_url": "https://testapp.com/docs", "confidence": "high"},
@@ -49,7 +49,7 @@ class TestRule1LowConfidence:
 
     def test_medium_escalates(self):
         hits = rule_low_confidence(make(access={"confidence": "medium"}))
-        assert [h.field for h in hits] == ["access.tier", "access.extra_gate"]
+        assert [h.field for h in hits] == ["access.tier", "access.extra_gate", "verdict.value"]
 
 
 class TestRule2ThirdPartyEvidence:
@@ -83,8 +83,10 @@ class TestRule4SelfServeUnknownGate:
 
 class TestRule5AsymmetricVerification:
     def test_buildable_now_always_escalates_even_at_high_confidence(self):
+        """Verdict is derived, so its two inputs are what get re-verified."""
         rec = make(verdict={"value": "buildable_now", "confidence": "high"})
-        assert len(rule_verify_all_buildable(rec)) == 1
+        fields = {h.field for h in rule_verify_all_buildable(rec)}
+        assert fields == {"access.tier", "access.extra_gate"}
 
     def test_other_verdicts_do_not(self):
         assert rule_verify_all_buildable(make(verdict={"value": "needs_outreach"})) == []
@@ -176,3 +178,27 @@ class TestDerivedVerdict:
         rec = make(access={"tier": "no_public_api"}, api={"protocols": ["cli"]},
                    verdict={"value": "buildable_local"})
         assert rec.verdict.value.value == "buildable_local"
+
+
+class TestRule7McpAbsence:
+    def test_none_is_rechecked(self):
+        from src.triggers import rule_mcp_absence
+        assert rule_mcp_absence(make(api={"mcp": "none"}))[0].field == "api.mcp"
+
+    def test_official_is_not(self):
+        from src.triggers import rule_mcp_absence
+        assert rule_mcp_absence(make(api={"mcp": "official"})) == []
+
+
+class TestEvidenceRule:
+    def test_quote_missing_escalates_all_fields_of_that_block(self):
+        from src.triggers import rule_unverifiable_evidence
+        ev = {"auth": {"status": "verified"}, "access": {"status": "quote_missing"},
+              "api": {"status": "verified"}}
+        fields = {h.field for h in rule_unverifiable_evidence(make(), ev)}
+        assert fields == {"access.tier", "access.extra_gate", "verdict.value"}
+
+    def test_verified_evidence_is_quiet(self):
+        from src.triggers import rule_unverifiable_evidence
+        ev = {b: {"status": "verified"} for b in ("auth", "access", "api")}
+        assert rule_unverifiable_evidence(make(), ev) == []

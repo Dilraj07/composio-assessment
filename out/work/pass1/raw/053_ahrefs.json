@@ -1,0 +1,38 @@
+{
+  "app": "Ahrefs",
+  "one_liner": "SEO toolset (backlinks, keyword research, site audit, rank tracking) with a REST API (v3) for programmatic data access.",
+  "auth": {
+    "methods": ["api_key"],
+    "primary_for_third_party": "api_key",
+    "evidence_url": "https://docs.ahrefs.com/",
+    "evidence_quote": "Create and manage your API keys",
+    "confidence": "medium",
+    "notes": null
+  },
+  "access": {
+    "tier": "paid_plan_required",
+    "extra_gate": "none",
+    "evidence_url": "https://docs.ahrefs.com/",
+    "evidence_quote": "Try API endpoints without an Enterprise plan",
+    "confidence": "medium",
+    "notes": "API v3 is included from the Lite plan ($129/mo) up; Starter and the free tier get no API access, per search results (ahrefs.com/pricing not directly fetched). Some free test queries are available without a full API purchase."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "broad",
+    "endpoint_count": null,
+    "mcp": "official",
+    "mcp_url": "https://api.ahrefs.com/mcp/mcp",
+    "docs_root": "https://docs.ahrefs.com/",
+    "evidence_url": "https://docs.ahrefs.com/en/mcp/docs/introduction",
+    "evidence_quote": null,
+    "confidence": "medium",
+    "notes": "Official hosted MCP server exposes 100+ tools per search results (github.com/ahrefs/ahrefs-mcp-server), requires Lite plan or higher; not independently fetched."
+  },
+  "verdict": {
+    "value": "buildable_paid",
+    "blocker": "paid_only",
+    "rationale": "API key auth with a well-documented REST API and official MCP server, but full API access requires a paid Lite-tier-or-above subscription.",
+    "confidence": "medium"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "app": "Firecrawl",
+  "one_liner": "API for turning websites into LLM-ready data (scrape, crawl, map, search) for AI applications.",
+  "auth": {
+    "methods": ["api_key"],
+    "primary_for_third_party": "api_key",
+    "evidence_url": "https://firecrawl.dev",
+    "evidence_quote": "app = Firecrawl(api_key=\"fc-YOUR_API_KEY\")",
+    "confidence": "high",
+    "notes": "Vendor documents the credential as an 'API key' with a distinctive fc- prefix."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "none",
+    "evidence_url": "https://firecrawl.dev",
+    "evidence_quote": "Firecrawl gives you 1,000 free credits every month, which covers about 1,000 pages, and no card is required.",
+    "confidence": "high",
+    "notes": null
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "narrow",
+    "endpoint_count": null,
+    "mcp": "official",
+    "mcp_url": "https://firecrawl.dev",
+    "docs_root": "https://firecrawl.dev",
+    "evidence_url": "https://firecrawl.dev",
+    "evidence_quote": "Firecrawl has an official MCP server so agents in Cursor, Claude, Windsurf, and other MCP-compatible tools can search, scrape, and interact with the web directly.",
+    "confidence": "high",
+    "notes": "Core operations are scrape, crawl, map, search, monitor, interact -- a small, focused endpoint set."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "Free monthly credits with no card required, clearly documented API-key auth, and an official MCP server.",
+    "confidence": "high"
+  }
+}

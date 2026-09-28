@@ -1,0 +1,38 @@
+{
+  "app": "Coda",
+  "one_liner": "Doc-based platform blending documents, spreadsheets, and apps (now rebranded as Superhuman Docs).",
+  "auth": {
+    "methods": ["unknown"],
+    "primary_for_third_party": "unknown",
+    "evidence_url": null,
+    "evidence_quote": null,
+    "confidence": "low",
+    "notes": "Product renamed: Coda was acquired by Grammarly (Dec 2024), Grammarly rebranded as Superhuman (Oct 2025), and Coda became 'Superhuman Docs' (Jul 2026). Its developer docs URL (coda.io/developers/apis/v1) now redirects to docs.superhuman.com/developers/apis/v1. Historically Coda's API used a bearer API token and had no public OAuth2 app flow, but this was not re-confirmed on the new docs domain within the 4-call budget."
+  },
+  "access": {
+    "tier": "unknown",
+    "extra_gate": "unknown",
+    "evidence_url": null,
+    "evidence_quote": null,
+    "confidence": "low",
+    "notes": "Could not confirm current free-tier/API access terms under the new Superhuman Docs branding within budget."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "narrow",
+    "endpoint_count": null,
+    "mcp": "unknown",
+    "mcp_url": null,
+    "docs_root": "https://docs.superhuman.com/developers/apis/v1",
+    "evidence_url": null,
+    "evidence_quote": null,
+    "confidence": "low",
+    "notes": "Docs root confirmed via redirect only (307 from coda.io/developers/apis/v1); no page content was successfully fetched from the new domain within budget."
+  },
+  "verdict": {
+    "value": "needs_outreach",
+    "blocker": "none",
+    "rationale": "Product was renamed to Superhuman Docs during a corporate rebrand; the new docs domain needs a dedicated pass to re-verify auth, access tier, and API details.",
+    "confidence": "low"
+  }
+}

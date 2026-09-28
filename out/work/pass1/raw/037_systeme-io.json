@@ -1,0 +1,38 @@
+{
+  "app": "systeme.io",
+  "one_liner": "All-in-one funnel builder and marketing platform (email, courses, funnels); offers a public REST API.",
+  "auth": {
+    "methods": ["api_key"],
+    "primary_for_third_party": "api_key",
+    "evidence_url": "https://developer.systeme.io/reference/api",
+    "evidence_quote": null,
+    "confidence": "medium",
+    "notes": "Web search summary: 'To authenticate with the Systeme.io Public API, you need to attach your API key to the X-API-Key header of each request.' Page not directly fetched for a verbatim quote within call budget; quote left null pending pass-2."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "none",
+    "evidence_url": "https://help.systeme.io/article/2323-how-to-create-a-public-api-key-on-systeme-io",
+    "evidence_quote": null,
+    "confidence": "low",
+    "notes": "API keys are generated directly from account dashboard profile settings ('Public API keys' section, up to 3 keys per account); systeme.io has a free plan. No OAuth documented, so third-party (on-behalf-of-others) integration is not natively supported -- each customer would need to share their own API key."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "narrow",
+    "endpoint_count": null,
+    "mcp": "unknown",
+    "mcp_url": null,
+    "docs_root": "https://developer.systeme.io/reference/api",
+    "evidence_url": null,
+    "evidence_quote": null,
+    "confidence": "low",
+    "notes": "Did not fetch the OpenAPI reference directly within call budget to count endpoints; likely a smaller/narrow API given the product's scope."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "Free-plan users can self-generate a static API key from their dashboard with no review gate, though there is no OAuth flow for acting on other users' accounts.",
+    "confidence": "low"
+  }
+}

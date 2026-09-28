@@ -1,0 +1,38 @@
+{
+  "app": "Twenty",
+  "one_liner": "Open-source CRM with REST and GraphQL APIs auto-generated from the workspace data model.",
+  "auth": {
+    "methods": ["api_key"],
+    "primary_for_third_party": "api_key",
+    "evidence_url": "https://docs.twenty.com/developers/extend/api",
+    "evidence_quote": "Create an API key in **Settings → API & Webhooks → + Create key**. Copy it immediately — it's shown once.",
+    "confidence": "high",
+    "notes": "No OAuth flow found in the docs consulted; auth is a Bearer API key generated per workspace. Being open-source, self-hosted deployments could add their own auth in front, but the documented product auth is API-key only."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "none",
+    "evidence_url": "https://docs.twenty.com/developers/extend/api",
+    "evidence_quote": null,
+    "confidence": "medium",
+    "notes": "Open-source CRM (self-hostable) and also offered as a hosted free-tier product per WebSearch summaries; a workspace signup yields an immediate API key with no review step."
+  },
+  "api": {
+    "protocols": ["rest", "graphql"],
+    "breadth": "moderate",
+    "endpoint_count": null,
+    "mcp": "unknown",
+    "mcp_url": null,
+    "docs_root": "https://docs.twenty.com/developers/extend/api",
+    "evidence_url": "https://docs.twenty.com/developers/extend/api",
+    "evidence_quote": null,
+    "confidence": "low",
+    "notes": "No static endpoint reference -- API is generated per-workspace schema (built-in objects + any custom objects each get REST/GraphQL endpoints), so a fixed endpoint count isn't documented; breadth estimated moderate for default object set. MCP presence not checked within call budget (third-party 'Twenty CRM' Claude Code skills appeared in search but were not verified as a real MCP server with a repo)."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "Free self-serve workspace with an immediately-issued API key against a REST/GraphQL API, no approval gate found.",
+    "confidence": "medium"
+  }
+}

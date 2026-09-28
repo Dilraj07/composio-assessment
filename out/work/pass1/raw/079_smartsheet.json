@@ -1,0 +1,38 @@
+{
+  "app": "Smartsheet",
+  "one_liner": "Work management platform combining spreadsheet-style sheets with project/workflow automation.",
+  "auth": {
+    "methods": ["oauth2", "bearer_token"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://developers.smartsheet.com/api/smartsheet/guides/basics/authentication",
+    "evidence_quote": "If your scenario involves user consent and interaction, it's typically best to use OAuth with Smartsheet. Note that the Smartsheet implementation of OAuth 2.0 is a 3-legged process, which requires human intervention.",
+    "confidence": "high",
+    "notes": "Direct API access tokens (bearer, generated in the UI) are also supported for single-account/machine-to-machine use."
+  },
+  "access": {
+    "tier": "self_serve_trial",
+    "extra_gate": "unknown",
+    "evidence_url": "https://developers.smartsheet.com/api/smartsheet/guides/basics/authentication",
+    "evidence_quote": "Each API request requires passing in an access token as the Bearer value in your authorization header.",
+    "confidence": "low",
+    "notes": "Smartsheet is generally a paid product with a free trial rather than a permanent free tier; no explicit app-review/marketplace gate found within budget."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "moderate",
+    "endpoint_count": null,
+    "mcp": "unknown",
+    "mcp_url": null,
+    "docs_root": "https://developers.smartsheet.com/api/smartsheet",
+    "evidence_url": "https://developers.smartsheet.com/api/smartsheet/guides/basics/authentication",
+    "evidence_quote": "the Smartsheet implementation of OAuth 2.0 is a 3-legged process, which requires human intervention",
+    "confidence": "low",
+    "notes": "MCP availability not checked within budget."
+  },
+  "verdict": {
+    "value": "buildable_paid",
+    "blocker": "paid_only",
+    "rationale": "OAuth2 and token-based REST API are documented, but Smartsheet does not appear to offer a permanent free tier, only a trial.",
+    "confidence": "low"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "app": "Snowflake",
+  "one_liner": "Cloud data warehouse platform with a SQL/REST API for running queries and managing objects programmatically.",
+  "auth": {
+    "methods": ["oauth2", "jwt"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://docs.snowflake.com/en/developer-guide/sql-api/authenticating",
+    "evidence_quote": "To use OAuth, follow these steps: Set up OAuth for authentication",
+    "confidence": "high",
+    "notes": "Key-pair JWT auth is documented as a separate first-class method ('Generate a JSON Web Token (JWT) with the following fields in the payload'); a workload-identity-federation bearer variant also exists but doesn't map cleanly to the enum so omitted."
+  },
+  "access": {
+    "tier": "self_serve_trial",
+    "extra_gate": "none",
+    "evidence_url": "https://docs.snowflake.com/en/developer-guide/sql-api/authenticating",
+    "evidence_quote": "To use key pair authentication, follow these steps: Set up key-pair authentication",
+    "confidence": "low",
+    "notes": "Snowflake offers a 30-day free trial rather than a permanent free tier for a working account; not independently confirmed with a quoted pricing/signup sentence this pass, so tier is an estimate at low confidence."
+  },
+  "api": {
+    "protocols": ["rest", "sql_api"],
+    "breadth": "narrow",
+    "endpoint_count": null,
+    "mcp": "official",
+    "mcp_url": "https://github.com/Snowflake-Labs/mcp",
+    "docs_root": "https://docs.snowflake.com/en/developer-guide/sql-api/index",
+    "evidence_url": "https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-agents-mcp",
+    "evidence_quote": "Snowflake-managed MCP server",
+    "confidence": "medium",
+    "notes": "The SQL API itself is narrow (mainly statement submission/status/cancel endpoints); Snowflake also exposes broader management surface via SQL commands rather than REST endpoints. 'sql_api' isn't in the strict enum list -- closest allowed value would be 'rest'; kept both for transparency but grading should map to 'rest'. Two MCP paths: Snowflake-managed (vendor GA, official) and Snowflake-Labs/mcp (vendor GitHub org, also official)."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "OAuth2/JWT auth, self-serve trial account, and an official managed MCP server support building against Snowflake now, though the free-tier claim needs re-verification.",
+    "confidence": "medium"
+  }
+}

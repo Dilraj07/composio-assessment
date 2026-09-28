@@ -1,0 +1,38 @@
+{
+  "app": "Brex",
+  "one_liner": "Corporate card and spend management platform for businesses, with an API for transactions, budgets, and expense data.",
+  "auth": {
+    "methods": ["bearer_token", "oauth2"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://developer.brex.com/docs/authentication/",
+    "evidence_quote": "add it as a header to your API calls in the following format: Authorization: 'Bearer {{your user_token here}}'",
+    "confidence": "medium",
+    "notes": "Direct API access uses a long-lived Bearer token created from the Brex dashboard (per-account, admin-generated) rather than an 'API key' by name; Brex also documents OAuth2 for partner integrations acting on multiple customers' accounts (not directly confirmed this pass)."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "admin_consent",
+    "evidence_url": "https://developer.brex.com/docs/authentication/",
+    "evidence_quote": "Sign in to dashboard.brex.com as an account or card admin",
+    "confidence": "medium",
+    "notes": "Any Brex customer's admin can self-serve generate a token; no separate paid tier or public sandbox found. 'Brex currently only offers a production API server' — no free/sandbox environment distinct from production."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "moderate",
+    "endpoint_count": null,
+    "mcp": "unknown",
+    "mcp_url": null,
+    "docs_root": "https://developer.brex.com/",
+    "evidence_url": "https://developer.brex.com/",
+    "evidence_quote": "Brex APIs use the REST architecture, are defined using the OpenAPI specification and use standard HTTP response codes and verbs.",
+    "confidence": "medium",
+    "notes": "No sandbox environment found — testing happens against production. Third-party (non-Brex-customer) buildability is limited without an existing Brex account."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "Existing Brex admins can self-serve generate a Bearer token immediately, but there is no free sandbox and no account means no access.",
+    "confidence": "medium"
+  }
+}

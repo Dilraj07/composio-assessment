@@ -1,0 +1,38 @@
+{
+  "app": "MongoDB Atlas",
+  "one_liner": "Managed cloud MongoDB database service with an Administration API for provisioning clusters, users, and network access.",
+  "auth": {
+    "methods": ["oauth2", "hmac_signed"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://www.mongodb.com/docs/atlas/api/api-authentication/",
+    "evidence_quote": "Service accounts are the recommended method to manage authentication to the Atlas Administration API. Service accounts provide improved security over API keys by using the industry standard OAuth 2.0 protocol with the Client Credentials flow.",
+    "confidence": "high",
+    "notes": "Legacy API keys use HTTP Digest Authentication ('Atlas hashes the Public Key and Private Key using a unique value called a nonce'), which is a request-signing scheme closest to hmac_signed rather than a plain api_key, since it is not a simple static bearer/key header."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "none",
+    "evidence_url": "https://www.mongodb.com/docs/atlas/api/api-authentication/",
+    "evidence_quote": "Each service account has a client ID and a rotatable secret that function as a username and a password for creating access tokens.",
+    "confidence": "medium",
+    "notes": "Atlas has a free M0 tier and self-serve API/service-account key creation; free-tier availability not re-quoted from a pricing page this pass."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "broad",
+    "endpoint_count": null,
+    "mcp": "official",
+    "mcp_url": "https://github.com/mongodb-js/mongodb-mcp-server",
+    "docs_root": "https://www.mongodb.com/docs/atlas/api/atlas-admin-api/",
+    "evidence_url": "https://github.com/mongodb-js/mongodb-mcp-server",
+    "evidence_quote": "A Model Context Protocol server to connect to MongoDB databases and MongoDB Atlas Clusters.",
+    "confidence": "high",
+    "notes": "Atlas Administration API covers clusters, users, network access, backups, alerts, etc. -- well known to be broad (>100 endpoints), though not counted from the reference index this pass. Official MongoDB MCP server supports both database and Atlas API credentials."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "Free M0 tier, service-account OAuth2 or legacy digest-signed API keys, broad Admin API, and an official MCP server support building now.",
+    "confidence": "high"
+  }
+}

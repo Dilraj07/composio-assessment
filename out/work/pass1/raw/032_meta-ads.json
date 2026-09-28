@@ -1,0 +1,38 @@
+{
+  "app": "Meta Ads",
+  "one_liner": "Meta's advertising platform (Facebook/Instagram Ads); the Marketing API lets developers manage ad campaigns, audiences, and insights.",
+  "auth": {
+    "methods": ["oauth2"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://developers.facebook.com/docs/marketing-api/access",
+    "evidence_quote": "If your app is managing other people's ad accounts, you need advanced access to the ads_read and/or ads_management permissions.",
+    "confidence": "high",
+    "notes": "Standard Meta Graph API OAuth2 access-token flow."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "app_review",
+    "evidence_url": "https://developers.facebook.com/docs/marketing-api/access",
+    "evidence_quote": "Advanced access must be approved through the App Review process on an individual permission and feature basis.",
+    "confidence": "high",
+    "notes": "Basic access to your own ad account is self-serve; managing other people's ad accounts (third-party use case) requires App Review-approved Advanced Access, and apps must maintain call-volume/error-rate thresholds to keep it."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "broad",
+    "endpoint_count": null,
+    "mcp": "unknown",
+    "mcp_url": null,
+    "docs_root": "https://developers.facebook.com/docs/marketing-apis",
+    "evidence_url": "https://developers.facebook.com/docs/marketing-api/access",
+    "evidence_quote": "Advanced access must be approved through the App Review process on an individual permission and feature basis.",
+    "confidence": "low",
+    "notes": "Marketing API has a very large resource/endpoint surface (campaigns, ad sets, ads, insights, etc.), well over 100. Did not verify official MCP server within call budget."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "app_review",
+    "rationale": "Free OAuth2 developer access works for a developer's own ad account immediately, but acting on other users' ad accounts requires Meta App Review approval of ads_management/ads_read.",
+    "confidence": "medium"
+  }
+}

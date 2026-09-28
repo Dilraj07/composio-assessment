@@ -1,0 +1,38 @@
+{
+  "app": "Attio",
+  "one_liner": "Modern, flexible CRM with a customizable data model and REST API.",
+  "auth": {
+    "methods": ["oauth2", "bearer_token"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://docs.attio.com/rest-api/guides/authentication",
+    "evidence_quote": "Attio implements the standard OAuth 2.0 specification.",
+    "confidence": "high",
+    "notes": "Single-workspace access tokens ('API keys' in Attio's UI, generated under Workspace Settings > Developers) are workspace-scoped bearer tokens; OAuth 2.0 is the path for apps connecting to other workspaces."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "none",
+    "evidence_url": "https://docs.attio.com/rest-api/guides/authentication",
+    "evidence_quote": "If you only need a token for a single workspace, you can generate an API key in the developer settings page of your apps.",
+    "confidence": "medium",
+    "notes": "Attio offers a free workspace signup allowing immediate API key generation; did not independently confirm pricing-plan gating on API access within call budget."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "moderate",
+    "endpoint_count": null,
+    "mcp": "unknown",
+    "mcp_url": null,
+    "docs_root": "https://docs.attio.com",
+    "evidence_url": "https://docs.attio.com/rest-api/guides/authentication",
+    "evidence_quote": null,
+    "confidence": "low",
+    "notes": "Did not check for an official/community Attio MCP server within the 4-call budget."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "Free workspace signup with immediate API-key access plus OAuth 2.0 support for third-party integrations.",
+    "confidence": "medium"
+  }
+}

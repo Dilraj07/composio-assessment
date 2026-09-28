@@ -1,0 +1,38 @@
+{
+  "app": "Supabase",
+  "one_liner": "Open-source Firebase alternative providing hosted Postgres, auth, storage, and edge functions with a Management API.",
+  "auth": {
+    "methods": ["bearer_token", "oauth2"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://supabase.com/docs/reference/api/introduction",
+    "evidence_quote": "OAuth2 allows your application to generate tokens on behalf of a Supabase user, providing secure and limited access to their account without requiring their credentials.",
+    "confidence": "high",
+    "notes": "Personal access tokens (PATs) are manually generated bearer tokens for direct use; OAuth2 is documented explicitly for third-party apps acting on behalf of users."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "none",
+    "evidence_url": "https://supabase.com/docs/reference/api/introduction",
+    "evidence_quote": "PATs are tokens with a custom expiry that you manually generate to access the Management API.",
+    "confidence": "medium",
+    "notes": "Free Supabase account can generate a PAT and free-tier projects immediately."
+  },
+  "api": {
+    "protocols": ["rest", "graphql"],
+    "breadth": "moderate",
+    "endpoint_count": null,
+    "mcp": "official",
+    "mcp_url": "https://github.com/supabase-community/supabase-mcp",
+    "docs_root": "https://supabase.com/docs/reference/api",
+    "evidence_url": "https://supabase.com/docs/guides/ai-tools/mcp",
+    "evidence_quote": "The Model Context Protocol (MCP) is an open standard for connecting AI agents and LLM tools to data sources and services.",
+    "confidence": "medium",
+    "notes": "Official MCP server hosted per-project (custom MCP URL from dashboard); repo also referenced at github.com/supabase/mcp. Breadth is an estimate not counted from a reference index this pass."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "Free account, PAT/OAuth2 auth, and an official per-project MCP server support building now.",
+    "confidence": "high"
+  }
+}

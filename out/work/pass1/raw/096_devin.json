@@ -1,0 +1,21 @@
+{
+  "app": "Devin",
+  "one_liner": "Cognition Labs' autonomous AI software engineer agent that can plan, write, and ship code in a sandboxed environment.",
+  "auth": {"methods": ["api_key", "bearer_token"], "primary_for_third_party": "api_key",
+    "evidence_url": "https://docs.devin.ai/work-with-devin/devin-mcp",
+    "evidence_quote": "Legacy API keys (apk_ / apk_user_ prefix) are not supported by the Devin MCP server. You should use a service user API key instead.",
+    "confidence": "high", "notes": "Auth is via API key (cog_ prefixed service-user/org/personal-access tokens) sent as 'Authorization: Bearer <API_KEY>'; also requires an X-Org-Id header for org-scoped resources."},
+  "access": {"tier": "paid_plan_required", "extra_gate": "none",
+    "evidence_url": "https://docs.devin.ai/work-with-devin/devin-mcp",
+    "evidence_quote": "Requires Devin account",
+    "confidence": "medium", "notes": "Requires signing up for a Devin.ai account and generating an API key; Devin is a paid product (credits-based) purchasable online, not free."},
+  "api": {"protocols": ["rest"], "breadth": "narrow", "endpoint_count": null,
+    "mcp": "official", "mcp_url": "https://mcp.devin.ai/",
+    "docs_root": "https://docs.devin.ai/",
+    "evidence_url": "https://docs.devin.ai/work-with-devin/devin-mcp",
+    "evidence_quote": "the official Devin MCP server",
+    "confidence": "high", "notes": "Vendor-published MCP server at mcp.devin.ai using Streamable HTTP, confirmed official in docs; operates on organization-level resources (sessions, playbooks, knowledge)."},
+  "verdict": {"value": "buildable_paid", "blocker": "paid_only",
+    "rationale": "Official MCP server and REST API exist with straightforward API-key auth, but requires a paid Devin account/credits.",
+    "confidence": "medium"}
+}

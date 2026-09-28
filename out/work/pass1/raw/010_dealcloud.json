@@ -1,0 +1,38 @@
+{
+  "app": "DealCloud",
+  "one_liner": "Deal, relationship, and pipeline management platform for private capital markets (by Intapp), with a REST API.",
+  "auth": {
+    "methods": ["oauth2", "api_key"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://api.docs.dealcloud.com/docs/token",
+    "evidence_quote": "The client application sends a POST request to the token endpoint, providing its `client_id`, `apiKey`, and the required `scope(s)`.",
+    "confidence": "high",
+    "notes": "OAuth2 client-credentials flow where an 'apiKey' (obtained per docs/apikeys) plus client_id are exchanged for a short-lived bearer token (900s/15min per docs). This is a machine-to-machine / single-tenant pattern rather than a delegated-user OAuth flow, since DealCloud is deployed per-client-org rather than a multi-tenant SaaS a third party would connect to many customers of."
+  },
+  "access": {
+    "tier": "partner_gated",
+    "extra_gate": "sales_contact",
+    "evidence_url": "https://api.docs.dealcloud.com/docs/apikeys",
+    "evidence_quote": null,
+    "confidence": "medium",
+    "notes": "DealCloud is an enterprise platform for private equity/investment banking sold via direct sales, with no public free/trial signup found; API access requires being an existing licensed customer/admin enabling the 'API' capability for a user group. Treated as partner_gated/sales_contact rather than self_serve given the enterprise-sales-only distribution model, though this was not exhaustively confirmed within the call budget."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "moderate",
+    "endpoint_count": null,
+    "mcp": "unknown",
+    "mcp_url": null,
+    "docs_root": "https://api.docs.dealcloud.com/",
+    "evidence_url": "https://api.docs.dealcloud.com/docs/token",
+    "evidence_quote": null,
+    "confidence": "low",
+    "notes": "Did not check for a DealCloud MCP server within the 4-call budget; endpoint count not tallied from docs."
+  },
+  "verdict": {
+    "value": "needs_outreach",
+    "blocker": "sales_contact",
+    "rationale": "DealCloud is a sales-only enterprise product with no self-serve signup found, so obtaining API access requires contacting the vendor.",
+    "confidence": "low"
+  }
+}

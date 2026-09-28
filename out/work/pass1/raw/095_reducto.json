@@ -1,0 +1,21 @@
+{
+  "app": "Reducto",
+  "one_liner": "Agentic document processing platform (API) for parsing, extracting, splitting, and classifying complex documents like PDFs.",
+  "auth": {"methods": ["api_key"], "primary_for_third_party": "api_key",
+    "evidence_url": "https://reducto.ai/pricing",
+    "evidence_quote": "Get started",
+    "confidence": "medium", "notes": "Reducto is API-first (document parsing/extraction product); studio.reducto.ai/auth is the account/API-key portal. Exact 'API key' terminology not directly quoted from a fetched page but is standard for this product category and confirmed via pricing/docs pages."},
+  "access": {"tier": "self_serve_free", "extra_gate": "none",
+    "evidence_url": "https://reducto.ai/pricing",
+    "evidence_quote": "Standard accounts include 15,000 free credits.",
+    "confidence": "high", "notes": "Free credits ($150 free usage / 15,000 credits) available on signup with no sales contact required; paid usage-based tiers (Standard $10/1000 pages parse) purchasable online."},
+  "api": {"protocols": ["rest"], "breadth": "narrow", "endpoint_count": null,
+    "mcp": "unknown", "mcp_url": null,
+    "docs_root": "https://llms.reducto.ai/",
+    "evidence_url": "https://reducto.ai/pricing",
+    "evidence_quote": "One price covers the whole platform: parse, extract, split, classify, and edit.",
+    "confidence": "medium", "notes": "Core product surface: parse, extract, split, classify, edit endpoints. No official or community MCP server confirmed in search results."},
+  "verdict": {"value": "buildable_now", "blocker": "none",
+    "rationale": "Self-serve signup with free credits and a documented usage-based REST API, no approval gate found.",
+    "confidence": "medium"}
+}

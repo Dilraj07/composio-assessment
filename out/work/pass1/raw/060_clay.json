@@ -1,0 +1,38 @@
+{
+  "app": "Clay",
+  "one_liner": "Go-to-market data enrichment and workflow automation platform ('spreadsheet meets 150+ data providers') for sales and marketing teams.",
+  "auth": {
+    "methods": ["api_key", "jwt", "basic", "oauth2"],
+    "primary_for_third_party": "api_key",
+    "evidence_url": "https://www.clay.com/guides/clay-mcp",
+    "evidence_quote": null,
+    "confidence": "medium",
+    "notes": "Clay's inbound HTTP API integration supports Basic and JWT auth for calling external APIs from Clay; separately, Clay's own Public API (api.clay.com/public/v0) authenticates with a 'clay-api-key' header, and the Clay CLI uses OAuth via 'clay login'. Treating the Public API's clay-api-key as the primary third-party credential."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "none",
+    "evidence_url": "https://www.clay.com/pricing",
+    "evidence_quote": null,
+    "confidence": "medium",
+    "notes": "Free plan exists (unlimited users, ~1,200 credits/year) plus a 14-day Pro-level trial with 1,000 credits, no credit card required, per search results; pricing page not directly fetched."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "narrow",
+    "endpoint_count": null,
+    "mcp": "official",
+    "mcp_url": "https://www.clay.com/guides/clay-mcp",
+    "docs_root": "https://university.clay.com/docs",
+    "evidence_url": "https://www.clay.com/guides/clay-mcp",
+    "evidence_quote": "Clay is an official MCP server published by clay-inc that provides AI assistants with tools and capabilities via the Model Context Protocol.",
+    "confidence": "medium",
+    "notes": "Public API is described as letting 'a queue worker, a backend job, or a coding agent run Clay logic with no Clay tab open anywhere'; full endpoint index not directly reviewed."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "Free plan with no card required, a documented Public API with API-key auth, and an official MCP server.",
+    "confidence": "medium"
+  }
+}

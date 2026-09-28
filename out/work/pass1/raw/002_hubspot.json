@@ -1,0 +1,38 @@
+{
+  "app": "HubSpot",
+  "one_liner": "Marketing, sales, and customer-service CRM platform with a broad REST API.",
+  "auth": {
+    "methods": ["oauth2", "bearer_token"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://developers.hubspot.com/docs/apps/legacy-apps/authentication/intro-to-auth",
+    "evidence_quote": "There are two ways to authenticate calls to HubSpot's APIs: OAuth, and private app access tokens.",
+    "confidence": "high",
+    "notes": "Private app access tokens are single-portal fixed tokens (bearer_token, not called an 'API key' by HubSpot -- HubSpot retired classic API keys in 2022). OAuth is required for apps that connect to multiple/other customers' HubSpot accounts."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "app_review",
+    "evidence_url": "https://developers.hubspot.com/mcp",
+    "evidence_quote": "OAuth credentials are then used to connect to the mcp.hubspot.com endpoint through any compatible MCP client.",
+    "confidence": "medium",
+    "notes": "HubSpot offers free developer test accounts (self-serve). Public OAuth apps intended for the App Marketplace / arbitrary third-party portals go through HubSpot's app review/certification process; internal-only private apps have no such gate (extra_gate reflects the third-party OAuth app path)."
+  },
+  "api": {
+    "protocols": ["rest", "webhook_only"],
+    "breadth": "broad",
+    "endpoint_count": null,
+    "mcp": "official",
+    "mcp_url": "https://developers.hubspot.com/mcp",
+    "docs_root": "https://developers.hubspot.com/docs",
+    "evidence_url": "https://developers.hubspot.com/mcp",
+    "evidence_quote": "HubSpot MCP server supports OAuth 2.0. Later in 2025, we will align with MCP specification requirements for OAuth 2.1 support.",
+    "confidence": "high",
+    "notes": "Official remote MCP server at mcp.hubspot.com reached general availability with read/write access per WebSearch summary; OAuth-based."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "Free developer accounts, OAuth2 support for third-party integrations, a broad REST API, and an official OAuth-based MCP server.",
+    "confidence": "high"
+  }
+}

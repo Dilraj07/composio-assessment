@@ -1,0 +1,38 @@
+{
+  "app": "Linear",
+  "one_liner": "Issue tracking and project management tool built for software teams.",
+  "auth": {
+    "methods": ["oauth2", "api_key"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://linear.app/developers",
+    "evidence_quote": "Use OAuth 2.0 or personal API keys to authenticate your requests to the Linear API",
+    "confidence": "high",
+    "notes": "OAuth2 is used for apps acting on behalf of other workspaces; personal API keys are single-account."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "none",
+    "evidence_url": "https://linear.app/developers",
+    "evidence_quote": "You can explore Linear's capabilities with a free account.",
+    "confidence": "medium",
+    "notes": "No documented separate app-review step found within budget; standard OAuth workspace-admin consent likely applies."
+  },
+  "api": {
+    "protocols": ["graphql"],
+    "breadth": "moderate",
+    "endpoint_count": null,
+    "mcp": "official",
+    "mcp_url": "https://linear.app/docs/mcp",
+    "docs_root": "https://developers.linear.app",
+    "evidence_url": "https://linear.app/developers",
+    "evidence_quote": "comprehensive GraphQL API for querying and modifying data",
+    "confidence": "medium",
+    "notes": "Linear publishes an official MCP server; API is GraphQL (single endpoint), so 'endpoint_count' is not applicable in the REST sense."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "Free account, documented OAuth2 GraphQL API, and an official MCP server all indicate low-friction buildability.",
+    "confidence": "high"
+  }
+}

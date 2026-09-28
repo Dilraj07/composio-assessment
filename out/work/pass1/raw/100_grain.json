@@ -1,0 +1,21 @@
+{
+  "app": "Grain",
+  "one_liner": "AI meeting recording and note-taking tool that captures, transcribes, and shares highlights from video calls.",
+  "auth": {"methods": ["oauth2", "bearer_token"], "primary_for_third_party": "oauth2",
+    "evidence_url": "https://developers.grain.com/",
+    "evidence_quote": null,
+    "confidence": "medium", "notes": "Search summary: Grain supports three methods -- Personal Access Token (PAT, single user), Workspace Access Token (WAT, generated at grain.com/app/settings/integrations), and OAuth2 for third-party integrations serving any Grain user. Could not fetch developers.grain.com or docs.grain.inc directly (redirect/404) to capture a verbatim quote."},
+  "access": {"tier": "self_serve_free", "extra_gate": "admin_consent",
+    "evidence_url": "https://developers.grain.com/",
+    "evidence_quote": null,
+    "confidence": "low", "notes": "WAT/PAT generation appears self-serve from account settings; OAuth2 third-party apps would need a workspace admin/user to authorize installation. Plan-tier gating not directly confirmed."},
+  "api": {"protocols": ["rest", "webhook_only"], "breadth": "narrow", "endpoint_count": null,
+    "mcp": "unknown", "mcp_url": null,
+    "docs_root": "https://developers.grain.com/",
+    "evidence_url": "https://developers.grain.com/",
+    "evidence_quote": null,
+    "confidence": "low", "notes": "Search summary states requests need a 'Public-Api-Version' header alongside the auth header, and rate limit is 300 requests/minute. No MCP server (official or community) found in search results."},
+  "verdict": {"value": "buildable_now", "blocker": "none",
+    "rationale": "Grain documents self-serve personal/workspace access tokens and an OAuth2 flow for third-party apps, suggesting buildable access, though several details are unconfirmed due to fetch failures.",
+    "confidence": "low"}
+}

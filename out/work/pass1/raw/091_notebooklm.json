@@ -1,0 +1,21 @@
+{
+  "app": "NotebookLM",
+  "one_liner": "Google's AI-powered research and note-taking assistant that synthesizes answers and audio overviews from user-uploaded sources; enterprise API is branded 'Gemini Notebook Enterprise'.",
+  "auth": {"methods": ["oauth2", "bearer_token"], "primary_for_third_party": "oauth2",
+    "evidence_url": "https://docs.cloud.google.com/gemini/enterprise/notebooklm-enterprise/docs/api-notebooks",
+    "evidence_quote": "Authorization:Bearer $(gcloud auth print-access-token)",
+    "confidence": "medium", "notes": "Consumer NotebookLM has no public API; only the Gemini Notebook Enterprise product (Google Cloud) exposes a preview API using gcloud/OAuth-issued bearer tokens."},
+  "access": {"tier": "partner_gated", "extra_gate": "admin_consent",
+    "evidence_url": "https://docs.cloud.google.com/gemini/enterprise/notebooklm-enterprise/docs/api-notebooks",
+    "evidence_quote": "This feature is subject to the 'Pre-GA Offerings Terms'...Pre-GA features are available 'as is'",
+    "confidence": "medium", "notes": "Requires setting up Gemini Notebook Enterprise and obtaining licenses via Google Cloud; not self-serve, pre-GA/enterprise-only. No free consumer API."},
+  "api": {"protocols": ["rest"], "breadth": "narrow", "endpoint_count": 5,
+    "mcp": "none", "mcp_url": null,
+    "docs_root": "https://docs.cloud.google.com/gemini/enterprise/notebooklm-enterprise/docs/api-notebooks",
+    "evidence_url": "https://docs.cloud.google.com/gemini/enterprise/notebooklm-enterprise/docs/api-notebooks",
+    "evidence_quote": "notebooks.create, notebooks.get, notebooks.listRecentlyViewed, notebooks.batchDelete, notebooks.share",
+    "confidence": "medium", "notes": "Only ~5 documented operations (create/get/list/delete/share notebooks); no official vendor MCP found, only unofficial community wrappers (nblm-rs, notebooklm-mcp-cli)."},
+  "verdict": {"value": "needs_outreach", "blocker": "partnership",
+    "rationale": "The consumer product has no public API and the only documented API is a pre-GA Google Cloud enterprise offering requiring licensing setup, not self-serve access.",
+    "confidence": "medium"}
+}

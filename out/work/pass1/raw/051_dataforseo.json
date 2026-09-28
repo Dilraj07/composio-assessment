@@ -1,0 +1,38 @@
+{
+  "app": "DataForSEO",
+  "one_liner": "SEO and SERP data provider offering REST APIs for search, keyword, backlink, on-page, and business data.",
+  "auth": {
+    "methods": ["basic"],
+    "primary_for_third_party": "basic",
+    "evidence_url": "https://docs.dataforseo.com/v3/auth/",
+    "evidence_quote": "DataForSEO is using the Basic Authentication, which makes it possible to call our APIs with almost any programming language",
+    "confidence": "high",
+    "notes": "Credentials are a login/password pair base64-encoded into the Authorization header, not a single vendor-labeled 'API key'."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "none",
+    "evidence_url": "https://docs.dataforseo.com/v3/",
+    "evidence_quote": "Free Unlimited Trial Info",
+    "confidence": "medium",
+    "notes": "Docs reference a free unlimited trial, an API Playground, and a sandbox; full pricing tiers not directly fetched."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "broad",
+    "endpoint_count": null,
+    "mcp": "official",
+    "mcp_url": "https://mcp.dataforseo.com/mcp",
+    "docs_root": "https://docs.dataforseo.com/v3/",
+    "evidence_url": "https://dataforseo.com/seo-mcp-server",
+    "evidence_quote": null,
+    "confidence": "medium",
+    "notes": "Endpoints span SERP, AI Optimization, Keywords Data, Domain Analytics, Backlinks, OnPage, Merchant, App Data, and Business Data APIs -- well over 100 total endpoints across categories. MCP details from search results, not directly fetched, so quote omitted."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "Free trial/sandbox access, Basic Auth documented, broad REST API surface, and an official MCP server all point to immediate buildability.",
+    "confidence": "medium"
+  }
+}

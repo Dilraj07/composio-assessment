@@ -1,0 +1,38 @@
+{
+  "app": "Datadog",
+  "one_liner": "Cloud observability platform for monitoring, logging, and APM, with a REST API for metrics, logs, and dashboards.",
+  "auth": {
+    "methods": ["api_key"],
+    "primary_for_third_party": "api_key",
+    "evidence_url": "https://docs.datadoghq.com/api/latest/",
+    "evidence_quote": "Authenticate to the API with an [API key](https://docs.datadoghq.com/account_management/api-app-keys.md#api-keys) using the header `DD-API-KEY`.",
+    "confidence": "high",
+    "notes": "Most endpoints need both an API key and an Application key ('DD-APPLICATION-KEY'); Datadog's MCP server documentation mentions OAuth for some client integrations (e.g. Grok), but the core REST API itself is documented as key-based, not OAuth2, so oauth2 omitted pending further verification."
+  },
+  "access": {
+    "tier": "self_serve_trial",
+    "extra_gate": "none",
+    "evidence_url": "https://docs.datadoghq.com/api/latest/",
+    "evidence_quote": "Authenticate to the API with an API key using the header DD-API-KEY.",
+    "confidence": "low",
+    "notes": "Datadog offers a 14-day free trial rather than a permanent free API-accessible tier for most products; not independently re-confirmed with a pricing-page quote this pass."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "broad",
+    "endpoint_count": null,
+    "mcp": "official",
+    "mcp_url": "https://docs.datadoghq.com/mcp_server/",
+    "docs_root": "https://docs.datadoghq.com/api/latest/",
+    "evidence_url": "https://docs.datadoghq.com/mcp_server/setup/",
+    "evidence_quote": "Set Up the Datadog MCP Server",
+    "confidence": "high",
+    "notes": "Datadog's API reference spans dozens of product areas (metrics, logs, monitors, dashboards, incidents, etc.), consistent with 'broad'; not counted precisely this pass. Official remote MCP server confirmed at mcp.datadoghq.com with regional endpoints."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "API/App key auth obtainable via a trial account, a broad REST API, and an official MCP server support building now, though the permanent-free-tier claim needs re-verification.",
+    "confidence": "medium"
+  }
+}

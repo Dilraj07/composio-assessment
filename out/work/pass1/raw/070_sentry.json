@@ -1,0 +1,38 @@
+{
+  "app": "Sentry",
+  "one_liner": "Error tracking and application performance monitoring platform with a REST API for issues, events, and projects.",
+  "auth": {
+    "methods": ["bearer_token", "oauth2"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://docs.sentry.io/api/auth/",
+    "evidence_quote": "For third-party applications that need to access Sentry on behalf of users, Sentry supports OAuth2 with the authorization code grant type.",
+    "confidence": "high",
+    "notes": "Direct-use auth tokens are created via 'internal integrations' and are long-lived bearer tokens, not called API keys by Sentry."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "none",
+    "evidence_url": "https://docs.sentry.io/api/auth/",
+    "evidence_quote": "You can create authentication tokens within Sentry by creating an internal integration.",
+    "confidence": "medium",
+    "notes": "Sentry has a free developer tier that allows creating internal integration tokens without payment or review."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "broad",
+    "endpoint_count": null,
+    "mcp": "official",
+    "mcp_url": "https://github.com/getsentry/sentry-mcp",
+    "docs_root": "https://docs.sentry.io/api/",
+    "evidence_url": "https://docs.sentry.io/product/mcp-servers/",
+    "evidence_quote": "MCP Servers | Sentry Docs",
+    "confidence": "high",
+    "notes": "Sentry's REST API reference covers many resource categories (issues, events, projects, teams, releases, etc.), consistent with 'broad'; not counted precisely this pass. Official remote MCP server confirmed at mcp.sentry.dev."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "Free-tier account, bearer-token or OAuth2 auth, broad REST API, and an official MCP server support building now.",
+    "confidence": "high"
+  }
+}

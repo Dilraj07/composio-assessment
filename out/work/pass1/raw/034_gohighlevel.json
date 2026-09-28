@@ -1,0 +1,38 @@
+{
+  "app": "GoHighLevel",
+  "one_liner": "All-in-one sales/marketing CRM and funnel platform for agencies; API v2 lets developers manage contacts, campaigns, and sub-accounts.",
+  "auth": {
+    "methods": ["oauth2", "bearer_token"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://marketplace.gohighlevel.com/docs/",
+    "evidence_quote": null,
+    "confidence": "medium",
+    "notes": "Web search summary: 'The GoHighLevel API v2 uses OAuth 2.0 for secure authentication, and developers can choose between Private Integration Tokens for internal sub-account tools or Marketplace Apps for public distribution.' Direct WebFetch of the docs page returned empty content, so no verbatim quote captured from the page itself; quote is null per rules pending pass-2 verification."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "unknown",
+    "evidence_url": "https://marketplace.gohighlevel.com/docs/",
+    "evidence_quote": null,
+    "confidence": "low",
+    "notes": "Marketplace app registration appears self-serve (create developer app, get OAuth2 client), but whether public/marketplace distribution requires a review gate was not confirmed within the call budget."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "moderate",
+    "endpoint_count": null,
+    "mcp": "unknown",
+    "mcp_url": null,
+    "docs_root": "https://marketplace.gohighlevel.com/docs/",
+    "evidence_url": null,
+    "evidence_quote": null,
+    "confidence": "low",
+    "notes": "V1 API reached end-of-support 31-Dec-2025; platform now runs on API v2 built on OAuth2. Did not verify endpoint count or MCP within call budget."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "unknown",
+    "rationale": "OAuth2-based Marketplace app registration appears self-serve, but production/public distribution gating was not confirmed.",
+    "confidence": "low"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "app": "Mermaid CLI",
+  "one_liner": "Open-source command-line tool that renders Mermaid diagram definitions into SVG/PNG/PDF files.",
+  "auth": {"methods": ["none"], "primary_for_third_party": "none",
+    "evidence_url": "https://github.com/mermaid-js/mermaid-cli/blob/master/README.md",
+    "evidence_quote": "This is a command-line interface (CLI) for mermaid. It takes a mermaid definition file as input and generates an SVG/PNG/PDF file as output.",
+    "confidence": "high", "notes": "Purely local CLI tool; no accounts, no hosted service, no auth of any kind."},
+  "access": {"tier": "self_serve_free", "extra_gate": "none",
+    "evidence_url": "https://github.com/mermaid-js/mermaid-cli/blob/master/README.md",
+    "evidence_quote": "npm install -g @mermaid-js/mermaid-cli",
+    "confidence": "high", "notes": "Free, open-source (MIT-style), installable via npm with no signup required."},
+  "api": {"protocols": ["cli"], "breadth": "none", "endpoint_count": null,
+    "mcp": "none", "mcp_url": null,
+    "docs_root": "https://github.com/mermaid-js/mermaid-cli",
+    "evidence_url": "https://github.com/mermaid-js/mermaid-cli/blob/master/README.md",
+    "evidence_quote": "mmdc -i input.mmd -o output.svg",
+    "confidence": "high", "notes": "No hosted API; it's a local binary (mmdc) invoked via shell. No official or community MCP server found specific to mermaid-cli."},
+  "verdict": {"value": "buildable_local", "blocker": "local_only",
+    "rationale": "It is a free, open-source local CLI tool with no hosted API or auth, so an agent toolkit would shell out to it locally rather than call a remote API.",
+    "confidence": "high"}
+}

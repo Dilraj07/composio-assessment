@@ -1,0 +1,38 @@
+{
+  "app": "LinkedIn Ads",
+  "one_liner": "LinkedIn's advertising platform; the Marketing/Advertising API lets developers manage ad campaigns, accounts, and conversions.",
+  "auth": {
+    "methods": ["oauth2"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://learn.microsoft.com/en-us/linkedin/marketing/quick-start",
+    "evidence_quote": "Generate an access token to make authenticated API calls for testing, either by using the Token Generator tool available on the Developer Portal or the LinkedIn Marketing Solutions Workspace on the Postman Network.",
+    "confidence": "high",
+    "notes": "LinkedIn APIs use standard OAuth2 with LinkedIn Developer Portal apps."
+  },
+  "access": {
+    "tier": "approval_required",
+    "extra_gate": "partner_program",
+    "evidence_url": "https://learn.microsoft.com/en-us/linkedin/marketing/quick-start",
+    "evidence_quote": "Apply to the desired API under the Products tab of your app. Complete the access form.",
+    "confidence": "medium",
+    "notes": "Getting even development-tier access to the Advertising API requires applying and being approved; upgrading to Standard tier requires a demo video. Community Management/Lead Sync APIs require separate application processes toward formal partner certification."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "broad",
+    "endpoint_count": null,
+    "mcp": "unknown",
+    "mcp_url": null,
+    "docs_root": "https://learn.microsoft.com/en-us/linkedin/marketing/",
+    "evidence_url": "https://learn.microsoft.com/en-us/linkedin/marketing/quick-start",
+    "evidence_quote": "Use this quick start guide to begin working with the LinkedIn APIs.",
+    "confidence": "low",
+    "notes": "Multiple sub-APIs (Advertising, Community Management, Lead Sync, Conversions, Events Management, Matched Audiences) combine to a broad surface; did not verify official MCP within call budget."
+  },
+  "verdict": {
+    "value": "needs_outreach",
+    "blocker": "partner_program",
+    "rationale": "API access requires applying for and being approved into named product/partner programs before any third-party account access is possible, even for development-tier testing.",
+    "confidence": "medium"
+  }
+}

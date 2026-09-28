@@ -1,0 +1,38 @@
+{
+  "app": "Intercom",
+  "one_liner": "Customer messaging platform with helpdesk, chat, and AI support agent (Fin).",
+  "auth": {
+    "methods": ["oauth2", "bearer_token"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://developers.intercom.com/docs/build-an-integration/learn-more/authentication",
+    "evidence_quote": "You should use OAuth if: You are requesting access to other people's Intercom accounts/data",
+    "confidence": "high",
+    "notes": "Access Token (per-workspace, bearer) is for private/own-workspace apps; OAuth is required for apps accessing other people's Intercom data. Both used as Authorization: Bearer header."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "app_review",
+    "evidence_url": "https://developers.intercom.com/docs/build-an-integration/getting-started",
+    "evidence_quote": "Development workspaces are free and intended for development purposes only.",
+    "confidence": "high",
+    "notes": "Free developer workspace available to anyone with no existing Intercom account needed. Public apps accessing other customers' data go through Developer Hub app review before general distribution."
+  },
+  "api": {
+    "protocols": ["rest", "webhook_only"],
+    "breadth": "broad",
+    "endpoint_count": null,
+    "mcp": "official",
+    "mcp_url": "https://developers.intercom.com/docs/guides/mcp",
+    "docs_root": "https://developers.intercom.com/docs",
+    "evidence_url": "https://developers.intercom.com/docs/guides/mcp",
+    "evidence_quote": "Intercom maintains one official server, reachable at https://mcp.intercom.com/mcp, with 13 tools.",
+    "confidence": "medium",
+    "notes": "Official remote MCP server confirmed via search results (mcp.intercom.com/mcp); not independently fetched/verified on the docs page directly."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "Free developer workspace plus OAuth for third-party access, with an official MCP server available.",
+    "confidence": "medium"
+  }
+}

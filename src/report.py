@@ -279,7 +279,7 @@ def main() -> int:
 
     def load(path, default):
         p = Path(path)
-        return json.loads(p.read_text()) if p.exists() else default
+        return json.loads(p.read_text(encoding="utf-8")) if p.exists() else default
 
     apps = load(args.input, {"apps": []})["apps"]
     if not apps:

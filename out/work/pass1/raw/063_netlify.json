@@ -1,0 +1,38 @@
+{
+  "app": "Netlify",
+  "one_liner": "Platform for building, deploying, and hosting static sites and web apps, with a REST API for sites, deploys, and forms.",
+  "auth": {
+    "methods": ["bearer_token", "oauth2"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://docs.netlify.com/api/get-started/",
+    "evidence_quote": "If you're making a public integration with Netlify for others to enjoy, you must use OAuth2. This allows users to authorize your application to use Netlify on their behalf without having to copy/paste API tokens or touch sensitive login info.",
+    "confidence": "high",
+    "notes": "Netlify calls the direct-use credential a 'personal access token' (PAT), used as a Bearer token, not called an API key."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "none",
+    "evidence_url": "https://docs.netlify.com/api/get-started/",
+    "evidence_quote": "Select New access token.",
+    "confidence": "medium",
+    "notes": "Free Netlify account can generate a PAT immediately; OAuth apps are self-registered in user settings, no review mentioned in the fetched page."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "moderate",
+    "endpoint_count": null,
+    "mcp": "official",
+    "mcp_url": "https://github.com/netlify/netlify-mcp",
+    "docs_root": "https://docs.netlify.com/api",
+    "evidence_url": "https://github.com/netlify/netlify-mcp",
+    "evidence_quote": "Netlify's Official MCP server",
+    "confidence": "medium",
+    "notes": "Breadth not counted from the reference index this pass (estimated moderate from general knowledge of Netlify's API surface); official remote MCP server confirmed at https://netlify-mcp.netlify.app/mcp."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "Free account, PAT or OAuth2 auth, and an official MCP server make this buildable now.",
+    "confidence": "high"
+  }
+}

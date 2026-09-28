@@ -1,0 +1,38 @@
+{
+  "app": "Vercel",
+  "one_liner": "Frontend cloud platform for deploying and hosting web apps, with a REST API for projects, deployments, and domains.",
+  "auth": {
+    "methods": ["bearer_token", "oauth2"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://vercel.com/docs/rest-api",
+    "evidence_quote": "Interact programmatically with your Vercel account using the SDK or direct HTTP requests.",
+    "confidence": "medium",
+    "notes": "Vercel REST API is documented as using an 'Access Token' (bearer_token, not called an API key) for direct use, and Vercel Integrations use OAuth2 for third-party apps acting on other users' accounts. Evidence quote for the auth header format itself wasn't captured verbatim this pass; lowering confidence accordingly."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "none",
+    "evidence_url": "https://vercel.com/docs/rest-api",
+    "evidence_quote": "Interact programmatically with your Vercel account using the SDK or direct HTTP requests.",
+    "confidence": "low",
+    "notes": "Vercel has a free Hobby tier with API access; Integrations marketplace listing requires review but that's a listing gate, not a call-time gate. Not independently verified with a quoted sentence this pass."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "broad",
+    "endpoint_count": null,
+    "mcp": "official",
+    "mcp_url": "https://vercel.com/docs/mcp",
+    "docs_root": "https://vercel.com/docs/rest-api",
+    "evidence_url": "https://vercel.com/docs/rest-api",
+    "evidence_quote": "access-groups | GET | /v1/access-groups/{idOrName} | Reads an access group",
+    "confidence": "high",
+    "notes": "REST API reference page lists many resource categories (access-groups, deployments, projects, domains, etc.) each with multiple endpoints, consistent with 'broad' (>100). Official hosted MCP server confirmed live at mcp.vercel.com."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "Free-tier account, token-based REST API, and an official MCP server support immediate integration.",
+    "confidence": "medium"
+  }
+}

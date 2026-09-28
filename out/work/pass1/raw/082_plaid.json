@@ -1,0 +1,38 @@
+{
+  "app": "Plaid",
+  "one_liner": "Financial data connectivity platform that links bank accounts to apps for transactions, balances, and identity data.",
+  "auth": {
+    "methods": ["api_key"],
+    "primary_for_third_party": "api_key",
+    "evidence_url": "https://plaid.com/docs/api/",
+    "evidence_quote": "Almost all Plaid API endpoints require a client_id and secret. These may be sent either in the request body or in the headers PLAID-CLIENT-ID and PLAID-SECRET.",
+    "confidence": "high",
+    "notes": "Plaid also uses Link (a client-side flow with access_token per end-user item) but developer-side API auth is client_id/secret, not OAuth2 in the traditional sense."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "app_review",
+    "evidence_url": "https://plaid.com/docs/api/",
+    "evidence_quote": "You can request Production API access via the Dashboard.",
+    "confidence": "medium",
+    "notes": "Sandbox environment is free and self-serve; moving to Production requires Plaid's approval process via the Dashboard."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "moderate",
+    "endpoint_count": null,
+    "mcp": "unknown",
+    "mcp_url": null,
+    "docs_root": "https://plaid.com/docs/",
+    "evidence_url": "https://plaid.com/docs/api/",
+    "evidence_quote": "The Sandbox environment supports only test Items.",
+    "confidence": "medium",
+    "notes": "Did not verify an official Plaid MCP server within call budget."
+  },
+  "verdict": {
+    "value": "needs_outreach",
+    "blocker": "approval",
+    "rationale": "Sandbox is self-serve and free, but real production access to other users' bank data requires Plaid's approval process.",
+    "confidence": "medium"
+  }
+}

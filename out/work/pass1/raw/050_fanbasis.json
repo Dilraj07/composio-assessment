@@ -1,0 +1,21 @@
+{
+  "app": "fanbasis",
+  "one_liner": "Payments/checkout infrastructure platform for creators and coaches, formerly branded FanBasis, now operating as Commas.",
+  "auth": {"methods": ["unknown"], "primary_for_third_party": "unknown",
+            "evidence_url": null, "evidence_quote": null,
+            "confidence": "low",
+            "notes": "fanbasis.com and its former docs site (fbnewapi.netlify.app) both 301-redirect to commas.com / commasdocs.com, indicating the product has rebranded to 'Commas'. Could not load stable API/auth documentation within the call budget; a checkout SDK package (@fanbasis/checkout-sdk) exists on npm suggesting a documented API, but auth details were not confirmed on a fetched page."},
+  "access": {"tier": "unknown", "extra_gate": "unknown",
+             "evidence_url": null, "evidence_quote": null,
+             "confidence": "low",
+             "notes": "Could not confirm signup/access model before hitting the site rebrand redirect chain."},
+  "api": {"protocols": ["unknown"], "breadth": "none", "endpoint_count": null,
+          "mcp": "unknown", "mcp_url": null,
+          "docs_root": null,
+          "evidence_url": null, "evidence_quote": null,
+          "confidence": "low",
+          "notes": "An API reference domain (apidocs.fan) exists but returned only a truncated 'Commas API Reference' shell page when fetched; a REST API with SDKs (Node/Python/PHP/Ruby) and webhooks is claimed in search summaries but not verified on a loaded page."},
+  "verdict": {"value": "needs_outreach", "blocker": "none",
+              "rationale": "Product appears to have rebranded from FanBasis to Commas; documentation could not be reliably loaded within the call budget, so buildability is unconfirmed rather than ruled out.",
+              "confidence": "low"}
+}

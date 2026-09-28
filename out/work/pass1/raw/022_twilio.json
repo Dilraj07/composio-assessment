@@ -1,0 +1,38 @@
+{
+  "app": "Twilio",
+  "one_liner": "Cloud communications platform (APIs) for SMS, voice, video, and messaging.",
+  "auth": {
+    "methods": ["basic", "api_key"],
+    "primary_for_third_party": "api_key",
+    "evidence_url": "https://www.twilio.com/docs/iam/api",
+    "evidence_quote": "Use your API key SID as the username and your API key secret as the password.",
+    "confidence": "high",
+    "notes": "Twilio calls these credentials API Keys, presented via HTTP Basic auth; Account SID/Auth Token is an alternative basic-auth credential."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "none",
+    "evidence_url": "https://www.twilio.com/docs/iam/api",
+    "evidence_quote": "Use your API key SID as the username and your API key secret as the password.",
+    "confidence": "medium",
+    "notes": "Twilio offers a well-known free trial account with credentials usable immediately; page fetched did not itself state trial terms."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "broad",
+    "endpoint_count": 1400,
+    "mcp": "official",
+    "mcp_url": "https://github.com/twilio-labs/mcp",
+    "docs_root": "https://www.twilio.com/docs",
+    "evidence_url": "https://github.com/twilio-labs/mcp",
+    "evidence_quote": "Monorepo providing 1) OpenAPI to MCP Tool generator 2) Exposing all of Twilio's API as MCP Tools",
+    "confidence": "medium",
+    "notes": "Search results describe the Twilio Alpha MCP server as covering 1,400+ API endpoints; endpoint_count taken from search summary, not directly fetched from an endpoint index."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "Self-serve trial/paid account with API key auth gives immediate production-capable access with no extra gate.",
+    "confidence": "high"
+  }
+}

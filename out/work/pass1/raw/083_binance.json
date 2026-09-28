@@ -1,0 +1,38 @@
+{
+  "app": "Binance",
+  "one_liner": "Cryptocurrency exchange offering spot, futures, and wallet trading via REST and WebSocket APIs.",
+  "auth": {
+    "methods": ["api_key", "hmac_signed"],
+    "primary_for_third_party": "api_key",
+    "evidence_url": "https://developers.binance.com/docs/binance-spot-api-docs/rest-api/general-info",
+    "evidence_quote": "Use the secretKey of your API key as the signing key for the HMAC-SHA-256 algorithm.",
+    "confidence": "high",
+    "notes": "SIGNED endpoints require api key plus HMAC (or RSA/Ed25519) signature; no OAuth2 for third-party account access, so a third party would need each user's own API key/secret."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "none",
+    "evidence_url": "https://developers.binance.com/docs/binance-spot-api-docs/rest-api/general-info",
+    "evidence_quote": "Both API key and secret key are sensitive. Never share them with anyone.",
+    "confidence": "medium",
+    "notes": "Any registered Binance user can generate API keys for free; no separate developer program gate found, though KYC on the underlying account is implied."
+  },
+  "api": {
+    "protocols": ["rest", "webhook_only"],
+    "breadth": "broad",
+    "endpoint_count": null,
+    "mcp": "unknown",
+    "mcp_url": null,
+    "docs_root": "https://developers.binance.com/docs/binance-spot-api-docs",
+    "evidence_url": "https://developers.binance.com/docs/binance-spot-api-docs/rest-api/general-info",
+    "evidence_quote": "The last 4 endpoints in the point above (api1-api4) should give better performance but have less stability.",
+    "confidence": "medium",
+    "notes": "Binance also offers WebSocket streams (used 'webhook_only' loosely is inaccurate; real-time is via WebSocket not webhooks — noting protocols may need correction to exclude webhook_only in pass 2). Endpoint count not confirmed but spot+futures+margin APIs are extensive (broad)."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "Free self-serve API key generation with HMAC-signed REST API makes basic building possible immediately, though per-user keys are needed for account-specific actions.",
+    "confidence": "medium"
+  }
+}

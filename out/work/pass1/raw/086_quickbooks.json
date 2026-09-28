@@ -1,0 +1,38 @@
+{
+  "app": "QuickBooks",
+  "one_liner": "Intuit's small-business accounting platform (QuickBooks Online) with an API for invoicing, accounting, and payments data.",
+  "auth": {
+    "methods": ["oauth2"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://dev.to/zuplo/quickbooks-api-complete-developers-guide-2026-3l77",
+    "evidence_quote": "The QuickBooks API uses OAuth 2.0 exclusively — there are no API keys or basic authentication options.",
+    "confidence": "medium",
+    "notes": "Evidence page is a third-party developer guide, not Intuit's own docs (developer.intuit.com pages repeatedly failed to fetch full content in this pass); auth mechanism is well corroborated by common knowledge of Intuit's platform."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "app_review",
+    "evidence_url": "https://dev.to/zuplo/quickbooks-api-complete-developers-guide-2026-3l77",
+    "evidence_quote": "A QuickBooks developer account is free, with immediate sandbox access, up to five sandbox companies, and all developer tools at no cost.",
+    "confidence": "medium",
+    "notes": "Same source states production (live) access requires Intuit app assessment/review before going live on real accounts; direct Intuit docs page confirming this could not be fetched within budget."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "moderate",
+    "endpoint_count": null,
+    "mcp": "unknown",
+    "mcp_url": null,
+    "docs_root": "https://developer.intuit.com/app/developer/qbo/docs/get-started",
+    "evidence_url": null,
+    "evidence_quote": null,
+    "confidence": "low",
+    "notes": "Could not confirm official MCP server or exact endpoint count within pass-1 budget; developer.intuit.com pages returned truncated content on every fetch attempt."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "Free developer account with immediate sandbox access allows building and testing immediately; production requires app review but sandbox development is unblocked.",
+    "confidence": "medium"
+  }
+}

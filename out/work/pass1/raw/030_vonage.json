@@ -1,0 +1,38 @@
+{
+  "app": "Vonage",
+  "one_liner": "Cloud communications APIs (SMS, voice, video, verify) for developers, part of Ericsson.",
+  "auth": {
+    "methods": ["basic", "api_key", "jwt"],
+    "primary_for_third_party": "api_key",
+    "evidence_url": "https://developer.vonage.com/en/getting-started/concepts/authentication",
+    "evidence_quote": "Many newer Vonage APIs require authentication using an API key and secret sent Base64 encoded in the Authorization header.",
+    "confidence": "medium",
+    "notes": "API key/secret (Basic-style encoding) is the primary credential per search summary; Vonage Video/Voice APIs also use JWT for some endpoints (not independently verified this pass)."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "none",
+    "evidence_url": "https://developer.vonage.com/en/getting-started/concepts/authentication",
+    "evidence_quote": "When you create a Vonage account, an API key and secret are created for you and located in your account settings in the Vonage Dashboard.",
+    "confidence": "medium",
+    "notes": "Account creation and API key issuance appear self-serve/free (with usage-based billing), consistent with other CPaaS vendors; not independently fetched to confirm trial credit details."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "broad",
+    "endpoint_count": null,
+    "mcp": "official",
+    "mcp_url": "https://github.com/Vonage-Community/vonage-mcp-server-api-bindings",
+    "docs_root": "https://developer.vonage.com/",
+    "evidence_url": "https://developer.vonage.com/en/blog/contribute-to-the-open-source-vonage-mcp-tooling-server",
+    "evidence_quote": "Contribute to the Open Source Vonage MCP Tooling Server",
+    "confidence": "low",
+    "notes": "Vonage-Community org is a vendor-affiliated open-source org (developer.vonage.com blog links to it), treated as official-adjacent rather than an independent third party; confidence kept low since this wasn't independently confirmed as the same entity as Vonage Inc."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "Self-serve account creation issues an API key/secret usable immediately across Vonage's communications APIs.",
+    "confidence": "medium"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "app": "Podio",
+  "one_liner": "Customizable work-management and collaboration platform (owned by Citrix/Cloud Software Group) with an app-building API.",
+  "auth": {
+    "methods": ["oauth2"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://developers.podio.com/authentication",
+    "evidence_quote": "The Podio API uses the [OAuth2 protocol](http://oauth.net/2/) for authentication.",
+    "confidence": "high",
+    "notes": "Docs describe server-side, client-side, and app-authentication (client-credential-style, for automated scripts against a single Podio 'app') OAuth2 flows; all require a registered Client ID/Secret."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "none",
+    "evidence_url": "https://developers.podio.com/authentication",
+    "evidence_quote": null,
+    "confidence": "low",
+    "notes": "Registering a Podio API client (Client ID/Secret) appears self-serve per docs structure, but a free Podio account's API rate limits/eligibility were not independently confirmed within the call budget."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "moderate",
+    "endpoint_count": null,
+    "mcp": "unknown",
+    "mcp_url": null,
+    "docs_root": "https://developers.podio.com",
+    "evidence_url": "https://developers.podio.com/authentication",
+    "evidence_quote": null,
+    "confidence": "low",
+    "notes": "Did not check for an MCP server within the 4-call budget; endpoint count not tallied."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "Self-serve OAuth2 client registration against a documented REST API, no explicit approval gate found in docs.",
+    "confidence": "low"
+  }
+}

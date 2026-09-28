@@ -1,0 +1,38 @@
+{
+  "app": "Asana",
+  "one_liner": "Work and project management platform for tracking tasks and team workflows.",
+  "auth": {
+    "methods": ["oauth2", "bearer_token"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://developers.asana.com/docs/authentication",
+    "evidence_quote": "OAuth is an open-standard authentication protocol that allows you to approve one application interacting with another on your behalf without providing your username and password.",
+    "confidence": "high",
+    "notes": "Personal access token (PAT) is documented as a bearer token for single-user scripts, not branded 'API key'; Service Accounts are Enterprise-only long-lived tokens."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "none",
+    "evidence_url": "https://developers.asana.com/docs/authentication",
+    "evidence_quote": "A personal access token (PAT) is the quickest and simplest way to authenticate in the API.",
+    "confidence": "low",
+    "notes": "Free Asana accounts exist generally; whether API/OAuth access is gated by plan tier was not confirmed within budget."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "moderate",
+    "endpoint_count": null,
+    "mcp": "official",
+    "mcp_url": "https://developers.asana.com/docs/using-asanas-mcp-server",
+    "docs_root": "https://developers.asana.com",
+    "evidence_url": "https://developers.asana.com/docs/authentication",
+    "evidence_quote": "OAuth is an open-standard authentication protocol",
+    "confidence": "low",
+    "notes": "Asana has an official MCP server per general knowledge; not independently re-verified via fetch in this pass."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "Documented OAuth2 and PAT authentication with no confirmed extra production gate beyond standard OAuth consent.",
+    "confidence": "medium"
+  }
+}

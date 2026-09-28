@@ -1,0 +1,38 @@
+{
+  "app": "LiveAgent",
+  "one_liner": "Multi-channel help desk and live chat software.",
+  "auth": {
+    "methods": ["api_key", "oauth2"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://www.liveagent.com/features/mcp-server/",
+    "evidence_quote": "Connecting an AI client requires an authorization flow (OAuth 2.1 with PKCE) and a consent screen, so you explicitly approve which account the AI client can act as.",
+    "confidence": "medium",
+    "notes": "Core REST API v3 uses admin-issued API keys (per-key scoped permissions). The newer MCP server instead uses OAuth 2.1 with PKCE."
+  },
+  "access": {
+    "tier": "self_serve_trial",
+    "extra_gate": "none",
+    "evidence_url": "https://www.liveagent.com/pricing/",
+    "evidence_quote": "LiveAgent offers a 30-day free trial with no credit card required",
+    "confidence": "medium",
+    "notes": "Sources conflict on whether a perpetual free plan exists; the confirmed self-serve path is the 30-day no-credit-card trial. Evidence quote from search summary, not a direct fetch of the pricing page."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "moderate",
+    "endpoint_count": null,
+    "mcp": "official",
+    "mcp_url": "https://www.liveagent.com/features/mcp-server/",
+    "docs_root": "https://support.liveagent.com/066804-LiveAgent-API",
+    "evidence_url": "https://www.liveagent.com/features/mcp-server/",
+    "evidence_quote": "LiveAgent's MCP server exposes tickets, ticket messages, knowledge base articles, agents, and departments as tools an MCP-compatible AI client can call directly.",
+    "confidence": "high",
+    "notes": "Official MCP server with 33 tools covering tickets, custom fields, knowledge base, and team lookups; enforces per-account department/role permissions."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "API key or OAuth credentials obtainable via a no-credit-card 30-day trial, with an official OAuth-based MCP server.",
+    "confidence": "medium"
+  }
+}

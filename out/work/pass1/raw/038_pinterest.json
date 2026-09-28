@@ -1,0 +1,38 @@
+{
+  "app": "Pinterest",
+  "one_liner": "Visual discovery/social platform; the Pinterest API lets developers manage pins, boards, and ads.",
+  "auth": {
+    "methods": ["oauth2"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://developers.pinterest.com/docs/getting-started/set-up-app/",
+    "evidence_quote": null,
+    "confidence": "medium",
+    "notes": "Web search summary: developers get an app ID/secret and configure an OAuth2 redirect URI via the 'Connect app' flow. Page not directly fetched for verbatim text within call budget."
+  },
+  "access": {
+    "tier": "approval_required",
+    "extra_gate": "app_review",
+    "evidence_url": "https://developers.pinterest.com/docs/getting-started/set-up-app/",
+    "evidence_quote": null,
+    "confidence": "medium",
+    "notes": "Web search summary: 'You submit a request for trial access, and application requests are reviewed each business day... Approved apps receive Trial access, where creating Pins and Boards produces sandbox entities visible only to the creator,' capped at 1,000 requests/day. Standard (production) access requires a further review with a demo video."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "moderate",
+    "endpoint_count": null,
+    "mcp": "unknown",
+    "mcp_url": null,
+    "docs_root": "https://developers.pinterest.com/docs/",
+    "evidence_url": null,
+    "evidence_quote": null,
+    "confidence": "low",
+    "notes": "Did not fetch reference index to count endpoints within call budget."
+  },
+  "verdict": {
+    "value": "needs_outreach",
+    "blocker": "app_review",
+    "rationale": "Even sandbox-only Trial access requires Pinterest to review and approve the app before any API calls, and production (Standard) access needs a further review with a demo video.",
+    "confidence": "medium"
+  }
+}

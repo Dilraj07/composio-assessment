@@ -1,0 +1,38 @@
+{
+  "app": "Zoho Cliq",
+  "one_liner": "Business messaging/chat app from Zoho with channels, bots, and integrations.",
+  "auth": {
+    "methods": ["oauth2"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://www.zoho.com/cliq/help/restapi/v3/oauth/",
+    "evidence_quote": "The first step in using OAuth authentication is registering your app with the Zoho API console.",
+    "confidence": "high",
+    "notes": "Access tokens are short-lived (1 hour) and passed as 'Zoho-oauthtoken' in the Authorization header."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "none",
+    "evidence_url": "https://www.zoho.com/cliq/help/restapi/v3/oauth/",
+    "evidence_quote": "you will get a Client ID and Client secret for your application",
+    "confidence": "medium",
+    "notes": "Zoho API console registration is self-serve; Zoho Cliq has a free plan. Did not verify any admin-consent requirement for installing on other orgs."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "moderate",
+    "endpoint_count": null,
+    "mcp": "official",
+    "mcp_url": "https://www.zoho.com/cliq/mcp-server.html",
+    "docs_root": "https://www.zoho.com/cliq/help/restapi/v3/introduction/",
+    "evidence_url": "https://www.zoho.com/cliq/mcp-server.html",
+    "evidence_quote": "The Cliq MCP Server exposes Cliq's core capabilities as standardized tools, so MCP-compatible AI clients can read context, take action, and coordinate work across Zoho and third-party systems.",
+    "confidence": "medium",
+    "notes": "Vendor-published MCP server confirmed via zoho.com domain page."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "Self-serve OAuth2 app registration and free plan give a working credential with no extra gate documented.",
+    "confidence": "medium"
+  }
+}

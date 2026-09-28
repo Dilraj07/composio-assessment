@@ -1,0 +1,21 @@
+{
+  "app": "Consensus",
+  "one_liner": "AI-powered search engine for academic research that finds and summarizes findings from 220M+ peer-reviewed papers.",
+  "auth": {"methods": ["oauth2", "bearer_token"], "primary_for_third_party": "oauth2",
+    "evidence_url": "https://docs.consensus.app/consensus-mcp",
+    "evidence_quote": null,
+    "confidence": "low", "notes": "Search summary: 'Consensus uses OAuth: the first time you connect, your MCP client opens a browser window to sign in and authorize access... supports OAuth for end users plus Bearer-token authentication for enterprise API access.' Direct fetches of docs.consensus.app and help.consensus.app both returned 403, so no verbatim quote could be captured; note this is the research-paper Consensus (consensus.app), not the unrelated proposal-software 'GoConsensus' (goconsensus.com) which shares the name."},
+  "access": {"tier": "approval_required", "extra_gate": "unknown",
+    "evidence_url": "https://help.consensus.app/en/articles/16516328-the-consensus-api",
+    "evidence_quote": null,
+    "confidence": "low", "notes": "API/MCP exist and OAuth login is self-serve for the MCP, but whether the REST API itself is self-serve or requires an enterprise/paid plan could not be confirmed (pages 403'd on fetch)."},
+  "api": {"protocols": ["rest"], "breadth": "narrow", "endpoint_count": null,
+    "mcp": "official", "mcp_url": "https://mcp.consensus.app/mcp",
+    "docs_root": "https://docs.consensus.app/",
+    "evidence_url": "https://github.com/Consensus-NLP/consensus-mcp",
+    "evidence_quote": "Official MCP server for Consensus. Search 220M+ peer-reviewed research papers from Claude, ChatGPT, Cursor, and any MCP client.",
+    "confidence": "medium", "notes": "Vendor-published MCP server confirmed via GitHub org and consensus.app/home/mcp/ landing page. REST API also exists per help center article title 'The Consensus API'."},
+  "verdict": {"value": "buildable_now", "blocker": "none",
+    "rationale": "Consensus publishes an official OAuth-based MCP server and a documented API, though exact plan gating for the raw REST API is unverified.",
+    "confidence": "low"}
+}

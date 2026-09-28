@@ -1,0 +1,38 @@
+{
+  "app": "Google Ads",
+  "one_liner": "Google's online advertising platform; the API lets developers manage campaigns, reporting, and billing programmatically.",
+  "auth": {
+    "methods": ["oauth2"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://developers.google.com/google-ads/api/docs/oauth/overview",
+    "evidence_quote": "Google Ads API also uses the OAuth 2.0 protocol for authentication and authorization. OAuth 2.0 enables your Google Ads API client app to access a user's Google Ads account without having to handle or store the user's login info.",
+    "confidence": "high",
+    "notes": "A separate developer token is required in addition to OAuth2 credentials, per same page: 'In addition to the OAuth 2.0 credentials, you also need a developer token to make API calls.'"
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "developer_token",
+    "evidence_url": "https://developers.google.com/google-ads/api/docs/oauth/overview",
+    "evidence_quote": "In addition to the OAuth 2.0 credentials, you also need a developer token to make API calls.",
+    "confidence": "medium",
+    "notes": "Developer tokens start with test-account-only access; Basic/Standard production access requires Google approval. Google Ads test accounts are free."
+  },
+  "api": {
+    "protocols": ["grpc", "rest"],
+    "breadth": "broad",
+    "endpoint_count": null,
+    "mcp": "unknown",
+    "mcp_url": null,
+    "docs_root": "https://developers.google.com/google-ads/api/docs/start",
+    "evidence_url": "https://developers.google.com/google-ads/api/docs/oauth/overview",
+    "evidence_quote": "Google Ads API also uses the OAuth 2.0 protocol for authentication and authorization.",
+    "confidence": "low",
+    "notes": "Did not check specifically for an official Google Ads MCP server within the call budget; API surface (GAQL resources, services) is very large, well over 100 endpoints/resources."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "developer_token",
+    "rationale": "OAuth2 plus a free developer token gives immediate test-account access, but production use on arbitrary accounts requires Google approval of the developer token.",
+    "confidence": "medium"
+  }
+}

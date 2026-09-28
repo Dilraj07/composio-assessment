@@ -1,0 +1,38 @@
+{
+  "app": "PitchBook",
+  "one_liner": "Private and public market research platform (companies, deals, investors, valuations) with an enterprise data API add-on.",
+  "auth": {
+    "methods": ["api_key"],
+    "primary_for_third_party": "api_key",
+    "evidence_url": "https://pipeline.zoominfo.com/sales/pitchbook-api-review",
+    "evidence_quote": "API key or token-based authentication",
+    "confidence": "medium",
+    "notes": "Also separately corroborated: authenticate with header 'Authorization: PB-Token {API_KEY}' per a search-result summary (not independently fetched/verified verbatim this pass)."
+  },
+  "access": {
+    "tier": "partner_gated",
+    "extra_gate": "sales_contact",
+    "evidence_url": "https://pipeline.zoominfo.com/sales/pitchbook-api-review",
+    "evidence_quote": "an enterprise add-on that requires a separate contract on top of an existing platform subscription",
+    "confidence": "high",
+    "notes": "No self-serve signup: 'There is no developer portal, no API key generator in the dashboard, and no free-trial API access.' Must contact PitchBook's Direct Data team after contracting."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "unknown",
+    "endpoint_count": null,
+    "mcp": "none",
+    "mcp_url": null,
+    "docs_root": null,
+    "evidence_url": "https://pipeline.zoominfo.com/sales/pitchbook-api-review",
+    "evidence_quote": "The API guide and Endpoints Overview document sit behind platform authentication and are visible only to contracted clients.",
+    "confidence": "medium",
+    "notes": "Public reference/breadth cannot be determined since docs are contract-gated; no published rate limits or public endpoint reference exist."
+  },
+  "verdict": {
+    "value": "needs_outreach",
+    "blocker": "sales_contact",
+    "rationale": "PitchBook's API is a sales-only enterprise add-on with no self-serve signup, developer portal, or public documentation.",
+    "confidence": "high"
+  }
+}

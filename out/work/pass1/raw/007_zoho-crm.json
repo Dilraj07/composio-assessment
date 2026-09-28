@@ -1,0 +1,38 @@
+{
+  "app": "Zoho CRM",
+  "one_liner": "CRM platform for sales pipeline, marketing, and customer support automation, part of Zoho's SaaS suite.",
+  "auth": {
+    "methods": ["oauth2"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://www.zoho.com/crm/developer/docs/api/v8/oauth-overview.html",
+    "evidence_quote": "The Zoho CRM API uses the OAuth 2.0 protocol for authentication.",
+    "confidence": "high",
+    "notes": "Grant-token based OAuth2 flow; a 'Self Client' option (api-console.zoho.com) lets a single developer generate tokens for their own org without a redirect-based flow, but the protocol is still OAuth2."
+  },
+  "access": {
+    "tier": "paid_plan_required",
+    "extra_gate": "none",
+    "evidence_url": "https://www.zoho.com/crm/developer/",
+    "evidence_quote": null,
+    "confidence": "medium",
+    "notes": "WebSearch summary of Zoho community/help sources indicates API access is included from the Standard paid plan upward and the Free plan has limited/no stable API access; a free Developer Edition exists for learning the data model/tools but production API use requires a paid plan. Not independently WebFetched for a verbatim quote, so confidence medium."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "broad",
+    "endpoint_count": null,
+    "mcp": "unknown",
+    "mcp_url": null,
+    "docs_root": "https://www.zoho.com/crm/developer/docs/api/v8/",
+    "evidence_url": "https://www.zoho.com/crm/developer/docs/api/v8/oauth-overview.html",
+    "evidence_quote": null,
+    "confidence": "low",
+    "notes": "Did not check for a Zoho CRM MCP server within the 4-call budget."
+  },
+  "verdict": {
+    "value": "buildable_paid",
+    "blocker": "paid_only",
+    "rationale": "OAuth2 access to a broad REST API, but a stable production API credential requires at least the Standard paid plan.",
+    "confidence": "medium"
+  }
+}

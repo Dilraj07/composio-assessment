@@ -1,0 +1,38 @@
+{
+  "app": "ClickUp",
+  "one_liner": "Productivity platform combining tasks, docs, goals, and project tracking.",
+  "auth": {
+    "methods": ["oauth2", "api_key"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://developer.clickup.com/docs/authentication",
+    "evidence_quote": "To allow others to use your app, implement the OAuth2 flow so each user has their own token for accessing their ClickUp resources.",
+    "confidence": "high",
+    "notes": "Personal API tokens (prefixed pk_) documented as vendor-called personal API token for individual/testing use."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "none",
+    "evidence_url": "https://developer.clickup.com/docs/authentication",
+    "evidence_quote": "Use a personal API token for individual or testing purposes. Personal tokens begin with pk_.",
+    "confidence": "low",
+    "notes": "ClickUp has a free plan generally; explicit plan-gating of API/OAuth access not confirmed within budget."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "moderate",
+    "endpoint_count": null,
+    "mcp": "official",
+    "mcp_url": "https://developer.clickup.com/docs/mcp",
+    "docs_root": "https://developer.clickup.com",
+    "evidence_url": "https://developer.clickup.com/docs/authentication",
+    "evidence_quote": "implement the OAuth2 flow so each user has their own token",
+    "confidence": "low",
+    "notes": "ClickUp has published an official MCP server per general knowledge; not independently re-verified via fetch in this pass."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "Documented OAuth2 authorization-code flow with no confirmed extra gate beyond standard consent.",
+    "confidence": "medium"
+  }
+}

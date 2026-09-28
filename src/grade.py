@@ -15,7 +15,7 @@ import json
 import sys
 from pathlib import Path
 
-from .config import ACCURACY_JSON, GOLD, PASS1_JSON, PASS2_JSON
+from .config import ACCURACY_JSON, DATA, GOLD, OUT, PASS1_JSON, PASS2_JSON
 from .schema import GRADED_FIELDS, get_field
 
 # Written down in advance (METHODOLOGY §3) so the result is a test rather than
@@ -49,9 +49,26 @@ def compare(agent, gold, field: str) -> dict:
     return {"exact": agent == gold, "jaccard": 1.0 if agent == gold else 0.0}
 
 
-def grade_run(records: dict, gold: dict) -> dict:
+# Hand classification of each miss (METHODOLOGY §2), keyed "app|field".
+# Written AFTER grading, which is exactly why it is a separate, committed,
+# reviewable file: every reclassification is visible, none is silent.
+MISS_CLASSES = DATA / "gold" / "miss_classes.json"
+
+# verdict.value lives on the access block for confidence purposes (derived).
+_CONF_BLOCK = {"verdict.value": "access"}
+
+
+def _confidence(rec: dict, field: str) -> str | None:
+    blk = rec.get(_CONF_BLOCK.get(field, field.split(".")[0])) or {}
+    return blk.get("confidence")
+
+
+def grade_run(records: dict, gold: dict, classes: dict | None = None) -> dict:
     """Score one pass against gold. `records` and `gold` are {app: record}."""
+    classes = classes or {}
     per_field = {f: {"n": 0, "hits": 0, "jaccard_sum": 0.0} for f in GRADED_FIELDS}
+    per_slot: dict[str, list[int]] = {}
+    per_conf: dict[str, list[int]] = {}
     misses = []
 
     for app, gold_rec in gold.items():
@@ -68,18 +85,28 @@ def grade_run(records: dict, gold: dict) -> dict:
 
             per_field[f]["n"] += 1
             per_field[f]["jaccard_sum"] += res["jaccard"]
+            conf = _confidence(agent_rec, f) or "low"
+            for bucket, key in ((per_slot, gold_rec.get("_slot", "?")), (per_conf, conf)):
+                bucket.setdefault(key, [0, 0])
+                bucket[key][0] += 1
+                bucket[key][1] += int(res["exact"])
             if res["exact"]:
                 per_field[f]["hits"] += 1
             else:
+                cls = classes.get(f"{app}|{f}", {})
                 misses.append({
                     "app": app, "field": f,
                     "agent": agent_val, "gold": gold_val,
+                    "agent_confidence": conf,
                     "jaccard": res["jaccard"],
-                    # Classify by hand afterwards: agent_wrong / gold_wrong /
-                    # both_defensible / stale. See METHODOLOGY §2. Only
-                    # agent_wrong counts against the pipeline.
-                    "disagreement_class": "UNCLASSIFIED",
+                    # Classified by hand in data/gold/miss_classes.json:
+                    # agent_wrong / gold_wrong / both_defensible / stale.
+                    "disagreement_class": cls.get("class", "UNCLASSIFIED"),
+                    "class_note": cls.get("note"),
+                    "gold_uncertain": bool(gold_rec.get("_gold_uncertain")),
                     "gold_evidence": (gold_rec.get(f.split(".")[0], {}) or {}).get("evidence_url"),
+                    "agent_evidence": (agent_rec.get(_CONF_BLOCK.get(f, f.split(".")[0]), {})
+                                       or {}).get("evidence_url"),
                 })
 
     summary, total_n, total_hits = {}, 0, 0
@@ -93,10 +120,18 @@ def grade_run(records: dict, gold: dict) -> dict:
         total_n += n
         total_hits += s["hits"]
 
+    def _rate(d):
+        return {k: {"n": n, "accuracy": round(h / n, 3)} for k, (n, h) in d.items()}
+
     return {
         "overall_accuracy": round(total_hits / total_n, 3) if total_n else None,
         "judgments": total_n,
+        "hits": total_hits,
         "per_field": summary,
+        "per_slot": _rate(per_slot),
+        # Calibration: is "high" confidence actually more accurate than "low"?
+        "per_confidence": _rate(per_conf),
+        "confidently_wrong": sum(1 for m in misses if m.get("agent_confidence") == "high"),
         "misses": misses,
     }
 
@@ -118,7 +153,7 @@ def main() -> int:
               file=sys.stderr)
         return 1
 
-    gold_doc = json.loads(gold_path.read_text())
+    gold_doc = json.loads(gold_path.read_text(encoding="utf-8"))
     # Unfilled template rows carry an empty app name -- excluding them here
     # means a half-filled gold set grades honestly on what it does contain,
     # instead of silently scoring every blank as an agent error.
@@ -131,14 +166,21 @@ def main() -> int:
         return 1
 
     result = {"gold_apps": len(gold), "graded_fields": list(GRADED_FIELDS)}
+    classes = (json.loads(MISS_CLASSES.read_text(encoding="utf-8"))
+               if MISS_CLASSES.exists() else {})
 
-    for label, path in (("pass1", args.pass1), ("pass2", args.pass2)):
+    runs = [("pass1", args.pass1), ("pass2", args.pass2)]
+    # Ablation: pass 2 with the acceptance gate switched off, if it was run.
+    nogate = OUT / "pass2_nogate.json"
+    if nogate.exists():
+        runs.append(("pass2_nogate", str(nogate)))
+    for label, path in runs:
         p = Path(path)
         if not p.exists():
             print(f"  (skipping {label}: {p} not found)")
             continue
-        recs = {a["app"]: a for a in json.loads(p.read_text())["apps"]}
-        result[label] = grade_run(recs, gold)
+        recs = {a["app"]: a for a in json.loads(p.read_text(encoding="utf-8"))["apps"]}
+        result[label] = grade_run(recs, gold, classes)
 
     # The headline the rubric actually asks for: movement, not a single number.
     if "pass1" in result and "pass2" in result:
@@ -161,7 +203,8 @@ def main() -> int:
             for f, (p1, p2) in PRIOR.items()
         }
 
-    Path(args.out).write_text(json.dumps(result, indent=2))
+    Path(args.out).write_text(json.dumps(result, indent=2, ensure_ascii=False),
+                              encoding="utf-8")
 
     print(f"\nGold apps: {len(gold)}   Graded fields: {len(GRADED_FIELDS)}")
     for label in ("pass1", "pass2"):

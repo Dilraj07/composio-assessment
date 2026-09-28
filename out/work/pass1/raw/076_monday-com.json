@@ -1,0 +1,38 @@
+{
+  "app": "Monday.com",
+  "one_liner": "Work operating system for building custom project and workflow management apps.",
+  "auth": {
+    "methods": ["oauth2", "api_key"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://developer.monday.com/api-reference/docs/authentication",
+    "evidence_quote": "The monday.com platform API utilizes personal V2 API tokens to authenticate requests and identify the user making the call.",
+    "confidence": "medium",
+    "notes": "Primary auth doc emphasizes personal API tokens for single-account use; OAuth2 (documented separately at developer.monday.com/apps/docs/oauth, including a newer OAuth 2.1 flow) is the mechanism for apps acting on other users' accounts."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "admin_consent",
+    "evidence_url": "https://developer.monday.com/api-reference/docs/authentication",
+    "evidence_quote": "create a free developer account to get an API token and start testing",
+    "confidence": "medium",
+    "notes": "Free developer sandbox account available; OAuth apps installed into another account require that account's admin to authorize during the OAuth consent flow."
+  },
+  "api": {
+    "protocols": ["graphql"],
+    "breadth": "moderate",
+    "endpoint_count": null,
+    "mcp": "official",
+    "mcp_url": "https://developer.monday.com/api-reference/docs/monday-mcp",
+    "docs_root": "https://developer.monday.com",
+    "evidence_url": "https://developer.monday.com/api-reference/docs/authentication",
+    "evidence_quote": "Personal tokens are user-specific and mirror all permission levels set in the monday.com UI",
+    "confidence": "low",
+    "notes": "GraphQL single-endpoint API; monday.com documents controlling MCP access via OAuth app."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "admin_consent",
+    "rationale": "Free developer sandbox and both API-token and OAuth2 flows are documented; acting on another workspace requires that workspace's admin consent.",
+    "confidence": "medium"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "app": "Aircall",
+  "one_liner": "Cloud-based phone/call center system with a public API for calls, contacts, and users.",
+  "auth": {
+    "methods": ["oauth2", "basic"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://developer.aircall.io/tutorials/how-aircall-oauth-flow-works",
+    "evidence_quote": "The goal of the OAuth flow is to get an access_token that will be used to authenticate requests to Aircall Public API",
+    "confidence": "medium",
+    "notes": "Basic Auth (api_id as username, api_token as password) is also supported for direct/internal integrations; OAuth is the recommended path for Technology Partner apps acting on other companies' accounts."
+  },
+  "access": {
+    "tier": "partner_gated",
+    "extra_gate": "partner_program",
+    "evidence_url": "https://developer.aircall.io/tutorials/how-aircall-oauth-flow-works",
+    "evidence_quote": "OAuth flow recommended for building apps for companies using Aircall (particularly for Technology Partners)",
+    "confidence": "low",
+    "notes": "Search-summary evidence only; did not fetch page directly to confirm whether basic-auth API keys are self-serve for a free/dev Aircall account or require a paid plan."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "narrow",
+    "endpoint_count": null,
+    "mcp": "community",
+    "mcp_url": "https://github.com/themobilefirstco/aircall-mcp-server",
+    "docs_root": "https://developer.aircall.io/",
+    "evidence_url": "https://developer.aircall.io/tutorials/how-aircall-oauth-flow-works",
+    "evidence_quote": "A client_id and client_secret are needed to use the OAuth flow.",
+    "confidence": "medium",
+    "notes": "No official Aircall-published MCP server found; multiple community/unofficial servers exist, explicitly labeled unofficial."
+  },
+  "verdict": {
+    "value": "needs_outreach",
+    "blocker": "partner_program",
+    "rationale": "Acting on other companies' Aircall accounts via OAuth is positioned for Technology Partners, suggesting a partner program gate beyond simple self-serve signup.",
+    "confidence": "low"
+  }
+}

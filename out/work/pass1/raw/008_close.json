@@ -1,0 +1,38 @@
+{
+  "app": "Close",
+  "one_liner": "Inside-sales CRM built for outbound sales teams, with a REST API.",
+  "auth": {
+    "methods": ["oauth2", "basic"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://developer.close.com/api/overview/api-key-authentication",
+    "evidence_quote": "API keys use HTTP Basic client side authentication. Basic authentication is a simple authentication scheme built into the HTTP protocol.",
+    "confidence": "high",
+    "notes": "API key is used as the Basic-auth username with an empty password (classified as 'basic', not 'api_key', per the enum rule that api_key applies when the vendor calls the credential an API key AND it's sent as such -- here Close explicitly documents it as HTTP Basic auth). OAuth 2.0 is the documented path for user-facing / third-party integrations."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "none",
+    "evidence_url": "https://developer.close.com/",
+    "evidence_quote": null,
+    "confidence": "low",
+    "notes": "Close offers a free trial account from which API keys/OAuth apps can be created per docs structure; did not independently confirm trial length or whether a permanent free tier exists within the call budget."
+  },
+  "api": {
+    "protocols": ["rest", "webhook_only"],
+    "breadth": "moderate",
+    "endpoint_count": null,
+    "mcp": "unknown",
+    "mcp_url": null,
+    "docs_root": "https://developer.close.com/",
+    "evidence_url": "https://developer.close.com/api/overview/oauth-authentication",
+    "evidence_quote": null,
+    "confidence": "low",
+    "notes": "Did not check for a Close MCP server within the 4-call budget."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "Self-serve account creation with API key (Basic auth) and OAuth2 support against a documented REST API.",
+    "confidence": "medium"
+  }
+}

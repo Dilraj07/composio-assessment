@@ -1,0 +1,38 @@
+{
+  "app": "Jira",
+  "one_liner": "Issue and project tracking software for software development teams (Atlassian).",
+  "auth": {
+    "methods": ["oauth2", "api_key", "basic"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://developer.atlassian.com/cloud/jira/platform/oauth-2-3lo-apps/",
+    "evidence_quote": "OAuth 2.0 (3LO) allows external applications and services to access Atlassian product APIs on a user's behalf.",
+    "confidence": "high",
+    "notes": "Also supports API tokens (basic auth with email:token) for single-account scripts."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "app_review",
+    "evidence_url": "https://developer.atlassian.com/cloud/jira/platform/oauth-2-3lo-apps/",
+    "evidence_quote": "Users trying to install an unapproved OAuth 2.0 integration are warned that the app has not yet been reviewed by Atlassian.",
+    "confidence": "high",
+    "notes": "Free Atlassian developer/cloud site available; OAuth apps distributed beyond installer's own instance need approval to avoid the unreviewed-app warning."
+  },
+  "api": {
+    "protocols": ["rest", "webhook_only"],
+    "breadth": "broad",
+    "endpoint_count": null,
+    "mcp": "official",
+    "mcp_url": "https://www.atlassian.com/platform/remote-mcp-server",
+    "docs_root": "https://developer.atlassian.com/cloud/jira/platform/",
+    "evidence_url": "https://developer.atlassian.com/cloud/jira/platform/oauth-2-3lo-apps/",
+    "evidence_quote": "OAuth 2.0 (3LO) apps can be listed on the Atlassian Marketplace",
+    "confidence": "medium",
+    "notes": "Jira Cloud REST API is large (broad by general knowledge); Atlassian has published a remote MCP server covering Jira/Confluence."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "app_review",
+    "rationale": "Free developer access and mature OAuth2 REST API, but distributing an app to arbitrary customers triggers Atlassian's review/warning process.",
+    "confidence": "medium"
+  }
+}

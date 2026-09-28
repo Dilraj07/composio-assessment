@@ -1,0 +1,38 @@
+{
+  "app": "Ramp",
+  "one_liner": "Corporate card and finance automation platform with an API for transactions, users, and spend management.",
+  "auth": {
+    "methods": ["oauth2"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://support.ramp.com/hc/en-us/articles/46681939909907-Accessing-the-Developer-API",
+    "evidence_quote": "To begin using the Ramp Developer API, you must first create a developer app to obtain your API credentials. Admin access is required.",
+    "confidence": "high",
+    "notes": "OAuth2 with both client_credentials (server-to-server) and authorization_code (user-delegated) flows; separate sandbox and production environments exist."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "admin_consent",
+    "evidence_url": "https://support.ramp.com/hc/en-us/articles/46681939909907-Accessing-the-Developer-API",
+    "evidence_quote": "Admin access is required.",
+    "confidence": "medium",
+    "notes": "Existing Ramp customer admins can self-serve create a developer app and credentials; not confirmed whether a non-customer can get a standalone sandbox account."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "moderate",
+    "endpoint_count": null,
+    "mcp": "unknown",
+    "mcp_url": null,
+    "docs_root": "https://docs.ramp.com/developer-api/v1/overview/introduction",
+    "evidence_url": null,
+    "evidence_quote": null,
+    "confidence": "low",
+    "notes": "Docs pages returned JS-rendered shells during fetch; endpoint count and MCP status not confirmed within budget. Known from search snippet: base URL https://api.ramp.com/developer/v1, sandbox and production environments both exist."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "Ramp customer admins can self-serve create OAuth2 developer apps with sandbox and production environments.",
+    "confidence": "medium"
+  }
+}

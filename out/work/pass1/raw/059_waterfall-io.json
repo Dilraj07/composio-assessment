@@ -1,0 +1,38 @@
+{
+  "app": "Waterfall.io",
+  "one_liner": "B2B contact and company enrichment API that aggregates 30+ data vendors behind a single unified API.",
+  "auth": {
+    "methods": ["api_key"],
+    "primary_for_third_party": "api_key",
+    "evidence_url": "https://docs.waterfall.io/v1/introduction",
+    "evidence_quote": "All requests require an API key in the `x-api-key` header.",
+    "confidence": "high",
+    "notes": null
+  },
+  "access": {
+    "tier": "partner_gated",
+    "extra_gate": "sales_contact",
+    "evidence_url": "https://www.waterfall.io/book-a-call",
+    "evidence_quote": null,
+    "confidence": "low",
+    "notes": "No self-serve signup or pricing page was found; search results indicate you must book a call with the Waterfall team to get exact rates, and the product uses a prepaid, usage-based model funded after contact with sales. Could not confirm whether an API key can be obtained without a sales conversation."
+  },
+  "api": {
+    "protocols": ["rest", "webhook_only"],
+    "breadth": "narrow",
+    "endpoint_count": null,
+    "mcp": "none",
+    "mcp_url": null,
+    "docs_root": "https://docs.waterfall.io/v1/introduction",
+    "evidence_url": "https://docs.waterfall.io/v1/introduction",
+    "evidence_quote": null,
+    "confidence": "low",
+    "notes": "Search summary lists endpoints: Prospector, Contact Enrichment, Phone Enrichment, Company Enrichment, Email Verification, with async workflows and webhook support; not independently confirmed via fetch. No MCP server found; only unrelated third-party Apify actors reference 'Waterfall' enrichment."
+  },
+  "verdict": {
+    "value": "needs_outreach",
+    "blocker": "sales_contact",
+    "rationale": "API-key auth exists but no self-serve pricing or signup was found; obtaining access appears to require contacting sales.",
+    "confidence": "low"
+  }
+}

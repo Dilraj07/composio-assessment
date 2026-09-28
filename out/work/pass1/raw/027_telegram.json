@@ -1,0 +1,38 @@
+{
+  "app": "Telegram",
+  "one_liner": "Cloud-based messaging app; developers build bots and clients against the Telegram Bot API / MTProto API.",
+  "auth": {
+    "methods": ["bearer_token"],
+    "primary_for_third_party": "bearer_token",
+    "evidence_url": "https://core.telegram.org/bots/api",
+    "evidence_quote": "Each bot is given a unique authentication token when it is created. The token looks something like 123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11.",
+    "confidence": "high",
+    "notes": "Telegram calls this a bot token (issued by BotFather), embedded directly in the request URL path rather than an OAuth or API-key header; not called an 'API key' by the vendor."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "none",
+    "evidence_url": "https://core.telegram.org/bots/api",
+    "evidence_quote": "All queries to the Telegram Bot API must be served over HTTPS and need to be presented in this form: https://api.telegram.org/bot<token>/METHOD_NAME.",
+    "confidence": "medium",
+    "notes": "Bot creation via BotFather is free and instant; fetched page did not state pricing but Telegram Bot API is widely known to be free."
+  },
+  "api": {
+    "protocols": ["rest", "webhook_only"],
+    "breadth": "moderate",
+    "endpoint_count": null,
+    "mcp": "community",
+    "mcp_url": "https://github.com/guangxiangdebizi/telegram-mcp",
+    "docs_root": "https://core.telegram.org/bots/api",
+    "evidence_url": "https://core.telegram.org/bots/api",
+    "evidence_quote": "Each bot is given a unique authentication token when it is created.",
+    "confidence": "medium",
+    "notes": "No official Telegram-published MCP server found; numerous community MCP servers wrap the Bot API."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "Bot token creation is free and instant via BotFather with no review process for basic bot usage.",
+    "confidence": "high"
+  }
+}

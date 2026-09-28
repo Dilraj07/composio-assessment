@@ -1,0 +1,38 @@
+{
+  "app": "Xero",
+  "one_liner": "Cloud accounting software for small businesses with APIs for invoicing, accounting, payroll, and bank feeds.",
+  "auth": {
+    "methods": ["oauth2"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://developer.xero.com/",
+    "evidence_quote": "OAuth 2",
+    "confidence": "medium",
+    "notes": "Page links to a dedicated OAuth2 overview guide at /documentation/guides/oauth2/overview; full authentication page content not fetched directly."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "app_review",
+    "evidence_url": "https://developer.xero.com/",
+    "evidence_quote": "Sign up for a free account to build on the Xero platform.",
+    "confidence": "high",
+    "notes": "Free developer signup and a demo company are available immediately; broader access/certification for the App Store requires 'Find customers who love your app, you'll need ten to get certified,' i.e. a certification review before wide production use."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "moderate",
+    "endpoint_count": null,
+    "mcp": "unknown",
+    "mcp_url": null,
+    "docs_root": "https://developer.xero.com/documentation/api/accounting/overview",
+    "evidence_url": "https://developer.xero.com/",
+    "evidence_quote": "access to over 4 million small business customers",
+    "confidence": "low",
+    "notes": "Did not verify official MCP server or exact endpoint count within call budget."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "Free developer account and demo company support immediate building; app certification is only needed for public listing at scale, not for initial development.",
+    "confidence": "medium"
+  }
+}

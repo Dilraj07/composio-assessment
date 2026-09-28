@@ -13,16 +13,16 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass
 
-from .fetch import claim_supported, is_first_party
+from .fetch import is_first_party
 from .schema import (
     GRADED_FIELDS,
     AccessTier,
     AppRecord,
     Confidence,
     ExtraGate,
+    McpStatus,
     Protocol,
     Verdict,
-    get_field,
 )
 
 
@@ -38,8 +38,14 @@ class Trigger:
 # Rules
 # --------------------------------------------------------------------------
 
+# verdict.value is DERIVED from access.tier + access.extra_gate, so its
+# confidence and evidence are the access block's. Verifying a verdict means
+# verifying those two fields.
+_BLOCK_OF = {f: f.split(".")[0] for f in GRADED_FIELDS} | {"verdict.value": "access"}
+
+
 def _block_for(record: AppRecord, dotted: str):
-    return getattr(record, dotted.split(".")[0])
+    return getattr(record, _BLOCK_OF[dotted])
 
 
 def rule_low_confidence(record: AppRecord) -> list[Trigger]:
@@ -68,28 +74,34 @@ def rule_third_party_evidence(record: AppRecord) -> list[Trigger]:
     return out
 
 
-def rule_unverifiable_evidence(record: AppRecord, pages: dict | None = None) -> list[Trigger]:
+_EVIDENCE_RULE = {
+    "no_url": ("no_evidence", "evidence_url is null"),
+    "dead": ("dead_evidence", "cited URL did not resolve"),
+    "quote_missing": ("claim_not_on_page", "quoted text not found on the re-fetched page"),
+    "no_quote": ("no_quote", "URL cited but no quote to check it against"),
+    "needs_browser": ("needs_browser", "plain fetch blocked (403/JS); needs a browser check"),
+}
+
+
+def rule_unverifiable_evidence(record: AppRecord, evidence: dict | None = None) -> list[Trigger]:
     """RULE 3 -- URL missing, dead, or the claim is not on the page.
 
-    `pages` maps url -> Page from the pass-1 fetch cache. Checking the claim
-    text appears is the point: a 200 response proves the path exists, not that
-    it says what the model claimed.
+    `evidence` is this app's entry from src/evidence.py: {block: {status,...}}
+    produced by re-downloading every cited URL with plain httpx. A 200 proves
+    the path exists, not that it says what the model claimed -- the quote
+    check is the point.
     """
     out = []
     for f in GRADED_FIELDS:
-        block = _block_for(record, f)
-        if not block.evidence_url:
-            out.append(Trigger(record.app, f, "no_evidence", "evidence_url is null"))
+        block_name = _BLOCK_OF[f]
+        if evidence is None:
+            if not getattr(record, block_name).evidence_url:
+                out.append(Trigger(record.app, f, "no_evidence", "evidence_url is null"))
             continue
-        if pages is None:
-            continue
-        page = pages.get(block.evidence_url)
-        if page is None or not page.ok:
-            out.append(Trigger(record.app, f, "dead_evidence",
-                               f"fetch failed: {block.evidence_url}"))
-        elif not claim_supported(page, block.evidence_quote):
-            out.append(Trigger(record.app, f, "claim_not_on_page",
-                               "cited text not found in fetched page"))
+        status = (evidence.get(block_name) or {}).get("status", "no_url")
+        if status in _EVIDENCE_RULE:
+            rule, detail = _EVIDENCE_RULE[status]
+            out.append(Trigger(record.app, f, rule, detail))
     return out
 
 
@@ -117,8 +129,10 @@ def rule_verify_all_buildable(record: AppRecord) -> list[Trigger]:
     negatives cost an outreach email. Verify the direction that hurts.
     """
     if record.verdict.value == Verdict.BUILDABLE_NOW:
-        return [Trigger(record.app, "verdict.value", "buildable_always_verified",
-                        "buildable_now is always re-verified (asymmetric cost)")]
+        # The verdict is derived, so verifying it = verifying its two inputs.
+        return [Trigger(record.app, f, "buildable_always_verified",
+                        "buildable_now is always re-verified (asymmetric cost)")
+                for f in ("access.tier", "access.extra_gate")]
     return []
 
 
@@ -159,21 +173,38 @@ def rule_contradictions(record: AppRecord) -> list[Trigger]:
     return out
 
 
+def rule_mcp_absence(record: AppRecord) -> list[Trigger]:
+    """RULE 7 -- a claim that NO MCP server exists is always re-checked.
+
+    Absence is the hardest claim to evidence (there is no page to quote) and
+    the most likely to be stale: vendors shipped MCP servers monthly through
+    2025-26, after most model training cut-offs.
+    """
+    if record.api.mcp in (McpStatus.NONE, McpStatus.UNKNOWN):
+        return [Trigger(record.app, "api.mcp", "mcp_absence_rechecked",
+                        f"mcp={record.api.mcp.value}: absence claims go stale fastest")]
+    return []
+
+
 ALL_RULES = (
     rule_low_confidence,
     rule_third_party_evidence,
     rule_selfserve_unknown_gate,
     rule_verify_all_buildable,
     rule_contradictions,
+    rule_mcp_absence,
 )
 
 
-def triage(record: AppRecord, pages: dict | None = None) -> list[Trigger]:
-    """All triggers for one record, deduplicated by (field, rule)."""
+def triage(record: AppRecord, evidence: dict | None = None) -> list[Trigger]:
+    """All triggers for one record, deduplicated by (field, rule).
+
+    `evidence` is this app's entry from src/evidence.py, or None to skip the
+    re-fetch checks (unit tests)."""
     hits: list[Trigger] = []
     for rule in ALL_RULES:
         hits.extend(rule(record))
-    hits.extend(rule_unverifiable_evidence(record, pages))
+    hits.extend(rule_unverifiable_evidence(record, evidence))
 
     seen, unique = set(), []
     for t in hits:
@@ -184,7 +215,7 @@ def triage(record: AppRecord, pages: dict | None = None) -> list[Trigger]:
     return unique
 
 
-def triage_all(records: list[AppRecord], pages: dict | None = None) -> dict:
+def triage_all(records: list[AppRecord], evidence: dict | None = None) -> dict:
     """Triage the full set and summarise.
 
     Escalation rate is a calibration signal: below ~20% the rules are too
@@ -196,7 +227,7 @@ def triage_all(records: list[AppRecord], pages: dict | None = None) -> dict:
                           # field can trip several rules at once, and counting
                           # pairs pushes the rate above 100%.
     for rec in records:
-        hits = triage(rec, pages)
+        hits = triage(rec, None if evidence is None else evidence.get(rec.app, {}))
         if hits:
             per_app[rec.app] = [asdict(h) for h in hits]
             escalated_fields += len({h.field for h in hits})

@@ -1,0 +1,38 @@
+{
+  "app": "Pipedrive",
+  "one_liner": "Sales-focused CRM and pipeline management tool with a REST API.",
+  "auth": {
+    "methods": ["oauth2", "api_key"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://pipedrive.readme.io/docs/core-api-concepts-authentication",
+    "evidence_quote": "The API token must be provided in the `x-api-token` header for all requests.",
+    "confidence": "high",
+    "notes": "Personal API token is per-user/company (single account). OAuth 2.0 is required/recommended for public Marketplace apps that act on other customers' accounts."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "none",
+    "evidence_url": "https://pipedrive.readme.io/docs/developer-sandbox-account",
+    "evidence_quote": null,
+    "confidence": "medium",
+    "notes": "A free Developer Sandbox account is available indefinitely for building/testing per WebSearch summary of Pipedrive docs (page not independently WebFetched for verbatim quote). Public OAuth apps must go through Pipedrive Marketplace review to be publicly listed, but that is a listing gate, not a block on calling the production API against accounts that install a private/unlisted app."
+  },
+  "api": {
+    "protocols": ["rest", "webhook_only"],
+    "breadth": "broad",
+    "endpoint_count": null,
+    "mcp": "unknown",
+    "mcp_url": null,
+    "docs_root": "https://developers.pipedrive.com/docs/api/v1",
+    "evidence_url": "https://developers.pipedrive.com/docs/api/v1",
+    "evidence_quote": null,
+    "confidence": "low",
+    "notes": "Did not search specifically for a Pipedrive MCP server within the 4-call budget; mcp field left unknown pending pass-2 verification."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "Free developer sandbox plus OAuth2/API-token access to a broad REST API with no production-call gate beyond normal OAuth consent.",
+    "confidence": "medium"
+  }
+}

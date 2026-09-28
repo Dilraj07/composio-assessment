@@ -1,0 +1,38 @@
+{
+  "app": "iPayX",
+  "one_liner": "FX forensic audit protocol (FINTRAC-registered) that audits cross-border B2B payment fees and FX spreads via API and MCP server.",
+  "auth": {
+    "methods": ["api_key", "bearer_token"],
+    "primary_for_third_party": "api_key",
+    "evidence_url": "https://www.ipayx.ai/docs/mcp-server",
+    "evidence_quote": "HTTP Bearer token in Authorization header.",
+    "confidence": "high",
+    "notes": "Keys are prefixed ipx_live_ / ipx_test_ and referred to as API keys, sent as Bearer tokens."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "none",
+    "evidence_url": "https://www.ipayx.ai/docs/mcp-server",
+    "evidence_quote": "How to get a key: Open your iPayX dashboard → API keys",
+    "confidence": "high",
+    "notes": "Free tier tools available (audit_fx_transaction, check_fx_mid_market_rate); paid tier for full_forensic_fx_report."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "narrow",
+    "endpoint_count": null,
+    "mcp": "official",
+    "mcp_url": "https://www.ipayx.ai/docs/mcp-server",
+    "docs_root": "https://www.ipayx.ai/docs",
+    "evidence_url": "https://www.ipayx.ai/docs/mcp-server",
+    "evidence_quote": "REST API Reference",
+    "confidence": "medium",
+    "notes": "Vendor publishes an official MCP server directly documented at ipayx.ai/docs/mcp-server with a small number of tools (3 primary tools found); a separate REST API reference is referenced but not directly verified in this pass."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "Free API key, official vendor-published MCP server, and documented Bearer-token REST auth make this immediately buildable.",
+    "confidence": "high"
+  }
+}

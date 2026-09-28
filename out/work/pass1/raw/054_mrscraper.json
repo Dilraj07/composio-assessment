@@ -1,0 +1,38 @@
+{
+  "app": "MrScraper",
+  "one_liner": "Web scraping API / AI-assisted scraper builder for extracting structured data from websites.",
+  "auth": {
+    "methods": ["api_key"],
+    "primary_for_third_party": "api_key",
+    "evidence_url": "https://docs.mrscraper.com",
+    "evidence_quote": "Learn how tokens work and create an API token for authentication.",
+    "confidence": "medium",
+    "notes": "Docs describe it as a 'token' used for authentication; treated as api_key since vendor context (API token in dashboard) matches the api_key definition rather than a long-lived bearer_token."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "none",
+    "evidence_url": "https://mrscraper.com/pricing",
+    "evidence_quote": null,
+    "confidence": "medium",
+    "notes": "Search results indicate a free plan with 1,000 tokens and no credit card required, upgradeable to a $199/mo Scraper Pro plan; pricing page not directly fetched so quote omitted."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "narrow",
+    "endpoint_count": null,
+    "mcp": "none",
+    "mcp_url": null,
+    "docs_root": "https://docs.mrscraper.com",
+    "evidence_url": "https://docs.mrscraper.com",
+    "evidence_quote": "Explore every endpoint, authentication, pagination, and error handling",
+    "confidence": "low",
+    "notes": "No MCP server found in the searches performed; docs overview did not enumerate endpoint count directly."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "Free tier with no credit card required and simple token-based API auth, no gate found.",
+    "confidence": "medium"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "app": "Apify",
+  "one_liner": "Web scraping and browser automation platform ('Actors') with a REST API and a marketplace of pre-built scrapers.",
+  "auth": {
+    "methods": ["api_key", "bearer_token"],
+    "primary_for_third_party": "api_key",
+    "evidence_url": "https://docs.apify.com/api/v2",
+    "evidence_quote": "Add the token to your request's `Authorization` header as `Bearer <token>`",
+    "confidence": "high",
+    "notes": "Apify calls this credential an 'API token'; can also be passed as a URL query parameter (less secure, per docs). Also documents agentic payment support (x402, Skyfire)."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "none",
+    "evidence_url": "https://apify.com/pricing",
+    "evidence_quote": null,
+    "confidence": "medium",
+    "notes": "Free plan is $0/mo with $5 monthly platform credits, no credit card required, usable indefinitely, per search results; pricing page not directly fetched."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "broad",
+    "endpoint_count": null,
+    "mcp": "official",
+    "mcp_url": "https://mcp.apify.com/",
+    "docs_root": "https://docs.apify.com/api/v2",
+    "evidence_url": "https://github.com/apify/apify-mcp-server",
+    "evidence_quote": "The Apify MCP server enables your AI agents to extract data from social media, search engines, maps, e-commerce sites, or any other website using thousands of ready-made scrapers, crawlers, and automation tools available on the Apify Store.",
+    "confidence": "high",
+    "notes": "API organized as 'RESTful HTTP endpoints' per docs.apify.com; full endpoint count references an OpenAPI schema rather than a fixed number."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "none",
+    "rationale": "Free, no-card-required tier, standard bearer-token API auth, broad REST API, and an official MCP server.",
+    "confidence": "high"
+  }
+}

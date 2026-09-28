@@ -1,0 +1,38 @@
+{
+  "app": "Harvest",
+  "one_liner": "Time tracking and invoicing software for teams and freelancers.",
+  "auth": {
+    "methods": ["oauth2", "bearer_token"],
+    "primary_for_third_party": "oauth2",
+    "evidence_url": "https://help.getharvest.com/api-v2/authentication-api/authentication/authentication/",
+    "evidence_quote": "register an OAuth2 Application, also known as an OAuth2 Client",
+    "confidence": "high",
+    "notes": "Personal Access Token is a long-lived bearer token created via Harvest ID for single-account scripts, distinct from the OAuth2 flow used for multi-account apps."
+  },
+  "access": {
+    "tier": "self_serve_trial",
+    "extra_gate": "none",
+    "evidence_url": "https://help.getharvest.com/api-v2/authentication-api/authentication/authentication/",
+    "evidence_quote": "The V2 API requires an access token to authenticate requests",
+    "confidence": "low",
+    "notes": "Harvest is a paid product with a free trial (no confirmed permanent free tier); no separate app-review gate found within budget."
+  },
+  "api": {
+    "protocols": ["rest"],
+    "breadth": "narrow",
+    "endpoint_count": null,
+    "mcp": "unknown",
+    "mcp_url": null,
+    "docs_root": "https://help.getharvest.com/api-v2/",
+    "evidence_url": "https://help.getharvest.com/api-v2/authentication-api/authentication/authentication/",
+    "evidence_quote": "a Personal Access Token being the quickest way to start playing around with the API",
+    "confidence": "low",
+    "notes": "MCP availability not checked within budget."
+  },
+  "verdict": {
+    "value": "buildable_paid",
+    "blocker": "paid_only",
+    "rationale": "OAuth2 and PAT-based REST API are documented, but Harvest requires a paid subscription beyond its trial period.",
+    "confidence": "low"
+  }
+}

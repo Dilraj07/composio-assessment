@@ -1,0 +1,38 @@
+{
+  "app": "Sherlock",
+  "one_liner": "Open-source CLI tool that hunts down social media accounts by username across hundreds of sites.",
+  "auth": {
+    "methods": ["none"],
+    "primary_for_third_party": "none",
+    "evidence_url": "https://github.com/sherlock-project/sherlock",
+    "evidence_quote": "Hunt down social media accounts by username across 400+ social networks",
+    "confidence": "high",
+    "notes": "Local CLI tool run via pipx/Docker; no hosted service or credential involved."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "none",
+    "evidence_url": "https://github.com/sherlock-project/sherlock",
+    "evidence_quote": "MIT © Sherlock Project",
+    "confidence": "high",
+    "notes": "OSS, MIT-licensed, freely installable (pipx, Docker, OS package managers)."
+  },
+  "api": {
+    "protocols": ["cli"],
+    "breadth": "none",
+    "endpoint_count": null,
+    "mcp": "none",
+    "mcp_url": null,
+    "docs_root": "https://github.com/sherlock-project/sherlock",
+    "evidence_url": "https://github.com/sherlock-project/sherlock",
+    "evidence_quote": "This is a CLI (command-line interface) tool. Users invoke it with commands like `sherlock user123` to search for usernames.",
+    "confidence": "high",
+    "notes": "No hosted API; no MCP server found in the documentation fetched."
+  },
+  "verdict": {
+    "value": "buildable_local",
+    "blocker": "local_only",
+    "rationale": "Free, open-source CLI tool with no auth or hosted API -- usable by an agent only as a local subprocess.",
+    "confidence": "high"
+  }
+}

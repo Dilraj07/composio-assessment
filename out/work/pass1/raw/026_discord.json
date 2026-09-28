@@ -1,0 +1,38 @@
+{
+  "app": "Discord",
+  "one_liner": "Voice, video, and text chat platform organized around communities/servers, with a bot and app developer platform.",
+  "auth": {
+    "methods": ["oauth2", "bearer_token"],
+    "primary_for_third_party": "bearer_token",
+    "evidence_url": "https://docs.discord.com/developers/topics/oauth2",
+    "evidence_quote": "Bot users are automatically added to all apps, and are authenticated using the bot token found in your app's settings. Unlike the normal OAuth2 flow, bot users have full access to most API routes without using bearer tokens.",
+    "confidence": "high",
+    "notes": "Bot token is the standard integration credential for acting on a server (long-lived, not OAuth); OAuth2 authorization-code flow is used to add the bot/app to a given server or for user-identity actions."
+  },
+  "access": {
+    "tier": "self_serve_free",
+    "extra_gate": "app_review",
+    "evidence_url": "https://docs.discord.com/developers/topics/oauth2",
+    "evidence_quote": "Verified bots do not have a maximum number of guilds",
+    "confidence": "medium",
+    "notes": "Free Discord developer account and bot creation is self-serve; verification (review) is required to scale a bot beyond ~100 guilds and for certain privileged intents."
+  },
+  "api": {
+    "protocols": ["rest", "webhook_only"],
+    "breadth": "broad",
+    "endpoint_count": null,
+    "mcp": "community",
+    "mcp_url": "https://github.com/SaseQ/discord-mcp",
+    "docs_root": "https://docs.discord.com/developers/docs",
+    "evidence_url": "https://docs.discord.com/developers/topics/oauth2",
+    "evidence_quote": "OAuth2 enables application developers to build applications that utilize authentication and data from the Discord API.",
+    "confidence": "medium",
+    "notes": "No official Discord-published MCP server found; multiple actively maintained community MCP servers exist."
+  },
+  "verdict": {
+    "value": "buildable_now",
+    "blocker": "app_review",
+    "rationale": "Free developer account and bot token give immediate working access; scaling to many servers or privileged intents requires Discord's verification/review process.",
+    "confidence": "high"
+  }
+}
